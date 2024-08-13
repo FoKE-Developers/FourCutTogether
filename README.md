@@ -3,9 +3,9 @@
 ## Specification
 
 ### Android
-- targetSdk 35
-- minSdk 31
-- DataBinding
+- targetSdk `35`
+- minSdk `31`
+- DataBinding for UI
 - Clean Architecture based
 
 ### Contributor
