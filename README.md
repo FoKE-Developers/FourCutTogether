@@ -1,5 +1,5 @@
 # 같이네컷
-- Last updated: 2024-08-13
+- Last updated: 2024-09-22
 
 ## Specification
 
@@ -33,6 +33,7 @@
    - Labels: 해당하는 라벨 추가 **반드시 하나의 라벨만 추가할 것**
    - Projects: 기입 X
    - Milestone: 기입 X
+- Rebase로 merge **Squash 금지!!**
 
 ## Code Review Rules
 - PR 요청 후, slack에 리뷰 요청
@@ -41,8 +42,3 @@
 ## Dependencies
 - 프로젝트 및 관련 버전은 libs.versions.toml 에서 관리
 - 기타 의존성은 사용한 모듈에서 관리
-
-## TODO
-- 기본적인 모듈 + Manifest 설정 추가 후 커밋
-- 모듈간 의존성 추가 커밋
-- 샘플코드 + Hilt 추가 후 커밋
