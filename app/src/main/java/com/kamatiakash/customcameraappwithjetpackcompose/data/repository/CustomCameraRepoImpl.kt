@@ -38,9 +38,7 @@ class CustomCameraRepoImpl @Inject constructor(
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME,name)
             put(MediaStore.MediaColumns.MIME_TYPE,"image/jpeg")
-            if (Build.VERSION.SDK_INT > 28){
-                put(MediaStore.Images.Media.RELATIVE_PATH,"Pictures/My-Camera-App-Images")
-            }
+            put(MediaStore.Images.Media.RELATIVE_PATH,"Pictures/My-Camera-App-Images")
         }
 
         // for capture output
@@ -98,4 +96,5 @@ class CustomCameraRepoImpl @Inject constructor(
             e.printStackTrace()
         }
     }
+
 }

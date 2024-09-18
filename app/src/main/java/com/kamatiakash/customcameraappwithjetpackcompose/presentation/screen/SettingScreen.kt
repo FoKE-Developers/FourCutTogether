@@ -5,8 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SettingScreen(
-    popBackStack: () -> Unit,
-    viewModel: SettingViewModel = hiltViewModel()
+    popBackStack: () -> Unit
 ) {
 
 }
