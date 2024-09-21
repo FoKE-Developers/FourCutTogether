@@ -7,9 +7,9 @@ plugins {
 
 android {
     compileSdk 35
-    namespace 'com.kamatiakash.customcameraappwithjetpackcompose'
+    namespace 'com.foke.together'
     defaultConfig {
-        applicationId "com.kamatiakash.customcameraappwithjetpackcompose"
+        applicationId "com.foke.together"
         minSdk 31
         targetSdk 35
         versionCode 1

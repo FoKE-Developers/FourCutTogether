@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Custom camera app with jetpack compose"
+rootProject.name = "FourCutsTogether"
 include ':app'
