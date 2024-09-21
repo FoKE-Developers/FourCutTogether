@@ -32,6 +32,7 @@
    - Assignee: 자신
    - Labels: 해당하는 라벨 추가 **반드시 하나의 라벨만 추가할 것**
    - Projects: 기입 X
+   - Milestone: 기입 X
 
 ## Code Review Rules
 - PR 요청 후, slack에 리뷰 요청
