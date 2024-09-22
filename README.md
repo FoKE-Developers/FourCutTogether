@@ -1,5 +1,5 @@
 # 같이네컷
-- Last updated: 2024-08-13
+- Last updated: 2024-09-22
 
 ## Specification
 
