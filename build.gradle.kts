@@ -49,15 +49,20 @@ subprojects {
                 getByName("debug") {
                     isMinifyEnabled = false
                     isShrinkResources = false
-                    // TODO: signing
+                    signingConfig = signingConfigs.getByName("debug")
+
                 }
                 getByName("release") {
-                    isMinifyEnabled = true
-                    isShrinkResources = true
+                    // TODO: need to resolve for Hilt R8 error and change to `true`
+                    isMinifyEnabled = false
+                    isShrinkResources = false
+
                     proguardFiles(
                         getDefaultProguardFile("proguard-android-optimize.txt"),
                         "proguard-rules.pro"
                     )
+                    // TODO: change to release keystore
+                    signingConfig = signingConfigs.getByName("debug")
                 }
             }
         }
@@ -77,6 +82,8 @@ subprojects {
                         getDefaultProguardFile("proguard-android-optimize.txt"),
                         "proguard-rules.pro"
                     )
+                    // TODO: change to release keystore
+                    signingConfig = signingConfigs.getByName("debug")
                 }
             }
         }
