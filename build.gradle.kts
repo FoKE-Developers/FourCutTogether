@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.android.library) apply false
+
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
 }
 
 subprojects {
@@ -77,5 +80,24 @@ subprojects {
                 }
             }
         }
+    }
+
+    plugins.withId("org.jetbrains.kotlin.android") {
+        apply(plugin = "kotlin-kapt")
+        apply(plugin = "dagger.hilt.android.plugin")
+
+        dependencies {
+            add("implementation", libs.hilt)
+            add("kapt", libs.hilt.compiler)
+        }
+
+        configure<org.jetbrains.kotlin.gradle.plugin.KaptExtension> {
+            correctErrorTypes = true
+        }
+    }
+
+    configurations.all {
+        // resolve error of import duplicated "annotations" with "org.jetbrains.annotations
+        exclude(group = "com.intellij", module = "annotations")
     }
 }
