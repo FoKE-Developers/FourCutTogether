@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.foke.together.presenter.navigation.NavGraph
 import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,30 +22,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            FourCutTogetherTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "FourCut Studio",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            MainScreen()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = name,
-        modifier = modifier
-    )
+private fun MainScreen() {
+    FourCutTogetherTheme {
+        val navController = rememberNavController()
+        NavGraph(navController)
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MainPreview() {
     FourCutTogetherTheme {
-        Greeting("Android")
+        val navController = rememberNavController()
+        NavGraph(navController)
     }
 }
