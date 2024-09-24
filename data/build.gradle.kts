@@ -49,6 +49,10 @@ dependencies {
     implementation(libs.datastore.preferences.core)
     implementation(libs.protobuf.javalite)
 
+    // test
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+
     // module dependency
     implementation(project(":domain"))
 
