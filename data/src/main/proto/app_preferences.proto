@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_package = "com.foke.together";
+option java_multiple_files = true;
+
+message AppPreferences {
+    // Check the guide of Protocol Buffers before create new field.
+    // https://protobuf.dev/programming-guides/proto3/
+
+    // Notes for set a new Field number
+    // * This number cannot be changed once your message type is in use.
+    // * The field number of 19,000 to 19,999 was reserved by Protocol Buffers implementation.
+    // * Max size of field number is 536870911
+
+    string sample_id = 999997;
+    string sample_title = 999998;
+    string sample_description = 999999;
+}
