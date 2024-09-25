@@ -2,7 +2,7 @@ package com.foke.together.domain.output
 
 import kotlinx.coroutines.flow.Flow
 
-interface AppPreferenceRepository {
+interface AppPreferenceInterface {
     fun getSampleData(): Flow<SampleData>
     suspend fun setSampleData(data: SampleData)
     suspend fun clearAll()
