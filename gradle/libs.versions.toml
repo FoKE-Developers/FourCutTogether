@@ -55,9 +55,6 @@ protobuf = "3.23.2"
 protobuf-plugin = "0.9.4"
 protoc = "com.google.protobuf:protoc:4.28.2"
 
-# lifecycle-viewmodel-ktx
-lifecycle-viewmodel-ktx = "2.8.6"
-
 # test -----------
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -113,10 +110,6 @@ datastore = { group = "androidx.datastore", name = "datastore", version.ref = "d
 datastore_preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 datastore_preferences_core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
 protobuf_javalite = { group = "com.google.protobuf", name = "protobuf-javalite", version.ref = "protobuf" }
-
-# lifecycle viewmodel
-androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel-ktx" }
-
 
 # test -----------
 junit = { group = "junit", name = "junit", version.ref = "junit" }

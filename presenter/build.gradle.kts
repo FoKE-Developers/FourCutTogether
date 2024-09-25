@@ -37,9 +37,6 @@ dependencies {
     // navigation
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
-
-    // view model
-    implementation(libs.androidx.lifecycle.viewmodel)
     
     // test
     testImplementation(libs.junit)
