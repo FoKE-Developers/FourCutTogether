@@ -1,45 +1,104 @@
 package com.foke.together.presenter.screen
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.foke.together.domain.input.GetSampleDataInterface
+import com.foke.together.domain.input.SampleUiData
 import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.HomeViewModel
+import com.foke.together.presenter.R
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 @Composable
 fun HomeScreen(
-    navigateToCamera: (String) -> Unit,
-    navigateToSetting: (String) -> Unit,
+    navigationSelectFrame: () -> Unit,
+    navigateToSetting: () -> Unit,
     popBackStack: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val sampleData by viewModel.getSampleText().collectAsState()
+    FourCutTogetherTheme() {
+        ConstraintLayout(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val (topBarrier, bottomBarrier, startBarrier, endBarrier, play, setting, summary) = createRefs()
 
-    Column (
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Home Screen", fontSize = 40.sp)
+            Image(
+                painter = painterResource(
+                    id = R.drawable.fourcut_together
+                ),
+                contentDescription = "FourCuts Together",
+                modifier = Modifier.constrainAs(play) {
+                    centerTo(parent)
+                    height = Dimension.wrapContent
+                    width = Dimension.wrapContent
+                },
 
-        Button(onClick = { navigateToCamera("camera") }){
-            Text("Camera")
+            )
+
+            IconButton(
+                onClick = { navigateToSetting() },
+                modifier = Modifier.constrainAs(setting) {
+                    top.linkTo(parent.top, margin = 24.dp)
+                    end.linkTo(parent.end, margin = 24.dp)
+                    height = Dimension.wrapContent
+                    width = Dimension.wrapContent
+                },
+            ) {
+                Icon(
+                    modifier = Modifier.size(85.dp),
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = "Setting",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Button(
+                onClick = { navigationSelectFrame() },
+                modifier = Modifier
+                    .constrainAs(summary) {
+                        top.linkTo(play.bottom)
+                        start.linkTo(parent.start, margin = 64.dp)
+                        end.linkTo(parent.end, margin = 64.dp)
+                        bottom.linkTo(parent.bottom)
+                        height = Dimension.wrapContent
+                        width = Dimension.fillToConstraints
+                    }
+            ) {
+                Text(
+                    text = "시작하기",
+                    style = MaterialTheme.typography.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 36.sp
+                )
+            }
         }
-
-        Button(onClick = { navigateToSetting("Setting") }){
-            Text("Setting")
-        }
-        Text(text = sampleData.sampleText)
+        // ViewModel test Code
+        Text(
+            text = sampleData.sampleText
+        )
     }
 }
 
@@ -47,15 +106,19 @@ fun HomeScreen(
 @Composable
 private fun DefaultPreview() {
     FourCutTogetherTheme() {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            HomeScreen(
-                navigateToCamera = { },
-                navigateToSetting = {},
-                popBackStack = {}
+        HomeScreen(
+            navigationSelectFrame = { },
+            navigateToSetting = {},
+            popBackStack = {},
+            viewModel = HomeViewModel(
+                getSampleData = object : GetSampleDataInterface {
+                    override fun invoke(): Flow<SampleUiData> {
+                        return flow {
+                            emit(SampleUiData("Hello World"))
+                        }
+                    }
+                }
             )
-        }
+        )
     }
 }
