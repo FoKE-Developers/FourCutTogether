@@ -33,11 +33,13 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.hilt.compiler)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.constraintlayout.compose)
 
     // navigation
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
-    
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
