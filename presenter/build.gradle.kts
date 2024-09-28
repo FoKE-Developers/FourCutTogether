@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.androidx.hilt.compiler)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.android.mjpeg.view)
 
     // navigation
     implementation(libs.androidx.hilt.navigation.compose)
