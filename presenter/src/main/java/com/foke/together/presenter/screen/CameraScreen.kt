@@ -16,14 +16,14 @@ import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
 
 @Composable
 fun CameraScreen(
-    navigateToFrame: () -> Unit,
+    navigateToShare: () -> Unit,
     popBackStack: () -> Unit
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         Text("Camera Screen", fontSize = 40.sp)
-        Button(onClick = navigateToFrame){
+        Button(onClick = navigateToShare){
             Text("Frame")
         }
     }
@@ -38,7 +38,7 @@ private fun DefaultPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             CameraScreen(
-                navigateToFrame = { },
+                navigateToShare = { },
                 popBackStack = { }
             )
         }

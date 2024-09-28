@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.sp
 import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
 
 @Composable
-fun FrameScreen(
-    navigateShare: () -> Unit,
+fun SelectFrameScreen(
+    navigateToMethod: () -> Unit,
     popBackStack: () -> Unit
 ) {
     Column (
@@ -24,7 +24,7 @@ fun FrameScreen(
         horizontalAlignment = Alignment.CenterHorizontally) {
         Text("Frame Screen", fontSize = 40.sp)
 
-        Button(onClick = navigateShare){
+        Button(onClick = navigateToMethod){
             Text("Share")
         }
     }
@@ -38,8 +38,8 @@ private fun DefaultPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            FrameScreen(
-                navigateShare = {},
+            SelectFrameScreen(
+                navigateToMethod = {},
                 popBackStack = {}
             )
         }
