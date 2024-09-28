@@ -3,27 +3,143 @@ package com.foke.together.presenter.screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Print
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ChainStyle
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import com.foke.together.presenter.frame.FourCutFrame
 import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
+import com.foke.together.presenter.ui.theme.mediumContrastLightColorScheme
 
 @Composable
 fun ShareScreen(
     popBackStack: () -> Unit
 ) {
-    Column (
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Share Screen", fontSize = 40.sp)
-        Button(onClick = { popBackStack }){
-            Text("Home")
+    ConstraintLayout(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        val (finalPic, printButton, shareButton, downloadButton, homeButton ) = createRefs()
+        // viewmodel과 합쳐야함 frameType
+        val topGuideLine = createGuidelineFromTop(0.1f)
+        val bottomGuideLine = createGuidelineFromBottom(0.1f)
+        val startGuideLine = createGuidelineFromStart(0.2f)
+        val endGuideLine = createGuidelineFromEnd(0.2f)
+
+        val frameBarrier = createEndBarrier(finalPic)
+
+        createVerticalChain(
+            homeButton, printButton, shareButton, downloadButton,
+            chainStyle = ChainStyle.Spread
+        )
+
+        val frameType = 0
+        when(frameType){
+            0 -> {
+                Card(
+                    modifier = Modifier
+                        .constrainAs(finalPic){
+                            top.linkTo(topGuideLine)
+                            bottom.linkTo(bottomGuideLine)
+                            start.linkTo(parent.start, margin = 30.dp)
+                            width = Dimension.wrapContent
+                            height = Dimension.fillToConstraints
+                        }
+                ){
+                    FourCutFrame(
+                        designColorScheme = mediumContrastLightColorScheme,
+                    )
+                }
+            }
+        }
+        IconButton(
+            onClick = { popBackStack() },
+            modifier = Modifier.constrainAs(homeButton) {
+                top.linkTo(topGuideLine)
+                end.linkTo(parent.end, margin = 30.dp)
+                bottom.linkTo(printButton.top)
+                height = Dimension.wrapContent
+                width = Dimension.wrapContent
+            },
+        ) {
+            Icon(
+                modifier = Modifier.size(120.dp),
+                imageVector = Icons.Filled.Home,
+                contentDescription = "Home",
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+        IconButton(
+            onClick = {  },
+            modifier = Modifier.constrainAs(printButton) {
+                top.linkTo(homeButton.bottom)
+                end.linkTo(parent.end, margin = 30.dp)
+                bottom.linkTo(shareButton.top)
+                height = Dimension.wrapContent
+                width = Dimension.wrapContent
+            },
+        ) {
+            Icon(
+                modifier = Modifier.size(120.dp),
+                imageVector = Icons.Filled.Print,
+                contentDescription = "Print",
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        IconButton(
+            onClick = {  },
+            modifier = Modifier.constrainAs(shareButton) {
+                top.linkTo(printButton.bottom)
+                end.linkTo(parent.end, margin = 30.dp)
+                bottom.linkTo(downloadButton.top)
+                height = Dimension.wrapContent
+                width = Dimension.wrapContent
+            },
+        ) {
+            Icon(
+                modifier = Modifier.size(120.dp),
+                imageVector = Icons.Filled.Share,
+                contentDescription = "Share",
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        IconButton(
+            onClick = {  },
+            modifier = Modifier.constrainAs(downloadButton) {
+                top.linkTo(shareButton.bottom)
+                end.linkTo(parent.end, margin = 30.dp)
+                bottom.linkTo(parent.bottom)
+                height = Dimension.wrapContent
+                width = Dimension.wrapContent
+            },
+        ) {
+            Icon(
+                modifier = Modifier.size(120.dp),
+                imageVector = Icons.Filled.Download,
+                contentDescription = "Download",
+                tint = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }
