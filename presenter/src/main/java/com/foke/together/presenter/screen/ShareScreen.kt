@@ -29,6 +29,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.foke.together.presenter.frame.FourCutFrame
 import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
+import com.foke.together.presenter.ui.theme.highContrastDarkColorScheme
 import com.foke.together.presenter.ui.theme.mediumContrastLightColorScheme
 
 @Composable
@@ -66,7 +67,7 @@ fun ShareScreen(
                         }
                 ){
                     FourCutFrame(
-                        designColorScheme = mediumContrastLightColorScheme,
+                        designColorScheme = highContrastDarkColorScheme,
                     )
                 }
             }
