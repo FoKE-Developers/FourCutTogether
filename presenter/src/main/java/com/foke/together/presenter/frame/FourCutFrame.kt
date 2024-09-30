@@ -55,6 +55,8 @@ fun FourCutFrame(
 
         ) {
             items(4){
+                //TODO: add camera image
+                // change Box -> ImageView
                 Box(
                     modifier = Modifier
                         .aspectRatio(1.5f)

@@ -85,12 +85,7 @@ fun SelectMethodScreen(
             border = BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
         ) {
             Text(text = "Timer", style = MaterialTheme.typography.titleLarge)
-            Icon(
-                imageVector = Icons.Filled.Timer,
-                contentDescription = "Gesture",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
-            )
+            Text(text = "⏱\uFE0F", style = MaterialTheme.typography.titleLarge)
         }
         OutlinedButton(
             onClick = { navigateToCamera() },
@@ -106,12 +101,7 @@ fun SelectMethodScreen(
             border = BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
         ) {
             Text(text = "Gesture", style = MaterialTheme.typography.titleLarge)
-            Icon(
-                imageVector = Icons.Filled.Gesture,
-                contentDescription = "Gesture",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
-            )
+            Text(text = "\uD83D\uDC4B", style = MaterialTheme.typography.titleLarge)
         }
 
     }
