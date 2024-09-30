@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--TODO IP Camera 연결에 사용하기 위해 인터넷 퍼미션을 추가하였습니다.-->
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".MainApplication"

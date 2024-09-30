@@ -76,6 +76,7 @@ fun CameraScreen(
                     isAdjustHeight = true
                     supportPinchZoomAndPan = false
                     // test url
+                    // TODO : change url in viewmodel
                     setUrl("https://192.168.137.100:8080/test.mjpg")
                     startStream()
                 }
