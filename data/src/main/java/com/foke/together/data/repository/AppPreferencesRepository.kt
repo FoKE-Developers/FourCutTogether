@@ -2,8 +2,10 @@ package com.foke.together.data.repository
 
 import androidx.datastore.core.DataStore
 import com.foke.together.AppPreferences
+import com.foke.together.CameraSource
+import com.foke.together.domain.interactor.CameraSourceType
+import com.foke.together.domain.interactor.SampleData
 import com.foke.together.domain.output.AppPreferenceInterface
-import com.foke.together.domain.output.SampleData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -26,6 +28,30 @@ class AppPreferencesRepository @Inject constructor(
                 .setSampleTitle(data.title)
                 .setSampleDescription(data.description)
                 .build()
+        }
+    }
+
+    override fun getCameraSourceType(): Flow<CameraSourceType> =
+        appPreferencesFlow.map {
+            it.cameraSource?.run {
+                when (this) {
+                    CameraSource.CAMERA_SOURCE_INTERNAL -> CameraSourceType.INTERNAL
+                    CameraSource.CAMERA_SOURCE_EXTERNAL -> CameraSourceType.EXTERNAL
+                    CameraSource.UNRECOGNIZED -> null
+                }
+            } ?: CameraSourceType.INTERNAL // set to default INTERNAL
+        }
+
+    override suspend fun setCameraSourceType(type: CameraSourceType) {
+        when (type) {
+            CameraSourceType.INTERNAL -> CameraSource.CAMERA_SOURCE_INTERNAL
+            CameraSourceType.EXTERNAL -> CameraSource.CAMERA_SOURCE_EXTERNAL
+        }.apply {
+            appPreferences.updateData {
+                it.toBuilder()
+                    .setCameraSource(this)
+                    .build()
+            }
         }
     }
 

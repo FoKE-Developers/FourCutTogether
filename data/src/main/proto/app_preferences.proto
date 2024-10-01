@@ -12,7 +12,15 @@ message AppPreferences {
     // * The field number of 19,000 to 19,999 was reserved by Protocol Buffers implementation.
     // * Max size of field number is 536870911
 
+    CameraSource camera_source = 10;
+
+    // TODO: sample code. remove later.
     string sample_id = 999997;
     string sample_title = 999998;
     string sample_description = 999999;
+}
+
+enum CameraSource {
+    CAMERA_SOURCE_INTERNAL = 0;
+    CAMERA_SOURCE_EXTERNAL = 1;
 }
