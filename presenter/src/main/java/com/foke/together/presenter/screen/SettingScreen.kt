@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
 
 @Composable
 fun SettingScreen(
@@ -27,11 +27,12 @@ fun SettingScreen(
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
-
             val (backKey, selectCamera, IPAdrress) = createRefs()
 
+            // TODO: viewmodel code. need to move SettingViewModel
             val cameraTypeList = listOf("Phone Cam", "External Cam")
             var cameraType by remember { mutableStateOf(cameraTypeList.indexOf("IP Cam")) }
+            var cameraIPAddress by rememberSaveable { mutableStateOf("192.168.X.X") }
 
             val topGuideLine = createGuidelineFromTop(0.1f)
             val bottomGuideLine = createGuidelineFromBottom(0.1f)
@@ -49,7 +50,6 @@ fun SettingScreen(
                     width = Dimension.wrapContent
                 },
             ) {
-                //
                 Icon(
                     modifier = Modifier.size(24.dp),
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -57,6 +57,7 @@ fun SettingScreen(
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
+
             Row(
                 modifier = Modifier.constrainAs(selectCamera){
                     top.linkTo(backKey.bottom)
@@ -68,11 +69,8 @@ fun SettingScreen(
                 }
 
             ) {
-
                 val cornerRadius = 16.dp
-
                 cameraTypeList.forEachIndexed { index, item ->
-
                     OutlinedButton(
                         onClick = { cameraType = index },
                         modifier = when (index) {
@@ -130,7 +128,7 @@ fun SettingScreen(
                     }
                 }
             }
-            var text by rememberSaveable { mutableStateOf("192.168.X.X") }
+
             TextField(
                 modifier = Modifier.constrainAs(IPAdrress){
                     top.linkTo(selectCamera.bottom)
@@ -140,22 +138,23 @@ fun SettingScreen(
                     width = Dimension.wrapContent
                     height = Dimension.wrapContent
                 },
-                value = text,
-                onValueChange = {text = it},
+                value = cameraIPAddress,
+                onValueChange = {cameraIPAddress = it},
                 label = { Text(text = "IP Address") },
             )
         }
     }
 }
+
 @Composable
 fun PhoneCamSetting(){
-    // phase 3에 개발
+    // TODO: implement in phase 3
 }
 
 @Composable
 fun ExternalCamSetting( modifier: Modifier) {
-
 }
+
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {

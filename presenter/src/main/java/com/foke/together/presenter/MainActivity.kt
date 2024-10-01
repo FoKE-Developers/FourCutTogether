@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.foke.together.presenter.navigation.NavGraph
-import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

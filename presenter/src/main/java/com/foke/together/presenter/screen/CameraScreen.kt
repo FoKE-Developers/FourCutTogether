@@ -3,11 +3,6 @@ package com.foke.together.presenter.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,8 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
-import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.longdo.mjpegviewer.MjpegView
 
 @Composable
@@ -32,24 +26,27 @@ fun CameraScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         val (backKey, title, preview, cameraTimer, imageCount, progress) = createRefs()
-        IconButton(
-            onClick = { popBackStack() },
-            modifier = Modifier.constrainAs(backKey) {
-                top.linkTo(title.top)
-                bottom.linkTo(title.bottom)
-                start.linkTo(parent.start, margin = 24.dp)
-                height = Dimension.wrapContent
-                width = Dimension.wrapContent
-            },
-        ) {
-            //
-            Icon(
-                modifier = Modifier.size(32.dp),
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "backKey",
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
+
+        // TODO: need to check ui guide
+//        IconButton(
+//            onClick = { popBackStack() },
+//            modifier = Modifier.constrainAs(backKey) {
+//                top.linkTo(title.top)
+//                bottom.linkTo(title.bottom)
+//                start.linkTo(parent.start, margin = 24.dp)
+//                height = Dimension.wrapContent
+//                width = Dimension.wrapContent
+//            },
+//        ) {
+//            //
+//            Icon(
+//                modifier = Modifier.size(32.dp),
+//                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+//                contentDescription = "backKey",
+//                tint = MaterialTheme.colorScheme.primary
+//            )
+//        }
+
         Text(
             text = "촬영시 움직이지마세요",
             modifier = Modifier.constrainAs(title) {
@@ -107,8 +104,8 @@ private fun DefaultPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             CameraScreen(
-                navigateToShare = { },
-                popBackStack = { }
+                navigateToShare = {},
+                popBackStack = {}
             )
         }
     }

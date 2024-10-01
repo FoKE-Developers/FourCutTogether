@@ -1,4 +1,5 @@
 package com.foke.together.presenter.navigation
+
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.flow
 
 @Composable
 fun NavGraph(navController: NavHostController) {
-
     NavHost(
         navController = navController,
         startDestination = NavRoute.Home.path
@@ -31,7 +31,6 @@ fun NavGraph(navController: NavHostController) {
         addShareScreen(navController, this)
     }
 }
-
 
 private fun addHomeScreen(
     navController: NavHostController,
@@ -59,35 +58,6 @@ private fun addHomeScreen(
     }
 }
 
-private fun addCameraScreen(
-    navController: NavHostController,
-    navGraphBuilder: NavGraphBuilder
-) {
-    navGraphBuilder.composable(route = NavRoute.Camera.path) {
-        CameraScreen(
-            navigateToShare = {
-                navController.navigate(NavRoute.Share.path)
-            },
-            popBackStack = {
-                navController.popBackStack(NavRoute.Home.path, inclusive = false)
-            }
-        )
-    }
-}
-
-private fun addSettingScreen(
-    navController: NavHostController,
-    navGraphBuilder: NavGraphBuilder
-) {
-    navGraphBuilder.composable(route = NavRoute.Setting.path) {
-        SettingScreen(
-            popBackStack = {
-                navController.popBackStack(NavRoute.Home.path, inclusive = false)
-            }
-        )
-    }
-}
-
 private fun addSelectFrameScreen(
     navController: NavHostController,
     navGraphBuilder: NavGraphBuilder
@@ -95,7 +65,7 @@ private fun addSelectFrameScreen(
     navGraphBuilder.composable(route = NavRoute.SelectFrame.path) {
         SelectFrameScreen(
             navigateToMethod = {
-                navController.navigate(NavRoute.Camera.path)
+                navController.navigate(NavRoute.SelectMethod.path)
             },
             popBackStack = {
                 navController.popBackStack(NavRoute.Home.path, inclusive = false)
@@ -114,7 +84,23 @@ private fun addSelectMethodScreen(
                 navController.navigate(NavRoute.Camera.path)
             },
             popBackStack = {
-                navController.popBackStack(NavRoute.Home.path, inclusive = false)
+                navController.popBackStack(NavRoute.SelectFrame.path, inclusive = false)
+            }
+        )
+    }
+}
+
+private fun addCameraScreen(
+    navController: NavHostController,
+    navGraphBuilder: NavGraphBuilder
+) {
+    navGraphBuilder.composable(route = NavRoute.Camera.path) {
+        CameraScreen(
+            navigateToShare = {
+                navController.navigate(NavRoute.Share.path)
+            },
+            popBackStack = {
+                 navController.popBackStack(NavRoute.Home.path, inclusive = false)
             }
         )
     }
@@ -126,6 +112,19 @@ private fun addShareScreen(
 ) {
     navGraphBuilder.composable(route = NavRoute.Share.path) {
         ShareScreen(
+            popBackStack = {
+                navController.popBackStack(NavRoute.Home.path, inclusive = false)
+            }
+        )
+    }
+}
+
+private fun addSettingScreen(
+    navController: NavHostController,
+    navGraphBuilder: NavGraphBuilder
+) {
+    navGraphBuilder.composable(route = NavRoute.Setting.path) {
+        SettingScreen(
             popBackStack = {
                 navController.popBackStack(NavRoute.Home.path, inclusive = false)
             }

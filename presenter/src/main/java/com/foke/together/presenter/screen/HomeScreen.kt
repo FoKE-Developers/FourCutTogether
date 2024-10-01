@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.foke.together.domain.input.GetSampleDataInterface
 import com.foke.together.domain.input.SampleUiData
 import com.foke.together.presenter.R
-import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.HomeViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -102,7 +102,7 @@ fun HomeScreen(
 private fun DefaultPreview() {
     FourCutTogetherTheme() {
         HomeScreen(
-            navigationSelectFrame = { },
+            navigationSelectFrame = {},
             navigateToSetting = {},
             popBackStack = {},
             viewModel = HomeViewModel(

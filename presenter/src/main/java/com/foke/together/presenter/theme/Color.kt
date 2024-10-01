@@ -1,4 +1,4 @@
-package com.foke.together.presenter.ui.theme
+package com.foke.together.presenter.theme
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF00696B)

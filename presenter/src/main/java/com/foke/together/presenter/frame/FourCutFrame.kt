@@ -22,13 +22,14 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.foke.together.presenter.R
-import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
-import com.foke.together.presenter.ui.theme.highContrastDarkColorScheme
-import com.foke.together.presenter.ui.theme.mediumContrastLightColorScheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.highContrastDarkColorScheme
+import com.foke.together.presenter.theme.mediumContrastLightColorScheme
+import com.foke.together.util.TimeUtil
 
-val frameRatio = 0.3333f
 @Composable
 fun FourCutFrame(
+    // TODO: Need to refactoring. separate frame design with application theme
     designColorScheme: ColorScheme = mediumContrastLightColorScheme,
     cameraImageUrlList : List<String>? = null,
 ) {
@@ -52,7 +53,6 @@ fun FourCutFrame(
                     width = Dimension.fillToConstraints
                     height = Dimension.wrapContent
                 }
-
         ) {
             items(4){
                 //TODO: add camera image
@@ -83,7 +83,7 @@ fun FourCutFrame(
             tint = designColorScheme.primaryContainer
         )
         Text(
-            text = "2024.09.27",
+            text = TimeUtil.getCurrentTime(),
             modifier = Modifier.constrainAs(curTime){
                 top.linkTo(decorateImage.bottom)
                 start.linkTo(parent.start)
@@ -93,7 +93,6 @@ fun FourCutFrame(
             fontSize = 12.sp
         )
     }
-
 }
 
 @Preview(showBackground = true)
