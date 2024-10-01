@@ -2,7 +2,6 @@ package com.foke.together.presenter.frame
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,10 +9,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,11 +18,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.foke.together.presenter.R
-import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
+import com.foke.together.util.TimeUtil
 
 @Composable
 fun MakerFaireFrame(
@@ -41,6 +37,7 @@ fun MakerFaireFrame(
             .padding(10.dp)
     ) {
         val (startBarrier, endBarrier, cameraColumn, background, decorateImage, curTime) = createRefs()
+
         LazyColumn(
             state = rememberLazyListState(),
             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -56,13 +53,17 @@ fun MakerFaireFrame(
         ) {
             items(4){
                 if(backgroundColor == Color.White) {
+                    //TODO: add camera image
+                    // change Box -> ImageView
                     Box(
                         modifier = Modifier
                             .aspectRatio(1.5f)
                             .background(color = Color.Black)
                     )
                 }
-                else{
+                else {
+                    //TODO: add camera image
+                    // change Box -> ImageView
                     Box(
                         modifier = Modifier
                             .aspectRatio(1.5f)
@@ -71,6 +72,7 @@ fun MakerFaireFrame(
                 }
             }
         }
+
         Image(
             painter =  painterResource(
                 id = R.drawable.maker_faire_logo
@@ -85,8 +87,9 @@ fun MakerFaireFrame(
                 width = Dimension.fillToConstraints
             }
         )
+
         Text(
-            text = "2024.09.27",
+            text = TimeUtil.getCurrentTime(),
             modifier = Modifier.constrainAs(curTime){
                 top.linkTo(decorateImage.bottom)
                 bottom.linkTo(parent.bottom, margin = 15.dp)

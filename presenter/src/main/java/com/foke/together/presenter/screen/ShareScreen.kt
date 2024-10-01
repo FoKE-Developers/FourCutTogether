@@ -16,8 +16,8 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.foke.together.presenter.frame.FourCutFrame
-import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
-import com.foke.together.presenter.ui.theme.highContrastDarkColorScheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.highContrastDarkColorScheme
 
 @Composable
 fun ShareScreen(
@@ -27,12 +27,12 @@ fun ShareScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         val (finalPic, printButton, shareButton, downloadButton, homeButton ) = createRefs()
-        // viewmodel과 합쳐야함 frameType
+
+        val frameType = 0
         val topGuideLine = createGuidelineFromTop(0.1f)
         val bottomGuideLine = createGuidelineFromBottom(0.1f)
         val startGuideLine = createGuidelineFromStart(0.2f)
         val endGuideLine = createGuidelineFromEnd(0.2f)
-
         val frameBarrier = createEndBarrier(finalPic)
 
         createVerticalChain(
@@ -40,7 +40,7 @@ fun ShareScreen(
             chainStyle = ChainStyle.Spread
         )
 
-        val frameType = 0
+        // TODO: need check to change single ImageView
         when(frameType){
             0 -> {
                 Card(
@@ -59,6 +59,7 @@ fun ShareScreen(
                 }
             }
         }
+
         IconButton(
             onClick = { popBackStack() },
             modifier = Modifier.constrainAs(homeButton) {
@@ -76,8 +77,9 @@ fun ShareScreen(
                 tint = MaterialTheme.colorScheme.primary
             )
         }
+
         IconButton(
-            onClick = {  },
+            onClick = {},
             modifier = Modifier.constrainAs(printButton) {
                 top.linkTo(homeButton.bottom)
                 end.linkTo(parent.end, margin = 30.dp)
@@ -95,7 +97,7 @@ fun ShareScreen(
         }
 
         IconButton(
-            onClick = {  },
+            onClick = {},
             modifier = Modifier.constrainAs(shareButton) {
                 top.linkTo(printButton.bottom)
                 end.linkTo(parent.end, margin = 30.dp)
@@ -113,7 +115,7 @@ fun ShareScreen(
         }
 
         IconButton(
-            onClick = {  },
+            onClick = {},
             modifier = Modifier.constrainAs(downloadButton) {
                 top.linkTo(shareButton.bottom)
                 end.linkTo(parent.end, margin = 30.dp)
@@ -135,7 +137,7 @@ fun ShareScreen(
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
-    FourCutTogetherTheme() {
+    FourCutTogetherTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background

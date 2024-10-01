@@ -1,4 +1,5 @@
 <resources>
+    <!-- TODO. check to remove xml files -->
     <color name="md_theme_primary">#00696B</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
     <color name="md_theme_primaryContainer">#9CF1F3</color>

@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.foke.together.presenter.R
-import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
 
 @Composable
 fun SelectFrameScreen(
@@ -58,7 +58,6 @@ fun SelectFrameScreen(
                     width = Dimension.wrapContent
                 },
             ) {
-                //
                 Icon(
                     modifier = Modifier.size(24.dp),
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -66,6 +65,7 @@ fun SelectFrameScreen(
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
+
             Text(
                 text = "프레임을 선택하세요",
                 modifier = Modifier.constrainAs(title) {
@@ -77,6 +77,7 @@ fun SelectFrameScreen(
                 fontWeight = FontWeight.Bold,
                 fontSize = 25.sp
             )
+
             HorizontalPager(
                 modifier = Modifier
                     .constrainAs(pager) {
@@ -99,11 +100,10 @@ fun SelectFrameScreen(
                 when(page){
                     0 -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_light), contentDescription = "fourcut_frame_medium_light")
                     1 -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_dark), contentDescription = "fourcut_frame_medium_dark")
-                    2 -> Image(painter = painterResource(id = R.drawable.maker_paire_frame), contentDescription = "maker_faire_frame")
-
-
+                    2 -> Image(painter = painterResource(id = R.drawable.maker_faire_frame), contentDescription = "maker_faire_frame")
                 }
             }
+
             IconButton(
                 onClick = { navigateToMethod() },
                 modifier = Modifier.constrainAs(frameSelectButton) {
@@ -115,7 +115,6 @@ fun SelectFrameScreen(
                     width = Dimension.wrapContent
                 },
             ) {
-                //
                 Icon(
                     modifier = Modifier.size(85.dp),
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,

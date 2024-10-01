@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Gesture
-import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -17,16 +14,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.foke.together.presenter.R
-import com.foke.together.presenter.ui.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
 
 @Composable
 fun SelectMethodScreen(
@@ -41,6 +35,7 @@ fun SelectMethodScreen(
         val bottomGuideLine = createGuidelineFromBottom(0.1f)
         val startGuideLine = createGuidelineFromStart(0.2f)
         val endGuideLine = createGuidelineFromEnd(0.2f)
+
         IconButton(
             onClick = { popBackStack() },
             modifier = Modifier.constrainAs(backKey) {
@@ -51,7 +46,6 @@ fun SelectMethodScreen(
                 width = Dimension.wrapContent
             },
         ) {
-            //
             Icon(
                 modifier = Modifier.size(24.dp),
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -59,6 +53,7 @@ fun SelectMethodScreen(
                 tint = MaterialTheme.colorScheme.primary
             )
         }
+
         Text(
             text = "Select Method",
             style = MaterialTheme.typography.headlineLarge,
@@ -71,6 +66,7 @@ fun SelectMethodScreen(
             fontWeight = FontWeight.Bold,
             fontSize = 25.sp
         )
+
         OutlinedButton(
             onClick = { navigateToCamera() },
             modifier = Modifier.constrainAs(timerButton) {
@@ -87,6 +83,7 @@ fun SelectMethodScreen(
             Text(text = "Timer", style = MaterialTheme.typography.titleLarge)
             Text(text = "⏱\uFE0F", style = MaterialTheme.typography.titleLarge)
         }
+
         OutlinedButton(
             onClick = { navigateToCamera() },
             modifier = Modifier.constrainAs(gestureButton) {
@@ -103,7 +100,6 @@ fun SelectMethodScreen(
             Text(text = "Gesture", style = MaterialTheme.typography.titleLarge)
             Text(text = "\uD83D\uDC4B", style = MaterialTheme.typography.titleLarge)
         }
-
     }
 }
 
