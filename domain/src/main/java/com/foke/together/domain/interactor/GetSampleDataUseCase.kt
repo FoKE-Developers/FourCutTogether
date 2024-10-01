@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+// TODO: sample code. remove later
 class GetSampleDataUseCase @Inject constructor(
     private val appPreference: AppPreferenceInterface
 ): GetSampleDataInterface {
@@ -21,3 +22,10 @@ class GetSampleDataUseCase @Inject constructor(
         private val TAG = GetSampleDataUseCase::class.java.simpleName
     }
 }
+
+// TODO: test code. remove later.
+data class SampleData (
+    val id: String,
+    val title: String,
+    val description: String,
+)
