@@ -16,11 +16,14 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.longdo.mjpegviewer.MjpegView
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.foke.together.presenter.viewmodel.CameraViewModel
 
 @Composable
 fun CameraScreen(
     navigateToShare: () -> Unit,
-    popBackStack: () -> Unit
+    popBackStack: () -> Unit,
+    viewModel: CameraViewModel = hiltViewModel()
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()

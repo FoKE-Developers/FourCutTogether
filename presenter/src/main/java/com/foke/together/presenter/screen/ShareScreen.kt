@@ -18,10 +18,13 @@ import androidx.constraintlayout.compose.Dimension
 import com.foke.together.presenter.frame.FourCutFrame
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.theme.highContrastDarkColorScheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.foke.together.presenter.viewmodel.ShareViewModel
 
 @Composable
 fun ShareScreen(
-    popBackStack: () -> Unit
+    popBackStack: () -> Unit,
+    viewModel: ShareViewModel = hiltViewModel()
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()

@@ -22,10 +22,3 @@ class GetSampleDataUseCase @Inject constructor(
         private val TAG = GetSampleDataUseCase::class.java.simpleName
     }
 }
-
-// TODO: test code. remove later.
-data class SampleData (
-    val id: String,
-    val title: String,
-    val description: String,
-)

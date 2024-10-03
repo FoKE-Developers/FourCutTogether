@@ -26,13 +26,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.foke.together.presenter.R
 import com.foke.together.presenter.theme.FourCutTogetherTheme
+import com.foke.together.presenter.viewmodel.SelectFrameViewModel
 
 @Composable
 fun SelectFrameScreen(
     navigateToMethod: () -> Unit,
-    popBackStack: () -> Unit
+    popBackStack: () -> Unit,
+    viewModel: SelectFrameViewModel = hiltViewModel()
 ) {
     FourCutTogetherTheme {
         val pagerState = rememberPagerState {
