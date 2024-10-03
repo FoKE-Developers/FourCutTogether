@@ -1,7 +1,7 @@
 package com.foke.together.domain.output
 
-import com.foke.together.domain.interactor.SampleData
-import com.foke.together.domain.interactor.CameraSourceType
+import com.foke.together.domain.interactor.entity.CameraSourceType
+import com.foke.together.domain.interactor.entity.SampleData
 import kotlinx.coroutines.flow.Flow
 
 interface AppPreferenceInterface {

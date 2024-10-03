@@ -3,8 +3,8 @@ package com.foke.together.data.repository
 import androidx.datastore.core.DataStore
 import com.foke.together.AppPreferences
 import com.foke.together.CameraSource
-import com.foke.together.domain.interactor.CameraSourceType
-import com.foke.together.domain.interactor.SampleData
+import com.foke.together.domain.interactor.entity.CameraSourceType
+import com.foke.together.domain.interactor.entity.SampleData
 import com.foke.together.domain.output.AppPreferenceInterface
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -10,7 +10,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,21 +20,29 @@ import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.foke.together.presenter.theme.FourCutTogetherTheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.foke.together.domain.interactor.entity.CameraSourceType
+import com.foke.together.presenter.viewmodel.SettingViewModel
+import kotlinx.coroutines.flow.map
+
+private const val CameraSourceTypeError = -1
 
 @Composable
 fun SettingScreen(
-    popBackStack: () -> Unit
+    popBackStack: () -> Unit,
+    viewModel: SettingViewModel = hiltViewModel()
 ) {
+    val cameraSelectedIndex by viewModel.cameraSourceType.map {
+        CameraSourceType.entries.indexOf(it)
+    }.collectAsState(CameraSourceTypeError)
+    val cameraIPAddress by viewModel.cameraIPAddress.collectAsState()
+    val cameraTypeList = CameraSourceType.entries.map { it.name }
+
     FourCutTogetherTheme {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
             val (backKey, selectCamera, IPAdrress) = createRefs()
-
-            // TODO: viewmodel code. need to move SettingViewModel
-            val cameraTypeList = listOf("Phone Cam", "External Cam")
-            var cameraType by remember { mutableStateOf(cameraTypeList.indexOf("IP Cam")) }
-            var cameraIPAddress by rememberSaveable { mutableStateOf("192.168.X.X") }
 
             val topGuideLine = createGuidelineFromTop(0.1f)
             val bottomGuideLine = createGuidelineFromBottom(0.1f)
@@ -67,21 +77,22 @@ fun SettingScreen(
                     width = Dimension.wrapContent
                     height = Dimension.wrapContent
                 }
-
             ) {
                 val cornerRadius = 16.dp
                 cameraTypeList.forEachIndexed { index, item ->
                     OutlinedButton(
-                        onClick = { cameraType = index },
+                        onClick = {
+                            viewModel.setCameraSourceType(index)
+                        },
                         modifier = when (index) {
                             0 ->
                                 Modifier
                                     .offset(0.dp, 0.dp)
-                                    .zIndex(if (cameraType == index) 1f else 0f)
+                                    .zIndex(1f)
                             else ->
                                 Modifier
                                     .offset((-1 * index).dp, 0.dp)
-                                    .zIndex(if (cameraType == index) 1f else 0f)
+                                    .zIndex(0f)
                         },
                         shape = when (index) {
                             0 -> RoundedCornerShape(
@@ -104,20 +115,18 @@ fun SettingScreen(
                             )
                         },
                         border = BorderStroke(
-                            1.dp, if (cameraType == index) {
+                            1.dp, if (cameraSelectedIndex == index) {
                                 MaterialTheme.colorScheme.primary
                             } else {
                                 MaterialTheme.colorScheme.secondary
                             }
                         ),
-                        // 선택되었을때의 색깔
-                        colors = if (cameraType == index) {
+                        colors = if (cameraSelectedIndex == index) {   // selected
                             ButtonDefaults.outlinedButtonColors(
                                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                                 contentColor = MaterialTheme.colorScheme.primary
                             )
-                            // 선택되지않았을때
-                        } else {
+                        } else {   // not selected
                             ButtonDefaults.outlinedButtonColors(
                                 containerColor = MaterialTheme.colorScheme.onPrimary,
                                 contentColor = MaterialTheme.colorScheme.primary
@@ -139,7 +148,7 @@ fun SettingScreen(
                     height = Dimension.wrapContent
                 },
                 value = cameraIPAddress,
-                onValueChange = {cameraIPAddress = it},
+                onValueChange = { viewModel.setCameraIPAddress(it) },
                 label = { Text(text = "IP Address") },
             )
         }
