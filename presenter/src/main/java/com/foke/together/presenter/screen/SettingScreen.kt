@@ -32,10 +32,12 @@ fun SettingScreen(
     popBackStack: () -> Unit,
     viewModel: SettingViewModel = hiltViewModel()
 ) {
-    val cameraSelectedIndex by viewModel.cameraSourceType.map {
-        CameraSourceType.entries.indexOf(it)
+    val cameraSelectedIndex by remember {
+        viewModel.cameraSourceType.map { CameraSourceType.entries.indexOf(it) }
     }.collectAsState(CameraSourceTypeError)
-    val cameraIPAddress by viewModel.cameraIPAddress.collectAsState()
+    val cameraIPAddress by remember {
+        viewModel.cameraIPAddress
+    }.collectAsState()
     val cameraTypeList = CameraSourceType.entries.map { it.name }
 
     FourCutTogetherTheme {
