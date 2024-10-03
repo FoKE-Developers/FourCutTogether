@@ -5,17 +5,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.foke.together.domain.input.GetSampleDataInterface
-import com.foke.together.domain.input.SampleUiData
 import com.foke.together.presenter.screen.CameraScreen
 import com.foke.together.presenter.screen.HomeScreen
 import com.foke.together.presenter.screen.SelectFrameScreen
 import com.foke.together.presenter.screen.SelectMethodScreen
 import com.foke.together.presenter.screen.SettingScreen
 import com.foke.together.presenter.screen.ShareScreen
-import com.foke.together.presenter.viewmodel.HomeViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -44,16 +39,7 @@ private fun addHomeScreen(
             navigationSelectFrame = {
                 navController.navigate(NavRoute.SelectFrame.path)
             },
-            popBackStack = { navController.popBackStack() },
-            viewModel = HomeViewModel(
-                getSampleData = object : GetSampleDataInterface {
-                    override fun invoke(): Flow<SampleUiData> {
-                        return flow {
-                            emit(SampleUiData("Hello World"))
-                        }
-                    }
-                }
-            )
+            popBackStack = { navController.popBackStack() }
         )
     }
 }
