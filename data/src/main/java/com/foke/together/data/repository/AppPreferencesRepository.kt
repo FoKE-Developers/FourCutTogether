@@ -4,7 +4,6 @@ import androidx.datastore.core.DataStore
 import com.foke.together.AppPreferences
 import com.foke.together.CameraSource
 import com.foke.together.domain.interactor.entity.CameraSourceType
-import com.foke.together.domain.interactor.entity.SampleData
 import com.foke.together.domain.output.AppPreferenceInterface
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,21 +14,6 @@ class AppPreferencesRepository @Inject constructor(
     private val appPreferences: DataStore<AppPreferences>
 ): AppPreferenceInterface {
     private val appPreferencesFlow: Flow<AppPreferences> = appPreferences.data
-
-    override fun getSampleData(): Flow<SampleData> =
-        appPreferencesFlow.map {
-            SampleData(it.sampleId, it.sampleTitle, it.sampleDescription)
-        }
-
-    override suspend fun setSampleData(data: SampleData) {
-        appPreferences.updateData {
-            it.toBuilder()
-                .setSampleId(data.id)
-                .setSampleTitle(data.title)
-                .setSampleDescription(data.description)
-                .build()
-        }
-    }
 
     override fun getCameraSourceType(): Flow<CameraSourceType> =
         appPreferencesFlow.map {
