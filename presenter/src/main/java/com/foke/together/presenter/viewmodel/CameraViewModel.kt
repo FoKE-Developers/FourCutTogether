@@ -26,19 +26,16 @@ class CameraViewModel @Inject constructor(
         captureTimer = object : CountDownTimer(5000, 10) {
             override fun onTick(millisUntilFinished: Long) {
                 _progressState.floatValue = 1f - (millisUntilFinished.toFloat() / 5000)
-                AppLog.d("CameraViewModel", "onTick: ${_progressState.floatValue}")
             }
             override fun onFinish() {
                 _progressState.floatValue = 1f
                 if(_captureCount.intValue < 4){
                     _captureCount.intValue += 1
                     startCaptureTimer()
-                    AppLog.d("CameraViewModel", "onFinish: ${_captureCount.intValue}")
                 }
                 else {
                     stopCaptureTimer()
                     _captureCount.intValue = 1
-                    AppLog.d("CameraViewModel", "onFinish: ${_captureCount.intValue}")
                     nextNavigate()
                 }
             }
