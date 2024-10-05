@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import com.foke.together.AppPreferences
 import com.foke.together.CameraSource
 import com.foke.together.domain.interactor.entity.CameraSourceType
+import com.foke.together.domain.interactor.entity.ExternalCameraIP
 import com.foke.together.domain.output.AppPreferenceInterface
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -36,6 +37,24 @@ class AppPreferencesRepository @Inject constructor(
                     .setCameraSource(this)
                     .build()
             }
+        }
+    }
+
+    override fun getExternalCameraIP(): Flow<ExternalCameraIP> =
+        appPreferencesFlow.map {
+            val address = it.externalCameraIp
+            if (address.isNullOrEmpty()) {
+                ExternalCameraIP("0.0.0.0")
+            } else {
+                ExternalCameraIP(address)
+            }
+        }
+
+    override suspend fun setExternalCameraIP(ip: ExternalCameraIP) {
+        appPreferences.updateData {
+            it.toBuilder()
+                .setExternalCameraIp(ip.address)
+                .build()
         }
     }
 
