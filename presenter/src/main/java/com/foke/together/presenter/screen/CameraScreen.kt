@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,18 +36,7 @@ fun CameraScreen(
     viewModel: CameraViewModel = hiltViewModel()
 ) {
     val TAG = "CameraScreen"
-    LifecycleEventEffect(Lifecycle.Event.ON_START) {
-        viewModel.setCaptureTimer { navigateToShare() }
-        AppLog.d(TAG, "ON_START")
-    }
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        AppLog.d(TAG, "ON_RESUME")
-        viewModel.startCaptureTimer()
-    }
-    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
-        viewModel.stopCaptureTimer()
-        AppLog.d(TAG, "ON_STOP")
-    }
+    var mjpegView: MjpegView? = null
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -103,6 +93,7 @@ fun CameraScreen(
                 .aspectRatio(1.5f),
             factory = { context ->
                 MjpegView(context).apply {
+                    mjpegView = this
                     mode = MjpegView.MODE_BEST_FIT
                     isAdjustHeight = true
                     supportPinchZoomAndPan = false
@@ -135,7 +126,6 @@ fun CameraScreen(
                     // test url
                     // TODO : change url in viewmodel
                     setUrl("http://10.32.100.37:5000/preview")
-                    startStream()
                 }
             },
         )
@@ -153,6 +143,21 @@ fun CameraScreen(
             fontSize = 24.sp,
         )
     }
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        viewModel.setCaptureTimer { navigateToShare() }
+        AppLog.d(TAG, "ON_START")
+    }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        AppLog.d(TAG, "ON_RESUME")
+        viewModel.startCaptureTimer()
+        mjpegView?.startStream()
+    }
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
+        viewModel.stopCaptureTimer()
+        AppLog.d(TAG, "ON_STOP")
+        mjpegView?.stopStream()
+    }
+    LocalContext
 }
 
 @Preview(showBackground = true)
