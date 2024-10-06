@@ -14,7 +14,7 @@ class AppPreferencesSerializer @Inject constructor(): Serializer<AppPreferences>
             // Add proto datastore default value here.
             // You need to check default value of each types from link below
             // https://protobuf.dev/programming-guides/proto3/
-            // ex> isDebugMode = true
+            // e.g. isDebugMode = true
             externalCameraIp = AppPolicy.DEFAULT_EXTERNAL_CAMERA_IP
             build()
         }
