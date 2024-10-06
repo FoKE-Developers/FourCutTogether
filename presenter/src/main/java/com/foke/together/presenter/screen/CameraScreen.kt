@@ -42,26 +42,8 @@ fun CameraScreen(
     ) {
         val (backKey, title, preview, cameraTimer, imageCount, progress) = createRefs()
 
-        // TODO: need to check ui guide
-//        IconButton(
-//            onClick = { popBackStack() },
-//            modifier = Modifier.constrainAs(backKey) {
-//                top.linkTo(title.top)
-//                bottom.linkTo(title.bottom)
-//                start.linkTo(parent.start, margin = 24.dp)
-//                height = Dimension.wrapContent
-//                width = Dimension.wrapContent
-//            },
-//        ) {
-//            //
-//            Icon(
-//                modifier = Modifier.size(32.dp),
-//                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-//                contentDescription = "backKey",
-//                tint = MaterialTheme.colorScheme.primary
-//            )
-//        }
         LinearProgressIndicator(
+            // TODO: progress State를 Flow로 구현하기
             progress = { viewModel.progressState },
             modifier = Modifier.constrainAs(progress){
                 start.linkTo(parent.start, margin = 24.dp)

@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
 ): ViewModel() {
-    // TODO: add viewmodel code here
+    // TODO: progress State를 Flow로 구현하기
     private val _progressState = mutableFloatStateOf(1f)
     val progressState: Float by _progressState
     private val _captureCount = mutableIntStateOf(1)
