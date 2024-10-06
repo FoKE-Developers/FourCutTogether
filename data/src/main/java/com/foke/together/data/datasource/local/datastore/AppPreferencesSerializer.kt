@@ -3,6 +3,7 @@ package com.foke.together.data.datasource.local.datastore
 import androidx.datastore.core.Serializer
 import com.foke.together.AppPreferences
 import com.foke.together.util.AppLog
+import com.foke.together.util.AppPolicy
 import java.io.InputStream
 import java.io.OutputStream
 import javax.inject.Inject
@@ -14,6 +15,7 @@ class AppPreferencesSerializer @Inject constructor(): Serializer<AppPreferences>
             // You need to check default value of each types from link below
             // https://protobuf.dev/programming-guides/proto3/
             // ex> isDebugMode = true
+            externalCameraIp = AppPolicy.DEFAULT_EXTERNAL_CAMERA_IP
             build()
         }
 

@@ -42,12 +42,7 @@ class AppPreferencesRepository @Inject constructor(
 
     override fun getExternalCameraIP(): Flow<ExternalCameraIP> =
         appPreferencesFlow.map {
-            val address = it.externalCameraIp
-            if (address.isNullOrEmpty()) {
-                ExternalCameraIP("0.0.0.0")
-            } else {
-                ExternalCameraIP(address)
-            }
+            ExternalCameraIP(it.externalCameraIp)
         }
 
     override suspend fun setExternalCameraIP(ip: ExternalCameraIP) {
