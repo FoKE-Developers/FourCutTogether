@@ -11,7 +11,7 @@ import javax.inject.Inject
 class GetExternalCameraIPUseCase @Inject constructor(
     private val appPreference: AppPreferenceInterface
 ): GetExternalCameraIPInterface {
-    override fun invoke(): Flow<ExternalCameraIP> =
+    override operator fun invoke(): Flow<ExternalCameraIP> =
         appPreference.getExternalCameraIP().map { it }
 }
 
