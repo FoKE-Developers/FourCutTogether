@@ -15,6 +15,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // retrofit
+    implementation(libs.ok.http.base)
+    implementation(libs.retrofit.base)
+    implementation(libs.retrofit.gson)
+    implementation(libs.google.gson)
+
     // module dependency
     implementation(project(":entity"))
 }
