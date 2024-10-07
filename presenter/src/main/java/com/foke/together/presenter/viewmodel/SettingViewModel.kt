@@ -2,8 +2,8 @@ package com.foke.together.presenter.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.foke.together.domain.input.GetCameraSourceTypeInterface
-import com.foke.together.domain.input.SetCameraSourceTypeInterface
+import com.foke.together.domain.interactor.GetCameraSourceTypeUseCase
+import com.foke.together.domain.interactor.SetCameraSourceTypeUseCase
 import com.foke.together.domain.interactor.entity.CameraSourceType
 import com.foke.together.util.AppLog
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +16,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val getCameraSourceTypeInterface: GetCameraSourceTypeInterface,
-    private val setCameraSourceTypeInterface: SetCameraSourceTypeInterface
+    getCameraSourceTypeUseCase: GetCameraSourceTypeUseCase,
+    private val setCameraSourceTypeUseCase: SetCameraSourceTypeUseCase
 ): ViewModel() {
-    val cameraSourceType = getCameraSourceTypeInterface().shareIn(
+    val cameraSourceType = getCameraSourceTypeUseCase().shareIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         replay = 1
@@ -36,7 +36,7 @@ class SettingViewModel @Inject constructor(
     fun setCameraSourceType(type: CameraSourceType){
         viewModelScope.launch {
             AppLog.e(TAG, "setCameraSourceType", "type: $type")
-            setCameraSourceTypeInterface(type)
+            setCameraSourceTypeUseCase(type)
         }
     }
 
