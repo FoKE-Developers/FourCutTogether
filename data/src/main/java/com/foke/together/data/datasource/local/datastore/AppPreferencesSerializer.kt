@@ -34,6 +34,5 @@ class AppPreferencesSerializer @Inject constructor(): Serializer<AppPreferences>
 
     companion object {
         private val TAG = AppPreferencesSerializer::class.java.simpleName
-
     }
 }
