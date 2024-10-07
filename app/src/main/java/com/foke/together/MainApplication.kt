@@ -12,6 +12,6 @@ class MainApplication: Application() {
     }
 
     companion object {
-        val TAG: String = MainApplication::class.java.simpleName
+        private val TAG: String = MainApplication::class.java.simpleName
     }
 }
