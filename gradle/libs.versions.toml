@@ -59,6 +59,7 @@ protoc = "com.google.protobuf:protoc:4.28.2"
 constraint-layout-compose = "1.0.1"
 android-mjpeg-view = "1.1.3"
 material-icons-extended = "1.7.2"
+ui-graphics-android = "1.7.3"
 
 # test -----------
 junit = "4.13.2"
@@ -120,6 +121,7 @@ protobuf_javalite = { group = "com.google.protobuf", name = "protobuf-javalite",
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraint-layout-compose" }
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "material-icons-extended" }
 android-mjpeg-view = { group = "com.perthcpe23.dev", name = "android-mjpeg-view", version.ref = "android-mjpeg-view" }
+androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "ui-graphics-android" }
 
 # test -----------
 junit = { group = "junit", name = "junit", version.ref = "junit" }
