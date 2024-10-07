@@ -1,5 +1,6 @@
 package com.foke.together.presenter.frame
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,13 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.AsyncImage
 import com.foke.together.presenter.R
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.util.TimeUtil
 
 @Composable
 fun MakerFaireFrame(
-    cameraImageUrlList : List<String>? = null,
+    cameraImageUrlList : List<Uri>? = null,
     backgroundColor : Color = Color(0xFFF5B934),
     decorateImageUrl: String? = null,
 ) {
@@ -52,6 +54,7 @@ fun MakerFaireFrame(
                 .wrapContentSize()
         ) {
             items(4){
+                itemIndex ->
                 if(backgroundColor == Color.White) {
                     //TODO: add camera image
                     // change Box -> ImageView
@@ -59,7 +62,11 @@ fun MakerFaireFrame(
                         modifier = Modifier
                             .aspectRatio(1.5f)
                             .background(color = Color.Black)
-                    )
+                    ){
+                        AsyncImage(
+                            model = cameraImageUrlList?.get(itemIndex),
+                        )
+                    }
                 }
                 else {
                     //TODO: add camera image

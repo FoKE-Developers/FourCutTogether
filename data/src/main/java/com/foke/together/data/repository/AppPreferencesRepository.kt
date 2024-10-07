@@ -3,7 +3,9 @@ package com.foke.together.data.repository
 import androidx.datastore.core.DataStore
 import com.foke.together.AppPreferences
 import com.foke.together.CameraSource
+import com.foke.together.CutFrameSource
 import com.foke.together.domain.interactor.entity.CameraSourceType
+import com.foke.together.domain.interactor.entity.CutFrameSourceType
 import com.foke.together.domain.interactor.entity.ExternalCameraIP
 import com.foke.together.domain.output.AppPreferenceInterface
 import kotlinx.coroutines.flow.Flow
@@ -56,6 +58,32 @@ class AppPreferencesRepository @Inject constructor(
     override suspend fun clearAll() {
         appPreferences.updateData {
             it.toBuilder().clear().build()
+        }
+    }
+
+    override fun getCutFrameSourceType(): Flow<CutFrameSourceType> =
+        appPreferencesFlow.map {
+            it.cutFrameSource?.run {
+                when (this) {
+                    CutFrameSource.MAKER_FAIRE -> CutFrameSourceType.MAKER_FAIRE
+                    CutFrameSource.FOKE_LIGHT -> CutFrameSourceType.FOKE_LIGHT
+                    CutFrameSource.FOKE_DARK -> CutFrameSourceType.FOKE_DARK
+                    CutFrameSource.UNRECOGNIZED -> null
+                }
+            } ?: CutFrameSourceType.MAKER_FAIRE // set to default INTERNAL
+        }
+
+    override suspend fun setCutFrameSourceType(type: CutFrameSourceType){
+        when (type) {
+            CutFrameSourceType.MAKER_FAIRE -> CutFrameSource.MAKER_FAIRE
+            CutFrameSourceType.FOKE_LIGHT -> CutFrameSource.FOKE_LIGHT
+            CutFrameSourceType.FOKE_DARK -> CutFrameSource.FOKE_DARK
+        }.apply {
+            appPreferences.updateData {
+                it.toBuilder()
+                    .setCutFrameSource(this)
+                    .build()
+            }
         }
     }
 }

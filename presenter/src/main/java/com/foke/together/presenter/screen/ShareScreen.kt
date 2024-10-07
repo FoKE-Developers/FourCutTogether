@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,9 @@ import com.foke.together.presenter.frame.FourCutFrame
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.theme.highContrastDarkColorScheme
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.foke.together.domain.interactor.entity.CutFrameSourceType
+import com.foke.together.presenter.frame.MakerFaireFrame
+import com.foke.together.presenter.theme.highContrastLightColorScheme
 import com.foke.together.presenter.viewmodel.ShareViewModel
 
 @Composable
@@ -31,7 +35,8 @@ fun ShareScreen(
     ) {
         val (finalPic, printButton, shareButton, downloadButton, homeButton ) = createRefs()
 
-        val frameType = 0
+//        val frameType = viewModel.cutFrameSourceType.collectAsState(initial = CutFrameSourceType.MAKER_FAIRE)
+        val frameType = CutFrameSourceType.MAKER_FAIRE
         val topGuideLine = createGuidelineFromTop(0.1f)
         val bottomGuideLine = createGuidelineFromBottom(0.1f)
         val startGuideLine = createGuidelineFromStart(0.2f)
@@ -44,8 +49,6 @@ fun ShareScreen(
         )
 
         // TODO: need check to change single ImageView
-        when(frameType){
-            0 -> {
                 Card(
                     modifier = Modifier
                         .constrainAs(finalPic){
@@ -56,12 +59,22 @@ fun ShareScreen(
                             height = Dimension.fillToConstraints
                         }
                 ){
-                    FourCutFrame(
-                        designColorScheme = highContrastDarkColorScheme,
-                    )
+                    when(frameType) {
+                        CutFrameSourceType.MAKER_FAIRE -> {
+                            MakerFaireFrame()
+                        }
+                        CutFrameSourceType.FOKE_LIGHT -> {
+                            FourCutFrame(
+                                designColorScheme = highContrastLightColorScheme,
+                            )
+                        }
+                        CutFrameSourceType.FOKE_DARK -> {
+                            FourCutFrame(
+                                designColorScheme = highContrastDarkColorScheme,
+                            )
+                    }
                 }
             }
-        }
 
         IconButton(
             onClick = { popBackStack() },

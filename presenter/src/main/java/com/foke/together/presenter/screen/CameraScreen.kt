@@ -11,6 +11,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +40,8 @@ fun CameraScreen(
 ) {
     val TAG = "CameraScreen"
     var mjpegView: MjpegView? = null
+    val context = LocalContext.current
+    var graphicsLayer = rememberGraphicsLayer()
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -64,7 +69,7 @@ fun CameraScreen(
             fontSize = 24.sp,
         )
 
-        val mjpegPreview = AndroidView(
+        AndroidView(
             modifier = Modifier
                 .constrainAs(preview) {
                     top.linkTo(title.bottom)
@@ -72,7 +77,16 @@ fun CameraScreen(
                     end.linkTo(parent.end, margin = 24.dp)
                     bottom.linkTo(imageCount.top)
                 }
-                .aspectRatio(1.5f),
+                .aspectRatio(1.5f)
+                .drawWithContent {
+                    // call record to capture the content in the graphics layer
+                    graphicsLayer.record {
+                        // draw the contents of the composable into the graphics layer
+                        this@drawWithContent.drawContent()
+                    }
+                    // draw the graphics layer on the visible canvas
+                    drawLayer(graphicsLayer)
+                },
             factory = { context ->
                 MjpegView(context).apply {
                     mjpegView = this
@@ -107,7 +121,7 @@ fun CameraScreen(
                     }
                     // test url
                     // TODO : change url in viewmodel
-                    setUrl("http://10.32.100.37:5000/preview")
+                    setUrl("http://192.168.0.71:5000/preview")
                 }
             },
         )
@@ -126,7 +140,7 @@ fun CameraScreen(
         )
     }
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
-        viewModel.setCaptureTimer { navigateToShare() }
+        viewModel.setCaptureTimer(graphicsLayer) { navigateToShare() }
         AppLog.d(TAG, "ON_START")
     }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
