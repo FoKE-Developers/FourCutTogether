@@ -6,7 +6,6 @@ import android.content.Intent.createChooser
 import android.graphics.Bitmap
 import android.media.MediaScannerConnection
 import android.net.Uri
-import android.os.Environment
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.core.content.ContextCompat.startActivity
@@ -15,8 +14,9 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.File
 import kotlin.coroutines.resume
 
-object BitmapUtil {
-    suspend fun saveBitmap(
+object ImageFileUtil {
+
+    suspend fun saveGraphicsLayer(
         graphicsLayer: GraphicsLayer,
         context: Context,
         fileName: String
@@ -27,9 +27,19 @@ object BitmapUtil {
         return uri
     }
 
+    suspend fun saveBitmap(
+        bitmap: Bitmap,
+        context: Context,
+        fileName: String
+    ): Uri {
+        var uri : Uri = Uri.EMPTY
+        bitmap.saveToDisk(context, fileName)
+        return uri
+    }
+
     private suspend fun Bitmap.saveToDisk(context: Context, fileName: String): Uri {
         val file = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+            context.filesDir,
             fileName + ".jpg"
         )
 
@@ -64,7 +74,8 @@ object BitmapUtil {
             }
         }
     }
-
+    
+    // TODO: 파일 분리하기
     fun shareBitmap(context: Context, uri: Uri) {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "image/jpg"
