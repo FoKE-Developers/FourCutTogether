@@ -10,6 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -26,8 +29,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.foke.together.presenter.viewmodel.CameraViewModel
 import com.foke.together.util.AppLog
+import com.foke.together.util.AppPolicy
 import com.longdo.mjpegviewer.MjpegViewError
 import com.longdo.mjpegviewer.MjpegViewStateChangeListener
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun CameraScreen(
@@ -37,6 +42,7 @@ fun CameraScreen(
 ) {
     val TAG = "CameraScreen"
     var mjpegView: MjpegView? = null
+    val externalCameraIP = viewModel.externalCameraIP
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -64,7 +70,7 @@ fun CameraScreen(
             fontSize = 24.sp,
         )
 
-        val mjpegPreview = AndroidView(
+        AndroidView(
             modifier = Modifier
                 .constrainAs(preview) {
                     top.linkTo(title.bottom)
@@ -75,7 +81,6 @@ fun CameraScreen(
                 .aspectRatio(1.5f),
             factory = { context ->
                 MjpegView(context).apply {
-                    mjpegView = this
                     mode = MjpegView.MODE_BEST_FIT
                     isAdjustHeight = true
                     supportPinchZoomAndPan = false
@@ -99,6 +104,8 @@ fun CameraScreen(
                         override fun onNewFrame(image: Bitmap?) {
                             AppLog.d(TAG, "onNewFrame")
                             // stream 한장 받을때마다 오는 콜백
+                            //TODO: 화면 로딩(30프레임 이상) 후 재실행
+                            viewModel.startCaptureTimer()
                         }
 
                         override fun onError(error: MjpegViewError?) {
@@ -107,13 +114,15 @@ fun CameraScreen(
                     }
                     // test url
                     // TODO : change url in viewmodel
-                    setUrl("http://10.32.100.37:5000/preview")
+                    setUrl("${externalCameraIP}")
                 }
             },
-        )
+        ){
+            mjpegView = it
+        }
 
         Text(
-            text = "${viewModel.captureCount} / 4",
+            text = "${viewModel.captureCount} / ${AppPolicy.CAPTURE_COUNT}",
             modifier = Modifier
                 .constrainAs(imageCount) {
                     top.linkTo(preview.bottom)
@@ -127,19 +136,17 @@ fun CameraScreen(
     }
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         viewModel.setCaptureTimer { navigateToShare() }
-        AppLog.d(TAG, "ON_START")
+        AppLog.d(TAG, "ON_START", mjpegView.toString())
     }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        AppLog.d(TAG, "ON_RESUME")
-        viewModel.startCaptureTimer()
+        AppLog.d(TAG, "ON_RESUME", mjpegView.toString())
         mjpegView?.startStream()
     }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
         viewModel.stopCaptureTimer()
-        AppLog.d(TAG, "ON_STOP")
+        AppLog.d(TAG, "ON_STOP", mjpegView.toString())
         mjpegView?.stopStream()
     }
-    LocalContext
 }
 
 @Preview(showBackground = true)

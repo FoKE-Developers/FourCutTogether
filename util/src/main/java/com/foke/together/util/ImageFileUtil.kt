@@ -17,8 +17,8 @@ import kotlin.coroutines.resume
 object ImageFileUtil {
 
     suspend fun saveGraphicsLayer(
-        graphicsLayer: GraphicsLayer,
         context: Context,
+        graphicsLayer: GraphicsLayer,
         fileName: String
     ): Uri {
         var uri : Uri = Uri.EMPTY
@@ -28,8 +28,8 @@ object ImageFileUtil {
     }
 
     suspend fun saveBitmap(
-        bitmap: Bitmap,
         context: Context,
+        bitmap: Bitmap,
         fileName: String
     ): Uri {
         var uri : Uri = Uri.EMPTY

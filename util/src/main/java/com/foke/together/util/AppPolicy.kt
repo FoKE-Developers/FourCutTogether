@@ -10,4 +10,8 @@ object AppPolicy {
     const val EXTERNAL_CAMERA_CONNECT_TIMEOUT = 10L
     const val EXTERNAL_CAMERA_READ_TIMEOUT = 10L
     const val EXTERNAL_CAMERA_WRITE_TIMEOUT = 10L
+
+    const val CAPTURE_INTERVAL = 10000L
+    const val CAPTURE_COUNT = 4
+    const val COUNTDOWN_INTERVAL = 10L
 }

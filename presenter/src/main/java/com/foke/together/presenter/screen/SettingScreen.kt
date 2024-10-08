@@ -25,6 +25,7 @@ import com.foke.together.presenter.theme.FourCutTogetherTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.foke.together.domain.interactor.entity.CameraSourceType
 import com.foke.together.presenter.viewmodel.SettingViewModel
+import com.foke.together.util.AppPolicy
 import kotlinx.coroutines.flow.map
 
 private const val CameraSourceTypeError = -1
@@ -37,10 +38,9 @@ fun SettingScreen(
     val cameraSelectedIndex by remember {
         viewModel.cameraSourceType.map { CameraSourceType.entries.indexOf(it) }
     }.collectAsState(CameraSourceTypeError)
-    val viewModelCameraIPAddress by remember {
+    val cameraIPAddress by remember {
         viewModel.cameraIPAddress.map { it.address }
-    }.collectAsState("0.0.0.0")
-    var cameraIPAddress: String = ""
+    }.collectAsState(initial = AppPolicy.DEFAULT_EXTERNAL_CAMERA_IP)
     val cameraTypeList = CameraSourceType.entries.map { it.name }
 
     FourCutTogetherTheme {
@@ -152,8 +152,8 @@ fun SettingScreen(
                     width = Dimension.wrapContent
                     height = Dimension.wrapContent
                 },
-                value = viewModelCameraIPAddress,
-                onValueChange = { cameraIPAddress = it },
+                value = cameraIPAddress,
+                onValueChange = { viewModel.setCameraIPAddress(it) },
                 label = { Text(text = "IP Address") },
             )
             IconButton(
@@ -165,7 +165,7 @@ fun SettingScreen(
                     width = Dimension.wrapContent
                     height = Dimension.fillToConstraints
                 },
-                onClick = { viewModel.setCameraIPAddress(cameraIPAddress) }
+                onClick = popBackStack
             ) {
                 Icon(
                     imageVector = Icons.Filled.CheckCircle,
