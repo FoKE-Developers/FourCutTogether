@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.FactCheck
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.material3.MaterialTheme
@@ -35,16 +37,17 @@ fun SettingScreen(
     val cameraSelectedIndex by remember {
         viewModel.cameraSourceType.map { CameraSourceType.entries.indexOf(it) }
     }.collectAsState(CameraSourceTypeError)
-    val cameraIPAddress by remember {
-        viewModel.cameraIPAddress
-    }.collectAsState()
+    val viewModelCameraIPAddress by remember {
+        viewModel.cameraIPAddress.map { it.address }
+    }.collectAsState("0.0.0.0")
+    var cameraIPAddress: String = ""
     val cameraTypeList = CameraSourceType.entries.map { it.name }
 
     FourCutTogetherTheme {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
-            val (backKey, selectCamera, IPAdrress) = createRefs()
+            val (backKey, selectCamera, IPAdrress, IPButton) = createRefs()
 
             val topGuideLine = createGuidelineFromTop(0.1f)
             val bottomGuideLine = createGuidelineFromBottom(0.1f)
@@ -144,15 +147,32 @@ fun SettingScreen(
                 modifier = Modifier.constrainAs(IPAdrress){
                     top.linkTo(selectCamera.bottom)
                     start.linkTo(parent.start)
-                    end.linkTo(parent.end)
+                    end.linkTo(IPButton.start)
                     bottom.linkTo(bottomGuideLine)
                     width = Dimension.wrapContent
                     height = Dimension.wrapContent
                 },
-                value = cameraIPAddress,
-                onValueChange = { viewModel.setCameraIPAddress(it) },
+                value = viewModelCameraIPAddress,
+                onValueChange = { cameraIPAddress = it },
                 label = { Text(text = "IP Address") },
             )
+            IconButton(
+                modifier = Modifier.constrainAs(IPButton){
+                    top.linkTo(IPAdrress.top)
+                    start.linkTo(IPAdrress.end)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(IPAdrress.bottom)
+                    width = Dimension.wrapContent
+                    height = Dimension.fillToConstraints
+                },
+                onClick = { viewModel.setCameraIPAddress(cameraIPAddress) }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.CheckCircle,
+                    contentDescription = "IPButton",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }

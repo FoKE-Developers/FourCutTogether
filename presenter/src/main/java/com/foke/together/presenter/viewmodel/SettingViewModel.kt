@@ -3,8 +3,12 @@ package com.foke.together.presenter.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.GetCameraSourceTypeUseCase
+import com.foke.together.domain.interactor.GetExternalCameraIPUseCase
+import com.foke.together.domain.interactor.InitExternalCameraIPUseCase
 import com.foke.together.domain.interactor.SetCameraSourceTypeUseCase
+import com.foke.together.domain.interactor.SetExternalCameraIPUseCase
 import com.foke.together.domain.interactor.entity.CameraSourceType
+import com.foke.together.domain.interactor.entity.ExternalCameraIP
 import com.foke.together.util.AppLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     getCameraSourceTypeUseCase: GetCameraSourceTypeUseCase,
-    private val setCameraSourceTypeUseCase: SetCameraSourceTypeUseCase
+    private val setCameraSourceTypeUseCase: SetCameraSourceTypeUseCase,
+    getExternalCameraIPUseCase: GetExternalCameraIPUseCase,
+    private val setExternalCameraIPUseCase: SetExternalCameraIPUseCase
 ): ViewModel() {
     val cameraSourceType = getCameraSourceTypeUseCase().shareIn(
         scope = viewModelScope,
@@ -26,8 +32,11 @@ class SettingViewModel @Inject constructor(
     )
 
     // TODO: need to change usecase
-    private val _cameraIPAddress = MutableStateFlow("0.0.0.0")
-    val cameraIPAddress = _cameraIPAddress.asStateFlow()
+    val cameraIPAddress = getExternalCameraIPUseCase().shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        replay = 1
+    )
 
     fun setCameraSourceType(index: Int){
         setCameraSourceType(CameraSourceType.entries[index])
@@ -42,9 +51,8 @@ class SettingViewModel @Inject constructor(
 
     fun setCameraIPAddress(address: String){
         viewModelScope.launch {
-            _cameraIPAddress.emit(address)
             // TODO: add usecase
-            // setCameraIPAddress(this)
+            setExternalCameraIPUseCase(ExternalCameraIP(address))
         }
     }
 
