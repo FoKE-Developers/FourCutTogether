@@ -30,7 +30,8 @@ object ExternalCameraModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(
+    @Named("okHttpExternalCameraClient")
+    fun provideOkHttpExternalCameraClient(
         baseUrlInterceptor: BaseUrlInterceptor
     ) = OkHttpClient.Builder()
         .connectTimeout(AppPolicy.EXTERNAL_CAMERA_CONNECT_TIMEOUT, TimeUnit.SECONDS)
@@ -42,8 +43,9 @@ object ExternalCameraModule {
 
     @Singleton
     @Provides
+    @Named("externalCameraServerRetrofit")
     fun provideExternalCameraServerRetrofit(
-        okHttpClient: OkHttpClient,
+        @Named("okHttpExternalCameraClient") okHttpClient: OkHttpClient,
         @Named("cameraIPUrl") cameraIPUrl: String
     ) = Retrofit.Builder()
         .baseUrl(cameraIPUrl)
@@ -56,6 +58,8 @@ object ExternalCameraModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ExternalCameraApi =
+    fun provideExternalCameraApi(
+        @Named("externalCameraServerRetrofit") retrofit: Retrofit
+    ): ExternalCameraApi =
         retrofit.create(ExternalCameraApi::class.java)
 }
