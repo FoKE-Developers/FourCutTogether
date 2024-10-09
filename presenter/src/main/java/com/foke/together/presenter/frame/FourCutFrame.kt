@@ -83,7 +83,7 @@ fun FourCutFrame(
             tint = designColorScheme.primaryContainer
         )
         Text(
-            text = TimeUtil.getCurrentDisplayTime(),
+            text = TimeUtil.getCurrentTime(),
             modifier = Modifier.constrainAs(curTime){
                 top.linkTo(decorateImage.bottom)
                 start.linkTo(parent.start)

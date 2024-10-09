@@ -11,7 +11,6 @@ import com.foke.together.domain.interactor.GetExternalCameraPreviewUrlUseCase
 import com.foke.together.util.AppPolicy
 import com.foke.together.util.AppPolicy.CAPTURE_INTERVAL
 import com.foke.together.util.AppPolicy.COUNTDOWN_INTERVAL
-import com.foke.together.util.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -31,12 +30,6 @@ class CameraViewModel @Inject constructor(
     val captureCount: Int by _captureCount
     private var captureTimer: CountDownTimer? = null
     private var mTimerState = false
-
-    // TODO: CameraScreen에서  filepath를 TimeUtil.getCurrentTimeSec() 로 전달
-    //  filepath를 ScameraScreen -> GenerateScreen -> ShareScreen 로 전달
-    //  추후에는 filepath를 presenter에서 관리하지 않도록 해야 할듯
-    val filepath = TimeUtil.getCurrentTimeSec()
-
     fun setCaptureTimer(nextNavigate: () -> Unit) {
         captureTimer = object : CountDownTimer(CAPTURE_INTERVAL, COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
@@ -44,7 +37,7 @@ class CameraViewModel @Inject constructor(
             }
             override fun onFinish() {
                 viewModelScope.launch {
-                    captureWithExternalCameraUseCase(filepath)
+                    captureWithExternalCameraUseCase()
                     _progressState.floatValue = 1f
                     if (_captureCount.intValue < AppPolicy.CAPTURE_COUNT) {
                         _captureCount.intValue += 1
