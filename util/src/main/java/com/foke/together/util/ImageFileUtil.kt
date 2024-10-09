@@ -19,32 +19,34 @@ object ImageFileUtil {
     suspend fun saveGraphicsLayer(
         context: Context,
         graphicsLayer: GraphicsLayer,
+        filepath: String,
         fileName: String
     ): Uri {
         var uri : Uri = Uri.EMPTY
         val bitmap = graphicsLayer.toImageBitmap()
-        bitmap.asAndroidBitmap().saveToDisk(context, fileName)
+        bitmap.asAndroidBitmap().saveToInternalStorage(context, filepath, fileName)
         return uri
     }
 
     suspend fun saveBitmap(
         context: Context,
         bitmap: Bitmap,
+        filepath: String,
         fileName: String
     ): Uri {
-        var uri : Uri = Uri.EMPTY
-        bitmap.saveToDisk(context, fileName)
+        // TODO: implement to use uri
+        val uri : Uri = Uri.EMPTY
+        bitmap.saveToInternalStorage(context, filepath, fileName)
         return uri
     }
 
-    private suspend fun Bitmap.saveToDisk(context: Context, fileName: String): Uri {
-        val file = File(
-            context.filesDir,
-            fileName + ".jpg"
-        )
+    private suspend fun Bitmap.saveToInternalStorage(context: Context, filepath: String, filename: String): Uri {
+        val baseDir = context.filesDir.absoluteFile
+        val path = File("$baseDir$filepath")
+        if (!path.exists()) { path.mkdirs() }
 
+        val file = File(filepath, "$filename.jpeg")
         file.writeBitmap(this, Bitmap.CompressFormat.JPEG, 100)
-
         return scanFilePath(context, file.path) ?: throw Exception("File could not be saved")
     }
 
