@@ -89,7 +89,7 @@ fun MakerFaireFrame(
         )
 
         Text(
-            text = TimeUtil.getCurrentTime(),
+            text = TimeUtil.getCurrentDisplayTime(),
             modifier = Modifier.constrainAs(curTime){
                 top.linkTo(decorateImage.bottom)
                 bottom.linkTo(parent.bottom, margin = 15.dp)
