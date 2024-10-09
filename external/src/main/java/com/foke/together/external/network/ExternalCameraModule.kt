@@ -37,8 +37,6 @@ object ExternalCameraModule {
         .connectTimeout(AppPolicy.EXTERNAL_CAMERA_CONNECT_TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(AppPolicy.EXTERNAL_CAMERA_READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(AppPolicy.EXTERNAL_CAMERA_WRITE_TIMEOUT, TimeUnit.SECONDS)
-        // .addInterceptor(MockInterceptor()) // TODO: add mock code for test
-        .addInterceptor(baseUrlInterceptor)
         .build()
 
     @Singleton

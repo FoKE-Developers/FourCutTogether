@@ -14,10 +14,8 @@ class ExternalCameraRepository @Inject constructor(
     }
 
     override suspend fun capture(): Result<Bitmap> {
-        return externalCameraDataSource.capture()
-            .map { responseBody ->
-                BitmapFactory.decodeStream(responseBody.byteStream())
-            }
+        externalCameraDataSource.captureTest()
+        return Result.failure(Exception())
     }
 
     override fun getPreviewUrl() =
