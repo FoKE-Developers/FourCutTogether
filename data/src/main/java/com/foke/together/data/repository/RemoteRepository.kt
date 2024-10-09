@@ -38,8 +38,8 @@ class RemoteRepository @Inject constructor(
         return Result.failure(Exception("unknown error"))
     }
 
-    override suspend fun getUploadUrl(key: String, file: File): Result<String> {
-        webDataSource.s3PreSignedUrl(key, file)
+    override suspend fun getUploadUrl(filename: String, file: File): Result<String> {
+        webDataSource.s3PreSignedUrl(filename, file)
             .onSuccess {
                 return Result.success(it.presignedUrl)
             }

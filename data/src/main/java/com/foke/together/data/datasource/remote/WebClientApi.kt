@@ -22,7 +22,7 @@ interface WebClientApi {
         @Body body: AccountRegisterRequest
     ): Result<AccountRegisterResponse>
 
-    @GET("api/account/register")
+    @GET("api/account/signin")
     suspend fun accountSignin(
         @Query("email") email: String,
         @Query("password") password: String
@@ -37,7 +37,7 @@ interface WebClientApi {
     @GET("api/s3/presigned-url")
     suspend fun s3PresignedUrl(
         @HeaderMap headers: HashMap<String, String>,
-        @Query("key") key: String,
+        @Query("filename") filename: String,
         @Query("ContentLength") contentLength: String, // max: 20971520
     ): Result<S3PresignedUrlResponse>
 
