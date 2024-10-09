@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.CaptureWithExternalCameraUseCase
 import com.foke.together.domain.interactor.GetExternalCameraPreviewUrlUseCase
+import com.foke.together.util.AppPolicy
 import com.foke.together.util.AppPolicy.CAPTURE_INTERVAL
 import com.foke.together.util.AppPolicy.COUNTDOWN_INTERVAL
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +39,7 @@ class CameraViewModel @Inject constructor(
                 viewModelScope.launch {
                     captureWithExternalCameraUseCase()
                     _progressState.floatValue = 1f
-                    if (_captureCount.intValue < 4) {
+                    if (_captureCount.intValue < AppPolicy.CAPTURE_COUNT) {
                         _captureCount.intValue += 1
                         mTimerState = false
                     } else {
