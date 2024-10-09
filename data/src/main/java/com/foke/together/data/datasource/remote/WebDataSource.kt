@@ -35,14 +35,14 @@ class WebDataSource @Inject constructor(
         return Result.failure(Exception("unknown error"))
     }
 
-    suspend fun s3PreSignedUrl(key: String, file: File): Result<S3PresignedUrlResponse> {
+    suspend fun s3PreSignedUrl(filename: String, file: File): Result<S3PresignedUrlResponse> {
         val contentLength = file.length()
         if (contentLength > AppPolicy.WEB_FILE_MAX_CONTENT_LENGTH) {
             return Result.failure(Exception("file size is over limit"))
         }
         return webClientApi.s3PresignedUrl(
             headers = headers,
-            key = key,
+            filename = filename,
             contentLength = file.length().toString()
         )
     }
@@ -57,6 +57,6 @@ class WebDataSource @Inject constructor(
     }
 
     private fun setToken(token: String) {
-        headers["token"] = token
+        headers["Authorization"] = "Bearer $token"
     }
 }

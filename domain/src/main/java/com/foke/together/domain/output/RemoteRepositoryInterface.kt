@@ -7,6 +7,6 @@ interface RemoteRepositoryInterface {
     suspend fun registerAccount(data: AccountData): Result<Unit>
     suspend fun signIn(data: AccountData): Result<Unit>
     suspend fun getAccountStatus(): Result<AccountData>
-    suspend fun getUploadUrl(key: String, file: File): Result<String>
+    suspend fun getUploadUrl(filename: String, file: File): Result<String>
     suspend fun uploadFile(preSignedUrl: String, file: File): Result<Unit>
 }
