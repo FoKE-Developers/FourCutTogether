@@ -1,6 +1,6 @@
-package com.foke.together.external.network
+package com.foke.together.external.camera.external
 
-import com.foke.together.external.network.interceptor.BaseUrlInterceptor
+import com.foke.together.external.camera.external.interceptor.BaseUrlInterceptor
 import com.foke.together.util.AppPolicy
 import com.foke.together.util.retrofit.NetworkCallAdapterFactory
 import com.google.gson.GsonBuilder

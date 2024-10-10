@@ -1,4 +1,4 @@
-package com.foke.together.external.network.interceptor
+package com.foke.together.external.camera.external.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Protocol

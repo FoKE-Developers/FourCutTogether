@@ -1,4 +1,4 @@
-package com.foke.together.external.network.interceptor
+package com.foke.together.external.camera.external.interceptor
 
 import com.foke.together.util.AppLog
 import com.foke.together.util.AppPolicy

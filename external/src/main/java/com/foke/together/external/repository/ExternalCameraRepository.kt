@@ -3,7 +3,7 @@ package com.foke.together.external.repository
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.foke.together.domain.output.ExternalCameraRepositoryInterface
-import com.foke.together.external.network.ExternalCameraDataSource
+import com.foke.together.external.camera.external.ExternalCameraDataSource
 import javax.inject.Inject
 
 class ExternalCameraRepository @Inject constructor(
