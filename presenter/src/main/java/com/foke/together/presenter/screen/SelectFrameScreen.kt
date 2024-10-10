@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.foke.together.domain.interactor.entity.CutFrameType
 import com.foke.together.presenter.R
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.SelectFrameViewModel
@@ -39,7 +40,7 @@ fun SelectFrameScreen(
 ) {
     FourCutTogetherTheme {
         val pagerState = rememberPagerState {
-            3 // 총 페이지 수 설정
+            CutFrameType.entries.size // 총 페이지 수 설정
         }
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
@@ -101,10 +102,11 @@ fun SelectFrameScreen(
                 )
             ) { page ->
                 when(page){
-                    0 -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_light), contentDescription = "fourcut_frame_medium_light")
-                    1 -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_dark), contentDescription = "fourcut_frame_medium_dark")
-                    2 -> Image(painter = painterResource(id = R.drawable.maker_faire_frame), contentDescription = "maker_faire_frame")
+                    CutFrameType.FOURCUT_LIGHT.ordinal -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_light), contentDescription = "fourcut_frame_medium_light")
+                    CutFrameType.FOURCUT_DARK.ordinal -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_dark), contentDescription = "fourcut_frame_medium_dark")
+                    CutFrameType.MAKER_FAIRE.ordinal -> Image(painter = painterResource(id = R.drawable.maker_faire_frame), contentDescription = "maker_faire_frame")
                 }
+                viewModel.setCutFrameType(page)
             }
 
             IconButton(

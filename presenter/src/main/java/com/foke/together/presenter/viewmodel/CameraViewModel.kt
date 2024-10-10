@@ -4,9 +4,12 @@ import android.os.CountDownTimer
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.CaptureWithExternalCameraUseCase
+import com.foke.together.domain.interactor.GeneratePhotoFrameUseCase
 import com.foke.together.domain.interactor.GetExternalCameraPreviewUrlUseCase
 import com.foke.together.util.AppPolicy
 import com.foke.together.util.AppPolicy.CAPTURE_INTERVAL
@@ -20,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     getExternalCameraPreviewUrlUseCase: GetExternalCameraPreviewUrlUseCase,
-    private val captureWithExternalCameraUseCase: CaptureWithExternalCameraUseCase
+//    private val captureWithExternalCameraUseCase: CaptureWithExternalCameraUseCase,
+    private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase
 ): ViewModel() {
     val externalCameraIP = getExternalCameraPreviewUrlUseCase()
 
@@ -31,20 +35,21 @@ class CameraViewModel @Inject constructor(
     val captureCount: Int by _captureCount
     private var captureTimer: CountDownTimer? = null
     private var mTimerState = false
-
-    // TODO: CameraScreen에서  filepath를 TimeUtil.getCurrentTimeSec() 로 전달
-    //  filepath를 ScameraScreen -> GenerateScreen -> ShareScreen 로 전달
-    //  추후에는 filepath를 presenter에서 관리하지 않도록 해야 할듯
-    val filepath = TimeUtil.getCurrentTimeSec()
-
-    fun setCaptureTimer(nextNavigate: () -> Unit) {
+    fun setCaptureTimer(
+        graphicsLayer: GraphicsLayer,
+        nextNavigate: () -> Unit
+    ) {
+        viewModelScope.launch {
+            generatePhotoFrameUseCase.clearCapturedImageList()
+        }
         captureTimer = object : CountDownTimer(CAPTURE_INTERVAL, COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 _progressState.floatValue = 1f - (millisUntilFinished.toFloat() / CAPTURE_INTERVAL)
             }
             override fun onFinish() {
                 viewModelScope.launch {
-                    captureWithExternalCameraUseCase(filepath)
+                    val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                    generatePhotoFrameUseCase.saveGraphicsLayerImage(bitmap, "${AppPolicy.CAPTURED_FOUR_CUT_IMAGE_NAME}_${_captureCount.value}")
                     _progressState.floatValue = 1f
                     if (_captureCount.intValue < AppPolicy.CAPTURE_COUNT) {
                         _captureCount.intValue += 1
@@ -52,6 +57,7 @@ class CameraViewModel @Inject constructor(
                     } else {
                         stopCaptureTimer()
                         _captureCount.intValue = 1
+                        delay(CAPTURE_INTERVAL)
                         nextNavigate()
                     }
                 }
@@ -60,8 +66,6 @@ class CameraViewModel @Inject constructor(
     }
 
     fun startCaptureTimer() = viewModelScope.launch{
-        // TODO: Capture 후 Preview 로딩까지의 Delay 구현하기
-        delay(5000)
         if(captureTimer != null){
             if(!mTimerState){
                 mTimerState = true

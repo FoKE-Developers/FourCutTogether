@@ -20,4 +20,8 @@ object AppPolicy {
     const val CAPTURE_INTERVAL = 10000L
     const val CAPTURE_COUNT = 4
     const val COUNTDOWN_INTERVAL = 10L
+
+    const val CAPTURED_FOUR_CUT_IMAGE_NAME = "capture"
+    const val SINGLE_ROW_FINAL_IMAGE_NAME = "final_single_row"
+    const val TWO_ROW_FINAL_IMAGE_NAME = "final_two_row"
 }

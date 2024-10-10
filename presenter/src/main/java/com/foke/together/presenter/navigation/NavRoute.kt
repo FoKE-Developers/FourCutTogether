@@ -7,6 +7,8 @@ sealed class NavRoute(val path: String) {
     object SelectFrame: NavRoute("select_frame")
     object SelectMethod: NavRoute("select_method")
     object Camera: NavRoute("camera")
+    object GenerateSingleRowImage: NavRoute("generate_single_row_image")
+    object GenerateTwoRowImage: NavRoute("generate_two_row_image")
     object Share: NavRoute("share")
 
     // build navigation path (for screen navigation)
