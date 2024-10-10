@@ -1,4 +1,4 @@
-package com.foke.together.external.network
+package com.foke.together.external.camera.external
 
 import okhttp3.ResponseBody
 import retrofit2.http.GET
