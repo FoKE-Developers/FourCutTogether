@@ -61,6 +61,9 @@ android-mjpeg-view = "1.1.3"
 material-icons-extended = "1.7.2"
 ui-graphics-android = "1.7.3"
 
+# qrcode-kotlin --
+qrcode-kotlin = "4.1.1"
+
 # test -----------
 junit = "4.13.2"
 junit-version = "1.2.1"
@@ -118,11 +121,14 @@ datastore_preferences = { group = "androidx.datastore", name = "datastore-prefer
 datastore_preferences_core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
 protobuf_javalite = { group = "com.google.protobuf", name = "protobuf-javalite", version.ref = "protobuf" }
 
-# compose UI
+# compose UI -----
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraint-layout-compose" }
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "material-icons-extended" }
 android-mjpeg-view = { group = "com.perthcpe23.dev", name = "android-mjpeg-view", version.ref = "android-mjpeg-view" }
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "ui-graphics-android" }
+
+# qrcode-kotlin --
+qrcode-kotlin = { group = "io.github.g0dkar", name = "qrcode-kotlin", version.ref = "qrcode-kotlin" }
 
 # test -----------
 junit = { group = "junit", name = "junit", version.ref = "junit" }

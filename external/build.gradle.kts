@@ -21,6 +21,9 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.google.gson)
 
+    // qrcode-kotlin
+    implementation(libs.qrcode.kotlin)
+
     // module dependency
     implementation(project(":domain"))
 
