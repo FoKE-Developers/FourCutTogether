@@ -24,4 +24,6 @@ object AppPolicy {
     const val CAPTURED_FOUR_CUT_IMAGE_NAME = "capture"
     const val SINGLE_ROW_FINAL_IMAGE_NAME = "final_single_row"
     const val TWO_ROW_FINAL_IMAGE_NAME = "final_two_row"
+
+    const val DEFAULT_QR_CODE_IMAGE_NAME = "qrcode"
 }
