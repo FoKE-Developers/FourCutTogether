@@ -14,6 +14,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,13 +39,15 @@ import kotlinx.coroutines.flow.map
 
 @Composable
 fun CameraScreen(
-    navigateToShare: () -> Unit,
+    navigateToGenerateImage: () -> Unit,
     popBackStack: () -> Unit,
     viewModel: CameraViewModel = hiltViewModel()
 ) {
     val TAG = "CameraScreen"
     var mjpegView: MjpegView? = null
     val externalCameraIP = viewModel.externalCameraIP
+    var frameCount = 0
+    val graphicsLayer = rememberGraphicsLayer()
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -78,7 +83,16 @@ fun CameraScreen(
                     end.linkTo(parent.end, margin = 24.dp)
                     bottom.linkTo(imageCount.top)
                 }
-                .aspectRatio(1.5f),
+                .aspectRatio(1.5f)
+                .drawWithContent {
+                    // call record to capture the content in the graphics layer
+                    graphicsLayer.record {
+                        // draw the contents of the composable into the graphics layer
+                        this@drawWithContent.drawContent()
+                    }
+                    // draw the graphics layer on the visible canvas
+                    drawLayer(graphicsLayer)
+                },
             factory = { context ->
                 MjpegView(context).apply {
                     mode = MjpegView.MODE_BEST_FIT
@@ -102,10 +116,13 @@ fun CameraScreen(
                         }
 
                         override fun onNewFrame(image: Bitmap?) {
-                            AppLog.d(TAG, "onNewFrame")
                             // stream 한장 받을때마다 오는 콜백
                             //TODO: 화면 로딩(30프레임 이상) 후 재실행
-                            viewModel.startCaptureTimer()
+                            frameCount++
+                            if(frameCount > 30) {
+                                frameCount = 0
+                                viewModel.startCaptureTimer()
+                            }
                         }
 
                         override fun onError(error: MjpegViewError?) {
@@ -135,7 +152,7 @@ fun CameraScreen(
         )
     }
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
-        viewModel.setCaptureTimer { navigateToShare() }
+        viewModel.setCaptureTimer(graphicsLayer) { navigateToGenerateImage() }
         AppLog.d(TAG, "ON_START", mjpegView.toString())
     }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
@@ -145,6 +162,7 @@ fun CameraScreen(
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
         viewModel.stopCaptureTimer()
         AppLog.d(TAG, "ON_STOP", mjpegView.toString())
+        frameCount = 0
         mjpegView?.stopStream()
     }
 }
@@ -158,7 +176,7 @@ private fun DefaultPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             CameraScreen(
-                navigateToShare = {},
+                navigateToGenerateImage = {},
                 popBackStack = {}
             )
         }

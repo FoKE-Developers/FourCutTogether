@@ -65,6 +65,7 @@ ui-graphics-android = "1.7.3"
 junit = "4.13.2"
 junit-version = "1.2.1"
 espresso-core = "3.6.1"
+coilCompose = "2.7.0"
 
 
 
@@ -128,6 +129,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit-version" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 
 
 
