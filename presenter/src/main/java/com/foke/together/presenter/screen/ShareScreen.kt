@@ -1,17 +1,10 @@
 package com.foke.together.presenter.screen
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.Share
@@ -20,27 +13,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
-import com.foke.together.presenter.frame.FourCutFrame
 import com.foke.together.presenter.theme.FourCutTogetherTheme
-import com.foke.together.presenter.theme.highContrastDarkColorScheme
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.foke.together.presenter.R
 import com.foke.together.presenter.viewmodel.ShareViewModel
 import com.foke.together.util.ImageFileUtil
 
@@ -50,8 +34,6 @@ fun ShareScreen(
     viewModel: ShareViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val qrCodeBitmap: State<Bitmap> = viewModel.qrCodeBitmap.collectAsState(initial = Bitmap.createBitmap(
-        1,1,Bitmap.Config.ARGB_8888) )
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -142,13 +124,14 @@ fun ShareScreen(
             ){
                 AsyncImage(
                     model = ImageRequest.Builder(context)
-                        .data(qrCodeBitmap.value)
+                        .data(viewModel.qrCodeBitmap)
                         .build(),
                     contentDescription = "qr code",
                     modifier = Modifier.fillMaxSize()
                 )
             }
 
+//            TODO: add android native share button
 //            IconButton(
 //                onClick = {
 //                viewModel.downloadImage()
