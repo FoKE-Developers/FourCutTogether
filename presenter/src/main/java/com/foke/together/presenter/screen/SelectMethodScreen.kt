@@ -1,7 +1,10 @@
 package com.foke.together.presenter.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -13,14 +16,19 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.foke.together.presenter.R
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.SelectMethodViewModel
 
@@ -33,7 +41,10 @@ fun SelectMethodScreen(
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
+        val context = LocalContext.current
+
         val (backKey, title, timerButton, gestureButton) = createRefs()
+
         val topGuideLine = createGuidelineFromTop(0.1f)
         val bottomGuideLine = createGuidelineFromBottom(0.1f)
         val startGuideLine = createGuidelineFromStart(0.2f)
@@ -72,36 +83,47 @@ fun SelectMethodScreen(
 
         OutlinedButton(
             onClick = { navigateToCamera() },
-            modifier = Modifier.constrainAs(timerButton) {
-                top.linkTo(title.bottom)
-                start.linkTo(startGuideLine)
-                end.linkTo(endGuideLine)
-                bottom.linkTo(gestureButton.top)
-                width = Dimension.fillToConstraints
-                height = Dimension.fillToConstraints
-            },
+            modifier = Modifier
+                .constrainAs(timerButton) {
+                    top.linkTo(title.bottom)
+                    start.linkTo(startGuideLine)
+                    end.linkTo(endGuideLine)
+                    bottom.linkTo(gestureButton.top)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.wrapContent
+                }
+                .height(200.dp),
             shape = RoundedCornerShape(24.dp),
             border = BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
         ) {
-            Text(text = "Timer", style = MaterialTheme.typography.titleLarge)
-            Text(text = "⏱\uFE0F", style = MaterialTheme.typography.titleLarge)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = stringResource(id = R.string.select_method_timer_button_icon), style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center, fontSize = 60.sp)
+                Text(text = stringResource(id = R.string.select_method_timer_button_text), style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center, fontSize = 36.sp)
+            }
         }
 
         OutlinedButton(
-            onClick = { navigateToCamera() },
-            modifier = Modifier.constrainAs(gestureButton) {
-                top.linkTo(timerButton.bottom)
-                start.linkTo(startGuideLine)
-                end.linkTo(endGuideLine)
-                bottom.linkTo(bottomGuideLine)
-                width = Dimension.fillToConstraints
-                height = Dimension.fillToConstraints
+            onClick = {
+                // TODO: implement gesture function
+                Toast.makeText(context, context.getString(R.string.select_method_gesture_button_toast), Toast.LENGTH_SHORT).show()
             },
+            modifier = Modifier
+                .constrainAs(gestureButton) {
+                    top.linkTo(timerButton.bottom)
+                    start.linkTo(startGuideLine)
+                    end.linkTo(endGuideLine)
+                    bottom.linkTo(bottomGuideLine)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.wrapContent
+                }
+                .height(200.dp),
             shape = RoundedCornerShape(24.dp),
             border = BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
         ) {
-            Text(text = "Gesture", style = MaterialTheme.typography.titleLarge)
-            Text(text = "\uD83D\uDC4B", style = MaterialTheme.typography.titleLarge)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = stringResource(id = R.string.select_method_gesture_button_icon), style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center, fontSize = 60.sp)
+                Text(text = stringResource(id = R.string.select_method_gesture_button_text), style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center, fontSize = 36.sp)
+            }
         }
     }
 }
