@@ -24,9 +24,9 @@ appcompat = "1.7.0"
 composeCompiler = "1.5.5"
 lifecycle-runtime-ktx = "2.8.6"
 activity-compose = "1.9.2"
-compose-bom = "2024.09.02"
+compose-bom = "2024.09.03"
 material = "1.12.0"
-navigation-compose = "2.8.1"
+navigation-compose = "2.8.2"
 
 # hilt -----------
 hilt = "2.49"
@@ -41,7 +41,7 @@ room = "2.6.1"
 work-runtime-ktx = "2.9.1"
 
 # retrofit -------
-okhttp = "4.10.0"
+okhttp = "4.12.0"
 retrofit = "2.9.0"
 gson = "2.10.1"
 
@@ -58,7 +58,7 @@ protoc = "com.google.protobuf:protoc:4.28.2"
 # compose extended UI
 constraint-layout-compose = "1.0.1"
 android-mjpeg-view = "1.1.3"
-material-icons-extended = "1.7.2"
+material-icons-extended = "1.7.3"
 ui-graphics-android = "1.7.3"
 
 # qrcode-kotlin --
