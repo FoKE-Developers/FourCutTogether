@@ -3,6 +3,7 @@ package com.foke.together.util.retrofit
 import com.foke.together.util.AppLog
 import com.foke.together.util.AppPolicy
 import okhttp3.Request
+import okhttp3.ResponseBody
 import okio.IOException
 import okio.Timeout
 import retrofit2.Call
@@ -17,6 +18,14 @@ class NetworkCall<T>(
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 if (AppPolicy.isDebugMode) {
                     AppLog.e(TAG, "onResponse", "success: $response")
+                    AppLog.e(TAG, "onResponse", "success: ${response.headers()}")
+
+                    val body = response.body() as ResponseBody
+                    AppLog.e(TAG, "onResponse", "success: ${response.body()}")
+                    AppLog.e(TAG, "onResponse", "success: ${body.source()}")
+                    AppLog.e(TAG, "onResponse", "success: ${body.contentLength()}")
+                    AppLog.e(TAG, "onResponse", "success: ${body.contentType()}")
+                    AppLog.e(TAG, "onResponse", "success: ${body.bytes()}")
                 }
 
                 if (response.isSuccessful) {
