@@ -170,7 +170,8 @@ fun SettingScreen(
                     modifier = Modifier.width(300.dp),
                     value = "",
                     onValueChange = { },
-                    label = { Text(text = "Email") }
+                    label = { Text(text = "Email") },
+                    enabled = false
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -179,7 +180,8 @@ fun SettingScreen(
                     modifier = Modifier.width(300.dp),
                     value = "",
                     onValueChange = { },
-                    label = { Text(text = "Password") }
+                    label = { Text(text = "Password") },
+                    enabled = false
                 )
 
                 TextButton(
@@ -192,7 +194,8 @@ fun SettingScreen(
                     colors = ButtonDefaults.textButtonColors(
                         containerColor = MaterialTheme.colorScheme.primary,  // Button background color
                         contentColor = MaterialTheme.colorScheme.onPrimary   // Text color
-                    )
+                    ),
+                    enabled = false
                 ) {
                     Text(text = "Log In")
                 }
@@ -207,7 +210,8 @@ fun SettingScreen(
                     modifier = Modifier.width(300.dp),
                     value = AppPolicy.CAPTURE_INTERVAL.toString(),
                     onValueChange = { },
-                    label = { Text(text = "Capture Interval") }
+                    label = { Text(text = "Capture Interval") },
+                    enabled = false
                 )
             }
         }
