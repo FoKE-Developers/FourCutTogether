@@ -34,12 +34,13 @@ class SettingViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         replay = 1
     )
+    // TODO: check to remove
     val cameraIPAddress = getExternalCameraIPUseCase().shareIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         replay = 1
     )
-    var cameraIPAddressState by mutableStateOf("1234")
+    var cameraIPAddressState by mutableStateOf("")
 
     init {
         viewModelScope.launch(ioDispatcher) {
