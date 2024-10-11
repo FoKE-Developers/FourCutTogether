@@ -19,6 +19,9 @@ class BaseUrlInterceptor: Interceptor {
 
     fun setBaseUrl(newBaseUrl: String) {
         baseUrl = newBaseUrl
+        if (AppPolicy.isDebugMode) {
+            AppLog.i(TAG, "setBaseUrl", "set to: $newBaseUrl")
+        }
         try {
             val sep = newBaseUrl.indexOf("://")
             scheme = newBaseUrl.substring(0, sep)
