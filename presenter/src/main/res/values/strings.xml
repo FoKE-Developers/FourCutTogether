@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">presenter</string>
+
+    <string name="home_button_start">시작하기</string>
 </resources>
