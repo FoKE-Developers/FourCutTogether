@@ -1,4 +1,6 @@
 <resources>
+    <color name="app_primary_color">#00A3A6</color>
+
     <!-- TODO. check to remove xml files -->
     <color name="md_theme_primary">#00696B</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
