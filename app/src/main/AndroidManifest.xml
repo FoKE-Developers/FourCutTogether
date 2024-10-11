@@ -10,7 +10,20 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:usesCleartextTraffic="true" />
+        android:usesCleartextTraffic="true" >
+
+        <!-- To use Sharing feature -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.foke.together.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_files" />
+        </provider>
+
+    </application>
     <!-- TODO: temporary add usesCleartextTraffic. remove later -->
 
 <!--    TODO: support back-up-->

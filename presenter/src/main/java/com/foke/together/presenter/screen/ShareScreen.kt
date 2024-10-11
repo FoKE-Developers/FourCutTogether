@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import com.foke.together.presenter.frame.FourCutFrame
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.theme.highContrastDarkColorScheme
@@ -28,6 +30,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.foke.together.presenter.viewmodel.ShareViewModel
+import com.foke.together.util.ImageFileUtil
 
 @Composable
 fun ShareScreen(
@@ -87,7 +90,10 @@ fun ShareScreen(
         }
 
         IconButton(
-            onClick = { viewModel.printImage() },
+            onClick = {
+                val finalTwoRowImageUri = viewModel.getFinalTwoImageUri()
+                ImageFileUtil.printFromUri(context,finalTwoRowImageUri)
+            },
             modifier = Modifier.constrainAs(printButton) {
                 top.linkTo(homeButton.bottom)
                 end.linkTo(parent.end, margin = 30.dp)
@@ -105,7 +111,15 @@ fun ShareScreen(
         }
 
         IconButton(
-            onClick = {viewModel.shareImage()},
+            onClick = {
+                val finalFile = finalSingleImageUri.toFile()
+                val contentUri = FileProvider.getUriForFile(
+                    context,
+                    "com.foke.together.fileprovider",
+                    finalFile
+                )
+                ImageFileUtil.shareUri(context, contentUri)
+            },
             modifier = Modifier.constrainAs(shareButton) {
                 top.linkTo(printButton.bottom)
                 end.linkTo(parent.end, margin = 30.dp)
