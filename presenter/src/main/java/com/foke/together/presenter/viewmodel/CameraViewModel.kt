@@ -17,10 +17,8 @@ import com.foke.together.util.AppPolicy
 import com.foke.together.util.AppPolicy.CAPTURE_INTERVAL
 import com.foke.together.util.AppPolicy.COUNTDOWN_INTERVAL
 import com.foke.together.util.SoundUtil
-import com.foke.together.util.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,7 +26,7 @@ import javax.inject.Inject
 class CameraViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     getExternalCameraPreviewUrlUseCase: GetExternalCameraPreviewUrlUseCase,
-//    private val captureWithExternalCameraUseCase: CaptureWithExternalCameraUseCase,
+    private val captureWithExternalCameraUseCase: CaptureWithExternalCameraUseCase,
     private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase,
     private val sessionKeyUseCase: SessionKeyUseCase
 ): ViewModel() {
@@ -56,7 +54,14 @@ class CameraViewModel @Inject constructor(
                 viewModelScope.launch {
                     SoundUtil.getCameraSound(context = context )
                     val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
-                    generatePhotoFrameUseCase.saveGraphicsLayerImage(bitmap, "${AppPolicy.CAPTURED_FOUR_CUT_IMAGE_NAME}_${_captureCount.value}")
+
+                    // TODO: 현재 External 실패 시, 스크린 캡쳐 화면을 사용하도록 구성함
+                    val fileName = "${AppPolicy.CAPTURED_FOUR_CUT_IMAGE_NAME}_${_captureCount.value}"
+                    captureWithExternalCameraUseCase(fileName)
+                        .onFailure {
+                            generatePhotoFrameUseCase.saveGraphicsLayerImage(bitmap, fileName)
+                        }
+
                     _progressState.floatValue = 1f
                     if (_captureCount.intValue < AppPolicy.CAPTURE_COUNT) {
                         _captureCount.intValue += 1
@@ -80,11 +85,11 @@ class CameraViewModel @Inject constructor(
             }
         }
     }
+
     fun stopCaptureTimer() = viewModelScope.launch{
         if(captureTimer != null){
             mTimerState = false
             captureTimer!!.cancel()
         }
     }
-
 }
