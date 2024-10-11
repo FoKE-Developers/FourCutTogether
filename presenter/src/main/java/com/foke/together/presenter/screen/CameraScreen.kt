@@ -2,22 +2,21 @@ package com.foke.together.presenter.screen
 
 import android.graphics.Bitmap
 import android.graphics.Rect
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,12 +29,12 @@ import com.longdo.mjpegviewer.MjpegView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import com.foke.together.presenter.R
 import com.foke.together.presenter.viewmodel.CameraViewModel
 import com.foke.together.util.AppLog
 import com.foke.together.util.AppPolicy
 import com.longdo.mjpegviewer.MjpegViewError
 import com.longdo.mjpegviewer.MjpegViewStateChangeListener
-import kotlinx.coroutines.flow.map
 
 @Composable
 fun CameraScreen(
@@ -56,25 +55,33 @@ fun CameraScreen(
         LinearProgressIndicator(
             // TODO: progress State를 Flow로 구현하기
             progress = { viewModel.progressState },
-            modifier = Modifier.constrainAs(progress){
-                start.linkTo(parent.start, margin = 24.dp)
-                end.linkTo(parent.end, margin = 24.dp)
-                bottom.linkTo(title.top)
-                width = Dimension.fillToConstraints
-                height = Dimension.wrapContent
-            },
+            modifier = Modifier
+                .constrainAs(progress) {
+                    start.linkTo(parent.start, margin = 24.dp)
+                    end.linkTo(parent.end, margin = 24.dp)
+                    bottom.linkTo(title.top)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.wrapContent
+                }
+                .height(30.dp)
         )
-        Text(
-            text = "촬영시 움직이지마세요",
-            modifier = Modifier.constrainAs(title) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(preview.top)
-            },
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-        )
+
+        Box(
+            modifier = Modifier
+                .constrainAs(title) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(preview.top)
+                }
+                .padding(top = 30.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.camera_exclamation_text),
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+            )
+        }
 
         AndroidView(
             modifier = Modifier
@@ -101,19 +108,19 @@ fun CameraScreen(
                     supportPinchZoomAndPan = false
                     stateChangeListener = object: MjpegViewStateChangeListener {
                         override fun onStreamDownloadStart() {
-                            AppLog.d(TAG, "onStreamDownloadStart")
+                            AppLog.d(TAG, "MjpegView", "onStreamDownloadStart")
                         }
 
                         override fun onStreamDownloadStop() {
-                            AppLog.d(TAG, "onStreamDownloadStop")
+                            AppLog.d(TAG, "MjpegView", "onStreamDownloadStop")
                         }
 
                         override fun onServerConnected() {
-                            AppLog.d(TAG, "onServerConnected")
+                            AppLog.d(TAG, "MjpegView", "onServerConnected")
                         }
 
                         override fun onMeasurementChanged(rect: Rect?) {
-                            AppLog.d(TAG, "onMeasurementChanged")
+                            AppLog.d(TAG, "MjpegView", "onMeasurementChanged")
                         }
 
                         override fun onNewFrame(image: Bitmap?) {
@@ -127,12 +134,10 @@ fun CameraScreen(
                         }
 
                         override fun onError(error: MjpegViewError?) {
-                            AppLog.d(TAG, "onError, ${error.toString()}")
+                            AppLog.d(TAG, "MjpegView", "onError, ${error?.cause ?: "unknown error"}")
                         }
                     }
-                    // test url
-                    // TODO : change url in viewmodel
-                    setUrl("${externalCameraIP}")
+                    setUrl(externalCameraIP)
                 }
             },
         ){
