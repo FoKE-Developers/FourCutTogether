@@ -41,6 +41,7 @@ class ImageRepository @Inject constructor(
         return uriList
     }
 
+    //TODO: file작업코드는 repository에서 하지말고 Util로 옮겨놓기
     override suspend fun clearCacheDir() {
         context.cacheDir.listFiles().forEach {
             if(it.name.contains(".jpg")){

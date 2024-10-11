@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.createChooser
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Environment
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toFile
 import androidx.print.PrintHelper
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.File
@@ -84,7 +86,7 @@ object ImageFileUtil {
     }
     
     // TODO: 파일 분리하기
-    fun shareBitmap(context: Context, uri: Uri) {
+    fun shareUri(context: Context, uri: Uri) {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "image/jpg"
             putExtra(Intent.EXTRA_STREAM, uri)
@@ -93,8 +95,15 @@ object ImageFileUtil {
         startActivity(context, createChooser(intent, "Share your image"), null)
     }
 
-    fun printBitmap(context: Context, bitmap: Bitmap){
+    fun getBitmapFromUri(context: Context, uri: Uri): Bitmap {
+        val file = uri.toFile()
+        return BitmapFactory.decodeFile(file.absolutePath)
+    }
+
+    fun printFromUri(context: Context, uri: Uri){
         // can use getActivity()
+        val file = uri.toFile()
+        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
         val photoPrinter = PrintHelper(context)
         photoPrinter.printBitmap("Print", bitmap)
     }
