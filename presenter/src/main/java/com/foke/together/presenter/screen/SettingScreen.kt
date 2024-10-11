@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.FactCheck
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +23,6 @@ import com.foke.together.presenter.theme.FourCutTogetherTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.foke.together.domain.interactor.entity.CameraSourceType
 import com.foke.together.presenter.viewmodel.SettingViewModel
-import com.foke.together.util.AppPolicy
 import kotlinx.coroutines.flow.map
 
 private const val CameraSourceTypeError = -1
@@ -38,9 +35,6 @@ fun SettingScreen(
     val cameraSelectedIndex by remember {
         viewModel.cameraSourceType.map { CameraSourceType.entries.indexOf(it) }
     }.collectAsState(CameraSourceTypeError)
-    val cameraIPAddress by remember {
-        viewModel.cameraIPAddress.map { it.address }
-    }.collectAsState(initial = AppPolicy.DEFAULT_EXTERNAL_CAMERA_IP)
     val cameraTypeList = CameraSourceType.entries.map { it.name }
 
     FourCutTogetherTheme {
@@ -152,27 +146,13 @@ fun SettingScreen(
                     width = Dimension.wrapContent
                     height = Dimension.wrapContent
                 },
-                value = cameraIPAddress,
-                onValueChange = { viewModel.setCameraIPAddress(it) },
+                value = viewModel.cameraIPAddressState,
+                onValueChange = {
+                    viewModel.cameraIPAddressState = it
+                    viewModel.setCameraIPAddress(it)
+                },
                 label = { Text(text = "IP Address") },
             )
-            IconButton(
-                modifier = Modifier.constrainAs(IPButton){
-                    top.linkTo(IPAdrress.top)
-                    start.linkTo(IPAdrress.end)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(IPAdrress.bottom)
-                    width = Dimension.wrapContent
-                    height = Dimension.fillToConstraints
-                },
-                onClick = popBackStack
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.CheckCircle,
-                    contentDescription = "IPButton",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
         }
     }
 }

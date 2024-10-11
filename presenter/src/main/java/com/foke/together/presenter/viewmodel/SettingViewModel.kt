@@ -1,25 +1,29 @@
 package com.foke.together.presenter.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.GetCameraSourceTypeUseCase
 import com.foke.together.domain.interactor.GetExternalCameraIPUseCase
-import com.foke.together.domain.interactor.InitExternalCameraIPUseCase
 import com.foke.together.domain.interactor.SetCameraSourceTypeUseCase
 import com.foke.together.domain.interactor.SetExternalCameraIPUseCase
 import com.foke.together.domain.interactor.entity.CameraSourceType
 import com.foke.together.domain.interactor.entity.ExternalCameraIP
 import com.foke.together.util.AppLog
+import com.foke.together.util.di.IODispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     getCameraSourceTypeUseCase: GetCameraSourceTypeUseCase,
     private val setCameraSourceTypeUseCase: SetCameraSourceTypeUseCase,
     getExternalCameraIPUseCase: GetExternalCameraIPUseCase,
@@ -30,13 +34,20 @@ class SettingViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         replay = 1
     )
-
-    // TODO: need to change usecase
     val cameraIPAddress = getExternalCameraIPUseCase().shareIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         replay = 1
     )
+    var cameraIPAddressState by mutableStateOf("1234")
+
+    init {
+        viewModelScope.launch(ioDispatcher) {
+            cameraIPAddress.collectLatest {
+                cameraIPAddressState = it.address
+            }
+        }
+    }
 
     fun setCameraSourceType(index: Int){
         setCameraSourceType(CameraSourceType.entries[index])
@@ -51,7 +62,6 @@ class SettingViewModel @Inject constructor(
 
     fun setCameraIPAddress(address: String){
         viewModelScope.launch {
-            // TODO: add usecase
             setExternalCameraIPUseCase(ExternalCameraIP(address))
         }
     }
