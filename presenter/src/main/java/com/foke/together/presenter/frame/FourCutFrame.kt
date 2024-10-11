@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,6 +27,8 @@ import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +38,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.foke.together.domain.interactor.entity.FramePosition
 import com.foke.together.presenter.R
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.theme.highContrastDarkColorScheme
@@ -48,13 +52,31 @@ import kotlinx.coroutines.launch
 fun FourCutFrame(
     // TODO: Need to refactoring. separate frame design with application theme
     designColorScheme: ColorScheme = mediumContrastLightColorScheme,
-    cameraImageUrlList : List<Uri>? = null
+    cameraImageUrlList : List<Uri>? = null,
+    position: FramePosition? = null
 ) {
     ConstraintLayout(
         modifier = Modifier
             .aspectRatio(ratio = 0.3333f)
             .background(color = designColorScheme.surface)
             .border(1.dp, designColorScheme.inverseSurface)
+            .padding(
+                start = position.let {
+                    when(it){
+                        FramePosition.LEFT -> 20.dp
+                        FramePosition.RIGHT -> 0.dp
+                        null -> 10.dp
+                    }
+                },
+                end = position.let {
+                    when(it){
+                        FramePosition.LEFT -> 0.dp
+                        FramePosition.RIGHT -> 20.dp
+                        null -> 10.dp
+                    }
+                },
+                top = 40.dp
+            )
     ) {
         val (cameraColumn, decorateRow) = createRefs()
         LazyColumn(
@@ -67,9 +89,8 @@ fun FourCutFrame(
                     bottom.linkTo(decorateRow.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.wrapContent
                 }
+                .wrapContentSize()
         ) {
             items(AppPolicy.CAPTURE_COUNT){
                 //TODO: add camera image
@@ -114,7 +135,9 @@ fun FourCutFrame(
                 text = TimeUtil.getCurrentDisplayTime(),
                 modifier = Modifier.weight(1f),
                 color = designColorScheme.inverseSurface,
-                fontSize = 12.sp
+                fontSize = 15.sp,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold
             )
         }
     }

@@ -39,7 +39,9 @@ fun SelectFrameScreen(
     viewModel: SelectFrameViewModel = hiltViewModel()
 ) {
     FourCutTogetherTheme {
-        val pagerState = rememberPagerState {
+        val pagerState = rememberPagerState(
+            initialPage = CutFrameType.MAKER_FAIRE.ordinal
+        ) {
             CutFrameType.entries.size // 총 페이지 수 설정
         }
         ConstraintLayout(
@@ -102,15 +104,17 @@ fun SelectFrameScreen(
                 )
             ) { page ->
                 when(page){
+                    CutFrameType.MAKER_FAIRE.ordinal -> Image(painter = painterResource(id = R.drawable.maker_faire_frame), contentDescription = "maker_faire_frame")
                     CutFrameType.FOURCUT_LIGHT.ordinal -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_light), contentDescription = "fourcut_frame_medium_light")
                     CutFrameType.FOURCUT_DARK.ordinal -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_dark), contentDescription = "fourcut_frame_medium_dark")
-                    CutFrameType.MAKER_FAIRE.ordinal -> Image(painter = painterResource(id = R.drawable.maker_faire_frame), contentDescription = "maker_faire_frame")
                 }
-                viewModel.setCutFrameType(page)
             }
 
             IconButton(
-                onClick = { navigateToMethod() },
+                onClick = {
+                    viewModel.setCutFrameType(pagerState.currentPage)
+                    navigateToMethod()
+                },
                 modifier = Modifier.constrainAs(frameSelectButton) {
                     top.linkTo(pager.bottom)
                     start.linkTo(startGuideLine)

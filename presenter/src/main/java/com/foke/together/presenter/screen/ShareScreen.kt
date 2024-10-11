@@ -1,6 +1,11 @@
 package com.foke.together.presenter.screen
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -10,8 +15,14 @@ import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +40,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.foke.together.presenter.R
 import com.foke.together.presenter.viewmodel.ShareViewModel
 import com.foke.together.util.ImageFileUtil
 
@@ -37,131 +49,121 @@ fun ShareScreen(
     popBackStack: () -> Unit,
     viewModel: ShareViewModel = hiltViewModel()
 ) {
-    val finalSingleImageUri = viewModel.getFinalSingleImageUri()
     val context = LocalContext.current
+    val qrCodeBitmap: State<Bitmap> = viewModel.qrCodeBitmap.collectAsState(initial = Bitmap.createBitmap(
+        1,1,Bitmap.Config.ARGB_8888) )
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
-        val (finalPic, printButton, shareButton, downloadButton, homeButton ) = createRefs()
+        val (finalPic, buttonColumn, printButton, shareButton, downloadButton, homeButton ) = createRefs()
         val frameType = 0
         val topGuideLine = createGuidelineFromTop(0.1f)
         val bottomGuideLine = createGuidelineFromBottom(0.1f)
-        val startGuideLine = createGuidelineFromStart(0.2f)
-        val endGuideLine = createGuidelineFromEnd(0.2f)
-        val frameBarrier = createEndBarrier(finalPic)
-        createVerticalChain(
-            homeButton, printButton, shareButton, downloadButton,
-            chainStyle = ChainStyle.Spread
-        )
+        val startGuideLine = createGuidelineFromStart(0.1f)
+        val endGuideLine = createGuidelineFromEnd(0.1f)
 
         // TODO: need check to change single ImageView
         AsyncImage(
             model = ImageRequest.Builder(context)
-                .data(finalSingleImageUri)
+                .data(viewModel.singleImageUri)
                 .build(),
             contentDescription = "",
             modifier = Modifier
                 .constrainAs(finalPic) {
                     top.linkTo(topGuideLine)
                     bottom.linkTo(bottomGuideLine)
-                    start.linkTo(parent.start, margin = 30.dp)
+                    start.linkTo(startGuideLine)
+                    end.linkTo(buttonColumn.start)
                     width = Dimension.wrapContent
                     height = Dimension.fillToConstraints
                 }
                 .aspectRatio(0.3333f)
         )
 
-        IconButton(
-            onClick = { popBackStack() },
-            modifier = Modifier.constrainAs(homeButton) {
+        Column(
+            modifier = Modifier.constrainAs(buttonColumn){
                 top.linkTo(topGuideLine)
-                end.linkTo(parent.end, margin = 30.dp)
-                bottom.linkTo(printButton.top)
-                height = Dimension.wrapContent
-                width = Dimension.wrapContent
+                bottom.linkTo(bottomGuideLine)
+                start.linkTo(finalPic.end)
+                end.linkTo(endGuideLine)
+                width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
             },
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                modifier = Modifier.size(120.dp),
-                imageVector = Icons.Filled.Home,
-                contentDescription = "Home",
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
 
-        IconButton(
-            onClick = {
-                val finalTwoRowImageUri = viewModel.getFinalTwoImageUri()
-                ImageFileUtil.printFromUri(context,finalTwoRowImageUri)
-            },
-            modifier = Modifier.constrainAs(printButton) {
-                top.linkTo(homeButton.bottom)
-                end.linkTo(parent.end, margin = 30.dp)
-                bottom.linkTo(shareButton.top)
-                height = Dimension.wrapContent
-                width = Dimension.wrapContent
-            },
-        ) {
-            Icon(
-                modifier = Modifier.size(120.dp),
-                imageVector = Icons.Filled.Print,
-                contentDescription = "Print",
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-
-        IconButton(
-            onClick = {
-                val finalFile = finalSingleImageUri.toFile()
-                val contentUri = FileProvider.getUriForFile(
-                    context,
-                    "com.foke.together.fileprovider",
-                    finalFile
+            IconButton(
+                onClick = { popBackStack() },
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    modifier = Modifier.fillMaxSize(),
+                    imageVector = Icons.Filled.Home,
+                    contentDescription = "Home",
+                    tint = MaterialTheme.colorScheme.primary
                 )
-                ImageFileUtil.shareUri(context, contentUri)
-            },
-            modifier = Modifier.constrainAs(shareButton) {
-                top.linkTo(printButton.bottom)
-                end.linkTo(parent.end, margin = 30.dp)
-                bottom.linkTo(downloadButton.top)
-                height = Dimension.wrapContent
-                width = Dimension.wrapContent
-            },
-        ) {
-            Icon(
-                modifier = Modifier.size(120.dp),
-                imageVector = Icons.Filled.Share,
-                contentDescription = "Share",
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
+            }
 
-        IconButton(
-            onClick = { viewModel.downloadImage() },
-            modifier = Modifier.constrainAs(downloadButton) {
-                top.linkTo(shareButton.bottom)
-                end.linkTo(parent.end, margin = 30.dp)
-                bottom.linkTo(parent.bottom)
-                height = Dimension.wrapContent
-                width = Dimension.wrapContent
-            },
-        ) {
-            Icon(
-                modifier = Modifier.size(120.dp),
-                imageVector = Icons.Filled.Download,
-                contentDescription = "Download",
-                tint = MaterialTheme.colorScheme.primary
-            )
+            IconButton(
+                onClick = {
+                    ImageFileUtil.printFromUri(context,viewModel.twoImageUri)
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    modifier = Modifier.fillMaxSize(),
+                    imageVector = Icons.Filled.Print,
+                    contentDescription = "Print",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    val contentUri = FileProvider.getUriForFile(
+                        context,
+                        "com.foke.together.fileprovider",
+                        viewModel.singleImageUri.toFile()
+                    )
+                    ImageFileUtil.shareUri(context, contentUri)
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    modifier = Modifier.fillMaxSize(),
+                    imageVector = Icons.Filled.Share,
+                    contentDescription = "Share",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Box(
+                modifier = Modifier.weight(1f)
+            ){
+                AsyncImage(
+                    model = ImageRequest.Builder(context)
+                        .data(qrCodeBitmap.value)
+                        .build(),
+                    contentDescription = "qr code",
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
+//            IconButton(
+//                onClick = {
+//                viewModel.downloadImage()
+//                },
+//                modifier = Modifier.weight(1f)
+//            ) {
+//                Icon(
+//                    modifier = Modifier.fillMaxSize(),
+//                    imageVector = Icons.Filled.Download,
+//                    contentDescription = "Download",
+//                    tint = MaterialTheme.colorScheme.primary
+//                )
+//            }
         }
     }
-    // TODO: Lifecycle 맞춰서 로딩하기
-//    LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
-//        context.filesDir.listFiles().forEach {
-//                file -> if (file.name.contains("final_single_row.jpg")) {
-//                finalSingleImageUri = Uri.fromFile(file)
-//            }
-//        }
-//    }
 }
 
 @Preview(showBackground = true)

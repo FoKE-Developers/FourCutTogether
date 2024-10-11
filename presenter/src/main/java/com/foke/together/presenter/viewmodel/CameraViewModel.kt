@@ -1,5 +1,6 @@
 package com.foke.together.presenter.viewmodel
 
+import android.content.Context
 import android.os.CountDownTimer
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -11,20 +12,25 @@ import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.CaptureWithExternalCameraUseCase
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCase
 import com.foke.together.domain.interactor.GetExternalCameraPreviewUrlUseCase
+import com.foke.together.domain.interactor.web.SessionKeyUseCase
 import com.foke.together.util.AppPolicy
 import com.foke.together.util.AppPolicy.CAPTURE_INTERVAL
 import com.foke.together.util.AppPolicy.COUNTDOWN_INTERVAL
+import com.foke.together.util.SoundUtil
 import com.foke.together.util.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CameraViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     getExternalCameraPreviewUrlUseCase: GetExternalCameraPreviewUrlUseCase,
 //    private val captureWithExternalCameraUseCase: CaptureWithExternalCameraUseCase,
-    private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase
+    private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase,
+    private val sessionKeyUseCase: SessionKeyUseCase
 ): ViewModel() {
     val externalCameraIP = getExternalCameraPreviewUrlUseCase()
 
@@ -48,6 +54,7 @@ class CameraViewModel @Inject constructor(
             }
             override fun onFinish() {
                 viewModelScope.launch {
+                    SoundUtil.getCameraSound(context = context )
                     val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
                     generatePhotoFrameUseCase.saveGraphicsLayerImage(bitmap, "${AppPolicy.CAPTURED_FOUR_CUT_IMAGE_NAME}_${_captureCount.value}")
                     _progressState.floatValue = 1f
@@ -55,9 +62,9 @@ class CameraViewModel @Inject constructor(
                         _captureCount.intValue += 1
                         mTimerState = false
                     } else {
+                        sessionKeyUseCase.setSessionKey()
                         stopCaptureTimer()
                         _captureCount.intValue = 1
-                        delay(CAPTURE_INTERVAL)
                         nextNavigate()
                     }
                 }
