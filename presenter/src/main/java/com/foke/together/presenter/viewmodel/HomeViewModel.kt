@@ -2,6 +2,7 @@ package com.foke.together.presenter.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.foke.together.domain.interactor.AppInitUseCase
 import com.foke.together.domain.interactor.web.GetCurrentUserInformationUseCase
 import com.foke.together.domain.interactor.web.SignInUseCase
 import com.foke.together.util.AppLog
@@ -15,11 +16,14 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val signInUseCase: SignInUseCase,
-    private val getCurrentUserInformationUseCase: GetCurrentUserInformationUseCase
-
+    private val getCurrentUserInformationUseCase: GetCurrentUserInformationUseCase,
+    private val appInitUseCase: AppInitUseCase
 ): ViewModel() {
     init {
         viewModelScope.launch(ioDispatcher) {
+            // init external camera ip address
+            appInitUseCase()
+
             // TODO: this is test code. remove later
             signInUseCase(
                 "test@test.com",
