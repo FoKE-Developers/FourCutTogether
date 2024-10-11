@@ -15,7 +15,7 @@ class AppPreferencesSerializer @Inject constructor(): Serializer<AppPreferences>
             // You need to check default value of each types from link below
             // https://protobuf.dev/programming-guides/proto3/
             // e.g. isDebugMode = true
-            externalCameraIp = AppPolicy.DEFAULT_EXTERNAL_CAMERA_IP
+            externalCameraIp = AppPolicy.EXTERNAL_CAMERA_DEFAULT_SERVER_URL
             build()
         }
 
