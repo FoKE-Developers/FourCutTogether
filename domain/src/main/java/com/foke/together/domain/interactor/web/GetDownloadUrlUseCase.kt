@@ -11,7 +11,7 @@ class GetDownloadUrlUseCase @Inject constructor(
     suspend operator fun invoke(key: String): Result<String> {
         getCurrentUserInformationUseCase()
             .onSuccess {
-                "${AppPolicy.WEB_SERVER_URL}download/${it.name}/$key"
+                return Result.success("${AppPolicy.WEB_SERVER_URL}download/${it.name}/$key.jpg") // TODO: remove `.jpg` later
             }
         return Result.failure(Exception("Unknown error"))
     }
