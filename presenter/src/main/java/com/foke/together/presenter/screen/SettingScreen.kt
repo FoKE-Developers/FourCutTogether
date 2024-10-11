@@ -27,6 +27,7 @@ import com.foke.together.presenter.theme.FourCutTogetherTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.foke.together.domain.interactor.entity.CameraSourceType
 import com.foke.together.presenter.viewmodel.SettingViewModel
+import com.foke.together.util.AppPolicy
 import kotlinx.coroutines.flow.map
 
 private const val CameraSourceTypeError = -1
@@ -195,6 +196,19 @@ fun SettingScreen(
                 ) {
                     Text(text = "Log In")
                 }
+
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 16.dp).width(300.dp),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    thickness = 1.dp
+                )
+
+                TextField(
+                    modifier = Modifier.width(300.dp),
+                    value = AppPolicy.CAPTURE_INTERVAL.toString(),
+                    onValueChange = { },
+                    label = { Text(text = "Capture Interval") }
+                )
             }
         }
     }
