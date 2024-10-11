@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +23,7 @@ import com.foke.together.domain.interactor.entity.FramePosition
 import com.foke.together.presenter.frame.FourCutFrame
 import com.foke.together.presenter.frame.MakerFaireFrame
 import com.foke.together.presenter.theme.FourCutTogetherTheme
+import com.foke.together.presenter.theme.mediumContrastDarkColorScheme
 import com.foke.together.presenter.theme.mediumContrastLightColorScheme
 import com.foke.together.presenter.viewmodel.GenerateTwoRowImageViewModel
 import com.foke.together.util.AppLog
@@ -97,7 +97,7 @@ fun GetFrame(
     cutFrameType : Int,
     imageUri: List<Uri>,
     position: FramePosition? = null
-): Unit{
+) {
     when(cutFrameType) {
         CutFrameType.MAKER_FAIRE.ordinal -> MakerFaireFrame(
             cameraImageUrlList = imageUri,
@@ -111,7 +111,7 @@ fun GetFrame(
         )
 
         CutFrameType.FOURCUT_DARK.ordinal -> FourCutFrame(
-            designColorScheme = mediumContrastLightColorScheme,
+            designColorScheme = mediumContrastDarkColorScheme,
             cameraImageUrlList = imageUri,
             position = position
         )
