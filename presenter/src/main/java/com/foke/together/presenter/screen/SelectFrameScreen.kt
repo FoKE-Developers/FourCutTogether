@@ -1,16 +1,19 @@
 package com.foke.together.presenter.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,8 +54,8 @@ fun SelectFrameScreen(
             val (backKey, title, pager, frameSelectButton) = createRefs()
             val topGuideLine = createGuidelineFromTop(0.1f)
             val bottomGuideLine = createGuidelineFromBottom(0.1f)
-            val startGuideLine = createGuidelineFromStart(0.2f)
-            val endGuideLine = createGuidelineFromEnd(0.2f)
+            val startGuideLine = createGuidelineFromStart(0.1f)
+            val endGuideLine = createGuidelineFromEnd(0.1f)
 
             IconButton(
                 onClick = { popBackStack() },
@@ -99,18 +103,46 @@ fun SelectFrameScreen(
                 state = pagerState,
                 pageSize = PageSize.Fill,
                 contentPadding = PaddingValues(
-                    start = 25.dp,
-                    end = 25.dp
+                    start = 40.dp,
+                    end = 40.dp
                 )
             ) { page ->
                 when(page){
-                    CutFrameType.MAKER_FAIRE.ordinal -> Image(painter = painterResource(id = R.drawable.maker_faire_frame), contentDescription = "maker_faire_frame")
-                    CutFrameType.FOURCUT_LIGHT.ordinal -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_light), contentDescription = "fourcut_frame_medium_light")
-                    CutFrameType.FOURCUT_DARK.ordinal -> Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_dark), contentDescription = "fourcut_frame_medium_dark")
+                    CutFrameType.MAKER_FAIRE.ordinal -> {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .clickable {
+                                    viewModel.setCutFrameType(pagerState.currentPage)
+                                    navigateToMethod()
+                                }
+                        ) { Image(painter = painterResource(id = R.drawable.maker_faire_frame), contentDescription = "maker_faire_frame") }
+                    }
+                    CutFrameType.FOURCUT_LIGHT.ordinal -> {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .clickable {
+                                    viewModel.setCutFrameType(pagerState.currentPage)
+                                    navigateToMethod()
+                                }
+
+                        ) { Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_light), contentDescription = "fourcut_frame_medium_light") }
+                    }
+                    CutFrameType.FOURCUT_DARK.ordinal -> {
+                        Box(
+                            modifier = Modifier
+                                .clickable {
+                                    viewModel.setCutFrameType(pagerState.currentPage)
+                                    navigateToMethod()
+                                },
+                            contentAlignment = Alignment.Center
+                        ) { Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_dark), contentDescription = "fourcut_frame_medium_dark") }
+                    }
                 }
             }
 
-            IconButton(
+            Button(
                 onClick = {
                     viewModel.setCutFrameType(pagerState.currentPage)
                     navigateToMethod()
@@ -122,13 +154,13 @@ fun SelectFrameScreen(
                     bottom.linkTo(bottomGuideLine)
                     height = Dimension.wrapContent
                     width = Dimension.wrapContent
-                },
+                }.width(200.dp),
             ) {
-                Icon(
-                    modifier = Modifier.size(85.dp),
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = "Camera Navigation Button Icon",
-                    tint = MaterialTheme.colorScheme.primary
+                Text(
+                    text = stringResource(id = R.string.select_frame_button_next),
+                    style = MaterialTheme.typography.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 36.sp
                 )
             }
         }
