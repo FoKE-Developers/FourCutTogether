@@ -61,6 +61,7 @@ fun CameraScreen(
                 end.linkTo(parent.end, margin = 24.dp)
                 bottom.linkTo(title.top)
                 width = Dimension.fillToConstraints
+                height = Dimension.wrapContent
             },
         )
         Text(

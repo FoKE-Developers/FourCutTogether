@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.foke.together.domain.interactor.entity.CutFrameType
+import com.foke.together.domain.interactor.entity.FramePosition
 import com.foke.together.presenter.frame.FourCutFrame
 import com.foke.together.presenter.frame.MakerFaireFrame
 import com.foke.together.presenter.theme.FourCutTogetherTheme
@@ -70,11 +71,13 @@ fun GenerateTwoRowImageScreen(
         ) {
             GetFrame(
                 cutFrameType = viewModel.cutFrameType.ordinal,
-                imageUri = viewModel.imageUri
+                imageUri = viewModel.imageUri,
+                position = FramePosition.LEFT
             )
             GetFrame(
                 cutFrameType = viewModel.cutFrameType.ordinal,
-                imageUri = viewModel.imageUri
+                imageUri = viewModel.imageUri,
+                position = FramePosition.RIGHT
             )
         }
     }
@@ -92,21 +95,25 @@ fun GenerateTwoRowImageScreen(
 @Composable
 fun GetFrame(
     cutFrameType : Int,
-    imageUri: List<Uri>
+    imageUri: List<Uri>,
+    position: FramePosition? = null
 ): Unit{
     when(cutFrameType) {
         CutFrameType.MAKER_FAIRE.ordinal -> MakerFaireFrame(
-            cameraImageUrlList = imageUri
+            cameraImageUrlList = imageUri,
+            position = position
         )
 
         CutFrameType.FOURCUT_LIGHT.ordinal -> FourCutFrame(
             designColorScheme = mediumContrastLightColorScheme,
-            cameraImageUrlList = imageUri
+            cameraImageUrlList = imageUri,
+            position = position
         )
 
         CutFrameType.FOURCUT_DARK.ordinal -> FourCutFrame(
             designColorScheme = mediumContrastLightColorScheme,
-            cameraImageUrlList = imageUri
+            cameraImageUrlList = imageUri,
+            position = position
         )
         else -> TODO()
     }
