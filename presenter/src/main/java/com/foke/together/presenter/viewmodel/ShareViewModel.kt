@@ -14,6 +14,7 @@ import com.foke.together.domain.interactor.GeneratePhotoFrameUseCase
 import com.foke.together.domain.interactor.GetQRCodeUseCase
 import com.foke.together.domain.interactor.web.GetDownloadUrlUseCase
 import com.foke.together.domain.interactor.web.SessionKeyUseCase
+import com.foke.together.domain.interactor.web.UploadFileUseCase
 import com.foke.together.util.AppLog
 import com.foke.together.util.AppPolicy
 import com.foke.together.util.ImageFileUtil
@@ -28,6 +29,7 @@ class ShareViewModel @Inject constructor(
     private val getQRCodeUseCase: GetQRCodeUseCase,
     private val getDownloadUrlUseCase: GetDownloadUrlUseCase,
     private val sessionKeyUseCase: SessionKeyUseCase,
+    private val uploadFileUseCase: UploadFileUseCase,
     private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase
 ): ViewModel() {
     var qrCodeBitmap by mutableStateOf<Bitmap?>(null)
@@ -52,6 +54,8 @@ class ShareViewModel @Inject constructor(
     }
 
     private suspend fun generateQRcode() {
+        val result = uploadFileUseCase(sessionKeyUseCase.getSessionKey(), singleImageUri.toFile())
+        AppLog.d("GenerateImageViewModel", "UploadFile" ,"result: $result")
         val sessionKey = sessionKeyUseCase.getSessionKey()
         val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { "https://4cuts.store" }
 
