@@ -16,7 +16,7 @@ object AppPolicy {
     const val EXTERNAL_CAMERA_WRITE_TIMEOUT = 10L
 
     // capture settings
-    const val CAPTURE_INTERVAL = 10000L
+    const val CAPTURE_INTERVAL = 3000L
     const val CAPTURE_COUNT = 4
     const val COUNTDOWN_INTERVAL = 10L
 
