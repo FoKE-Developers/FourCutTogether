@@ -127,7 +127,7 @@ fun CameraScreen(
                             // stream 한장 받을때마다 오는 콜백
                             //TODO: 화면 로딩(30프레임 이상) 후 재실행
                             frameCount++
-                            if(frameCount > 30) {
+                            if(frameCount > 10) {
                                 frameCount = 0
                                 viewModel.startCaptureTimer()
                             }
