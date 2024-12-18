@@ -64,6 +64,9 @@ ui-graphics-android = "1.7.3"
 # qrcode-kotlin --
 qrcode-kotlin = "4.1.1"
 
+# camerax --------
+camerax = "1.4.1"
+
 # test -----------
 junit = "4.13.2"
 junit-version = "1.2.1"
@@ -129,6 +132,14 @@ androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graph
 
 # qrcode-kotlin --
 qrcode-kotlin = { group = "io.github.g0dkar", name = "qrcode-kotlin", version.ref = "qrcode-kotlin" }
+
+# camerax --------
+camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
+camerax-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
+camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
+camerax-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
+camerax-extensions = { group = "androidx.camera", name = "camera-extensions", version.ref = "camerax" }
+
 
 # test -----------
 junit = { group = "junit", name = "junit", version.ref = "junit" }
