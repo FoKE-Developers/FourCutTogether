@@ -3,7 +3,7 @@ package com.foke.together.presenter.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCase
-import com.foke.together.domain.interactor.entity.MakerFaireFrame
+import com.foke.together.domain.interactor.entity.DefaultCutFrameSet
 import com.foke.together.domain.interactor.entity.Status
 import com.foke.together.domain.interactor.session.UpdateSessionStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +23,6 @@ class SelectFrameViewModel @Inject constructor(
     fun setCutFrameType(type:Int) = viewModelScope.launch {
         // TODO: remove deprecated code
         generatePhotoFrameUseCase.setCutFrameType(type)
-        updateSessionStatusUseCase(MakerFaireFrame())
+        updateSessionStatusUseCase(DefaultCutFrameSet.MakerFaire)
     }
 }
