@@ -18,7 +18,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import com.foke.together.domain.interactor.entity.CutFrameType
+import com.foke.together.domain.interactor.entity.CutFrameTypeV1
 import com.foke.together.domain.interactor.entity.FramePosition
 import com.foke.together.presenter.frame.FourCutFrame
 import com.foke.together.presenter.frame.MakerFaireFrame
@@ -53,6 +53,10 @@ fun GenerateTwoRowImageScreen(
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
         )
+
+
+
+        // ===== 여기가 프레임 생성하는 구간 =====
         Row(
             modifier = Modifier
                 .constrainAs(editFrame) {
@@ -80,6 +84,10 @@ fun GenerateTwoRowImageScreen(
                 position = FramePosition.RIGHT
             )
         }
+        // ===== 여기가 프레임 생성하는 구간 =====
+
+
+
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
@@ -99,18 +107,18 @@ fun GetFrame(
     position: FramePosition? = null
 ) {
     when(cutFrameType) {
-        CutFrameType.MAKER_FAIRE.ordinal -> MakerFaireFrame(
+        CutFrameTypeV1.MAKER_FAIRE.ordinal -> MakerFaireFrame(
             cameraImageUrlList = imageUri,
             position = position
         )
 
-        CutFrameType.FOURCUT_LIGHT.ordinal -> FourCutFrame(
+        CutFrameTypeV1.FOURCUT_LIGHT.ordinal -> FourCutFrame(
             designColorScheme = mediumContrastLightColorScheme,
             cameraImageUrlList = imageUri,
             position = position
         )
 
-        CutFrameType.FOURCUT_DARK.ordinal -> FourCutFrame(
+        CutFrameTypeV1.FOURCUT_DARK.ordinal -> FourCutFrame(
             designColorScheme = mediumContrastDarkColorScheme,
             cameraImageUrlList = imageUri,
             position = position

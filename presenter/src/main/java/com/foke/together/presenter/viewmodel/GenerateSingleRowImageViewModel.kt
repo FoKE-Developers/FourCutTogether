@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.lifecycle.ViewModel
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCase
-import com.foke.together.domain.interactor.entity.CutFrameType
+import com.foke.together.domain.interactor.entity.CutFrameTypeV1
 import com.foke.together.util.AppLog
 import com.foke.together.util.AppPolicy
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class GenerateSingleRowImageViewModel @Inject constructor(
     private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase,
 ): ViewModel() {
-    val cutFrameType: CutFrameType = generatePhotoFrameUseCase.getCutFrameType()
+    val cutFrameType: CutFrameTypeV1 = generatePhotoFrameUseCase.getCutFrameType()
     val imageUri = generatePhotoFrameUseCase.getCapturedImageListUri()
 
     suspend fun generateImage(graphicsLayer: GraphicsLayer) {

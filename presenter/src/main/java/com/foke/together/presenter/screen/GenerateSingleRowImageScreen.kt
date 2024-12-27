@@ -1,6 +1,5 @@
 package com.foke.together.presenter.screen
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.text.font.FontWeight
@@ -19,11 +17,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import com.foke.together.domain.interactor.entity.CutFrameType
-import com.foke.together.presenter.frame.FourCutFrame
-import com.foke.together.presenter.frame.MakerFaireFrame
 import com.foke.together.presenter.theme.FourCutTogetherTheme
-import com.foke.together.presenter.theme.mediumContrastLightColorScheme
 import com.foke.together.presenter.viewmodel.GenerateSingleRowImageViewModel
 import com.foke.together.util.AppLog
 import kotlinx.coroutines.launch

@@ -12,8 +12,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCase
 import com.foke.together.domain.interactor.GetQRCodeUseCase
+import com.foke.together.domain.interactor.entity.Status
+import com.foke.together.domain.interactor.session.ClearSessionUseCase
+import com.foke.together.domain.interactor.session.GetCurrentSessionUseCase
+import com.foke.together.domain.interactor.session.UpdateSessionStatusUseCase
 import com.foke.together.domain.interactor.web.GetDownloadUrlUseCase
-import com.foke.together.domain.interactor.web.SessionKeyUseCase
 import com.foke.together.domain.interactor.web.UploadFileUseCase
 import com.foke.together.util.AppLog
 import com.foke.together.util.AppPolicy
@@ -28,9 +31,11 @@ class ShareViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val getQRCodeUseCase: GetQRCodeUseCase,
     private val getDownloadUrlUseCase: GetDownloadUrlUseCase,
-    private val sessionKeyUseCase: SessionKeyUseCase,
     private val uploadFileUseCase: UploadFileUseCase,
-    private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase
+    private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase,
+    private val getCurrentSessionUseCase: GetCurrentSessionUseCase,
+    private val updateSessionStatusUseCase: UpdateSessionStatusUseCase,
+    private val clearSessionUseCase: ClearSessionUseCase
 ): ViewModel() {
     var qrCodeBitmap by mutableStateOf<Bitmap?>(null)
     val singleImageUri: Uri = generatePhotoFrameUseCase.getFinalSingleImageUri()
@@ -54,16 +59,19 @@ class ShareViewModel @Inject constructor(
     }
 
     private suspend fun generateQRcode() {
-        val result = uploadFileUseCase(sessionKeyUseCase.getSessionKey(), singleImageUri.toFile())
-        AppLog.d("GenerateImageViewModel", "UploadFile" ,"result: $result")
-        val sessionKey = sessionKeyUseCase.getSessionKey()
-        val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { "https://4cuts.store" }
+        getCurrentSessionUseCase()?.let { session ->
+            val sessionKey = session.sessionId.toString()
 
-        if (AppPolicy.isDebugMode) {
-            AppLog.e(TAG, "generateQRcode", "sessionKey: $sessionKey")
-            AppLog.e(TAG, "generateQRcode", "downloadUrl: $downloadUrl")
+            val result = uploadFileUseCase(sessionKey, singleImageUri.toFile())
+            AppLog.d("GenerateImageViewModel", "UploadFile" ,"result: $result")
+
+            val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { "https://4cuts.store" }
+            if (AppPolicy.isDebugMode) {
+                AppLog.e(TAG, "generateQRcode", "sessionKey: $sessionKey")
+                AppLog.e(TAG, "generateQRcode", "downloadUrl: $downloadUrl")
+            }
+            qrCodeBitmap =  getQRCodeUseCase(sessionKey, downloadUrl).getOrNull()
         }
-        qrCodeBitmap =  getQRCodeUseCase(sessionKey, downloadUrl).getOrNull()
     }
 
     fun shareImage() {
@@ -77,6 +85,14 @@ class ShareViewModel @Inject constructor(
 
     fun printImage(activityContext: Context) {
         ImageFileUtil.printFromUri(activityContext,twoImageUri)
+    }
+
+    fun updateSessionStatus() {
+        updateSessionStatusUseCase(Status.SHARE)
+    }
+
+    fun closeSession() {
+        clearSessionUseCase()
     }
 
     companion object {

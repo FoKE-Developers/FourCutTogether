@@ -13,6 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +34,11 @@ fun ShareScreen(
     popBackStack: () -> Unit,
     viewModel: ShareViewModel = hiltViewModel()
 ) {
+    DisposableEffect(Unit) {
+        viewModel.updateSessionStatus()
+        onDispose { }
+    }
+
     val context = LocalContext.current
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
@@ -75,7 +81,10 @@ fun ShareScreen(
         ) {
 
             IconButton(
-                onClick = { popBackStack() },
+                onClick = {
+                    viewModel.closeSession()
+                    popBackStack()
+                          },
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(

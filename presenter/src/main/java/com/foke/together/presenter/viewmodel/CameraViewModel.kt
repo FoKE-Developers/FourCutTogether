@@ -12,7 +12,8 @@ import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.CaptureWithExternalCameraUseCase
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCase
 import com.foke.together.domain.interactor.GetExternalCameraPreviewUrlUseCase
-import com.foke.together.domain.interactor.web.SessionKeyUseCase
+import com.foke.together.domain.interactor.entity.Status
+import com.foke.together.domain.interactor.session.UpdateSessionStatusUseCase
 import com.foke.together.util.AppPolicy
 import com.foke.together.util.AppPolicy.CAPTURE_INTERVAL
 import com.foke.together.util.AppPolicy.COUNTDOWN_INTERVAL
@@ -28,7 +29,7 @@ class CameraViewModel @Inject constructor(
     getExternalCameraPreviewUrlUseCase: GetExternalCameraPreviewUrlUseCase,
     private val captureWithExternalCameraUseCase: CaptureWithExternalCameraUseCase,
     private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase,
-    private val sessionKeyUseCase: SessionKeyUseCase
+    private val updateSessionStatusUseCase: UpdateSessionStatusUseCase
 ): ViewModel() {
     val externalCameraIP = getExternalCameraPreviewUrlUseCase()
 
@@ -39,6 +40,7 @@ class CameraViewModel @Inject constructor(
     val captureCount: Int by _captureCount
     private var captureTimer: CountDownTimer? = null
     private var mTimerState = false
+
     fun setCaptureTimer(
         graphicsLayer: GraphicsLayer,
         nextNavigate: () -> Unit
@@ -67,7 +69,6 @@ class CameraViewModel @Inject constructor(
                         _captureCount.intValue += 1
                         mTimerState = false
                     } else {
-                        sessionKeyUseCase.setSessionKey()
                         stopCaptureTimer()
                         _captureCount.intValue = 1
                         nextNavigate()
@@ -91,5 +92,9 @@ class CameraViewModel @Inject constructor(
             mTimerState = false
             captureTimer!!.cancel()
         }
+    }
+
+    fun updateSessionStatus() {
+        updateSessionStatusUseCase(Status.CAPTURE)
     }
 }

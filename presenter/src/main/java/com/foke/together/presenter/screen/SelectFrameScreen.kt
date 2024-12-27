@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.foke.together.domain.interactor.entity.CutFrameType
+import com.foke.together.domain.interactor.entity.CutFrameTypeV1
 import com.foke.together.presenter.R
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.SelectFrameViewModel
@@ -42,11 +43,16 @@ fun SelectFrameScreen(
     popBackStack: () -> Unit,
     viewModel: SelectFrameViewModel = hiltViewModel()
 ) {
+    DisposableEffect(Unit) {
+        viewModel.updateSessionStatus()
+        onDispose { }
+    }
+
     FourCutTogetherTheme {
         val pagerState = rememberPagerState(
-            initialPage = CutFrameType.MAKER_FAIRE.ordinal
+            initialPage = CutFrameTypeV1.MAKER_FAIRE.ordinal
         ) {
-            CutFrameType.entries.size // 총 페이지 수 설정
+            CutFrameTypeV1.entries.size // 총 페이지 수 설정
         }
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
@@ -107,8 +113,11 @@ fun SelectFrameScreen(
                     end = 40.dp
                 )
             ) { page ->
+
+                // TODO: usecase를 통해서 모든 프레임 정보를 가져오도록 함
+
                 when(page){
-                    CutFrameType.MAKER_FAIRE.ordinal -> {
+                    CutFrameTypeV1.MAKER_FAIRE.ordinal -> {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
@@ -116,9 +125,9 @@ fun SelectFrameScreen(
                                     viewModel.setCutFrameType(pagerState.currentPage)
                                     navigateToMethod()
                                 }
-                        ) { Image(painter = painterResource(id = R.drawable.maker_faire_frame), contentDescription = "maker_faire_frame") }
+                        ) { Image(painter = painterResource(id = com.foke.together.domain.R.drawable.maker_faire_frame), contentDescription = "maker_faire_frame") }
                     }
-                    CutFrameType.FOURCUT_LIGHT.ordinal -> {
+                    CutFrameTypeV1.FOURCUT_LIGHT.ordinal -> {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
@@ -127,9 +136,9 @@ fun SelectFrameScreen(
                                     navigateToMethod()
                                 }
 
-                        ) { Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_light), contentDescription = "fourcut_frame_medium_light") }
+                        ) { Image(painter = painterResource(id = com.foke.together.domain.R.drawable.fourcut_frame_medium_light), contentDescription = "fourcut_frame_medium_light") }
                     }
-                    CutFrameType.FOURCUT_DARK.ordinal -> {
+                    CutFrameTypeV1.FOURCUT_DARK.ordinal -> {
                         Box(
                             modifier = Modifier
                                 .clickable {
@@ -137,7 +146,7 @@ fun SelectFrameScreen(
                                     navigateToMethod()
                                 },
                             contentAlignment = Alignment.Center
-                        ) { Image(painter = painterResource(id = R.drawable.fourcut_frame_medium_dark), contentDescription = "fourcut_frame_medium_dark") }
+                        ) { Image(painter = painterResource(id = com.foke.together.domain.R.drawable.fourcut_frame_medium_dark), contentDescription = "fourcut_frame_medium_dark") }
                     }
                 }
             }
