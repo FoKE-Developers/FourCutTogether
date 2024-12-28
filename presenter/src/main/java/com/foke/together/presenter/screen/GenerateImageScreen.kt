@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import com.foke.together.domain.interactor.entity.CutFrame
+import com.foke.together.domain.interactor.entity.DefaultCutFrameSet
 import com.foke.together.presenter.R
 import com.foke.together.presenter.frame.DefaultCutFrame
 import com.foke.together.presenter.theme.FourCutTogetherTheme
@@ -67,14 +67,15 @@ fun GenerateImageScreen(
 
         Row {
             if (isFirstState.value) {
-                GetFrame(
-                    cutFrame = viewModel.cutFrame,
+                // TODO: 나중에 다른 CutFrameSet 어떻게 처리해야 할지?
+                GetDefaultFrame(
+                    cutFrame = viewModel.cutFrame as DefaultCutFrameSet,
                     imageUri = viewModel.imageUri,
                     graphicsLayer = graphicsLayer1,
                 )
             } else {
-                GetFrame(
-                    cutFrame = viewModel.cutFrame,
+                GetDefaultFrame(
+                    cutFrame = viewModel.cutFrame as DefaultCutFrameSet,
                     imageUri = viewModel.imageUri,
                     graphicsLayer = graphicsLayer2,
                     isForPrint = true,
@@ -112,8 +113,8 @@ fun GenerateImageScreen(
 
 // TODO: !!!!! left / right 20dp 마진 있었음
 @Composable
-fun GetFrame(
-    cutFrame: CutFrame,
+fun GetDefaultFrame(
+    cutFrame: DefaultCutFrameSet,
     imageUri: List<Uri>,
     graphicsLayer: GraphicsLayer,
     isForPrint: Boolean = false,

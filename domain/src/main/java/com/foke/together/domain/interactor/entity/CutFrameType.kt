@@ -22,7 +22,9 @@ sealed class DefaultCutFrameSet (
     height: Int,
     frameImageSrc: Int, // !!!!! TODO: asset 에 추가 및 src 값을 넣어서 처리
     photoPosition: List<PhotoPosition>,
-    additionalFrameImageSrc: List<Int> // !!!!! TODO: asset 에 추가 및 src 값을 넣어서 처리
+    additionalFrameImageSrc: List<Int>, // !!!!! TODO: asset 에 추가 및 src 값을 넣어서 처리
+    var isDateString: Boolean = false,
+    val dateStringHeight: Int = 0,
 ): CutFrame(index, frameTitle, cutCount, width, height, frameImageSrc, photoPosition, additionalFrameImageSrc) {
     val cutFrameSetTitle = "기본"
     val cutFrameCoverImageSrc = ""
@@ -81,7 +83,8 @@ sealed class DefaultCutFrameSet (
             PhotoPosition(171, 114, 9, 256),
             PhotoPosition(171, 114, 9, 383),
         ),
-        emptyList()
+        emptyList(),
+        dateStringHeight = 498
     )
 
     data object Bride2: DefaultCutFrameSet(
@@ -95,7 +98,8 @@ sealed class DefaultCutFrameSet (
             PhotoPosition(171, 114, 9, 256),
             PhotoPosition(171, 114, 9, 383),
         ),
-        emptyList()
+        emptyList(),
+        dateStringHeight = 495
     )
 
     data object Groom1: DefaultCutFrameSet(
@@ -109,7 +113,8 @@ sealed class DefaultCutFrameSet (
             PhotoPosition(171, 114, 9, 256),
             PhotoPosition(171, 114, 9, 383),
         ),
-        emptyList()
+        emptyList(),
+        dateStringHeight = 495
     )
 
     data object Groom2: DefaultCutFrameSet(
@@ -123,7 +128,8 @@ sealed class DefaultCutFrameSet (
             PhotoPosition(171, 114, 9, 256),
             PhotoPosition(171, 114, 9, 383),
         ),
-        emptyList()
+        emptyList(),
+        dateStringHeight = 495
     )
 
     data object Wedding1: DefaultCutFrameSet(
@@ -140,6 +146,7 @@ sealed class DefaultCutFrameSet (
         listOf(
             R.drawable.wedding_overlay1
         ),
+        dateStringHeight = 495
     )
 
     data object Wedding2: DefaultCutFrameSet(
@@ -156,5 +163,6 @@ sealed class DefaultCutFrameSet (
         listOf(
             R.drawable.wedding_overlay2
         ),
+        dateStringHeight = 495
     )
 }

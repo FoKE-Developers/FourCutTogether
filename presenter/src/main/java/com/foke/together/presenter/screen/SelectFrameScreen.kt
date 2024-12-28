@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +51,7 @@ fun SelectFrameScreen(
     viewModel: SelectFrameViewModel = hiltViewModel()
 ) {
     val cutFrames = remember { mutableStateOf<List<DefaultCutFrameSet>>(emptyList()) }
+    val isDateDisplay = remember { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         viewModel.updateSessionStatus()
@@ -70,7 +73,7 @@ fun SelectFrameScreen(
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
-            val (backKey, title, pager, frameSelectButton) = createRefs()
+            val (backKey, title, pager, isDateDisplayCheckBox, frameSelectButton) = createRefs()
             val topGuideLine = createGuidelineFromTop(0.1f)
             val bottomGuideLine = createGuidelineFromBottom(0.1f)
             val startGuideLine = createGuidelineFromStart(0.1f)
@@ -114,7 +117,7 @@ fun SelectFrameScreen(
                         top.linkTo(title.bottom)
                         start.linkTo(startGuideLine)
                         end.linkTo(endGuideLine)
-                        bottom.linkTo(frameSelectButton.top)
+                        bottom.linkTo(isDateDisplayCheckBox.top)
                         width = Dimension.wrapContent
                         height = Dimension.wrapContent
                     },
@@ -146,7 +149,8 @@ fun SelectFrameScreen(
                                 Uri.parse("file:///android_asset/sample_cut.png"),
                                 Uri.parse("file:///android_asset/sample_cut.png"),
                                 Uri.parse("file:///android_asset/sample_cut.png"),
-                            )
+                            ),
+
                         )
                     }
                     Text(
@@ -159,6 +163,38 @@ fun SelectFrameScreen(
                 }
             }
 
+            Row (
+                modifier = Modifier
+                    .constrainAs(isDateDisplayCheckBox) {
+                        top.linkTo(pager.bottom)
+                        start.linkTo(startGuideLine)
+                        end.linkTo(endGuideLine)
+                        bottom.linkTo(frameSelectButton.top)
+                        width = Dimension.wrapContent
+                        height = Dimension.wrapContent
+                    }
+                    .padding(top = 30.dp, bottom = 30.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = isDateDisplay.value,
+                    onCheckedChange = { isChecked ->
+                        isDateDisplay.value = isChecked
+                        cutFrames.value = cutFrames.value.map {
+                            it.isDateString = isChecked
+                            it
+                        }
+                    }
+                )
+                Text(
+                    text = "날짜 표시하기",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Gray,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+            }
+
             Button(
                 onClick = {
                      viewModel.setCutFrameType(cutFrames.value[pagerState.currentPage])
@@ -166,7 +202,7 @@ fun SelectFrameScreen(
                 },
                 modifier = Modifier
                     .constrainAs(frameSelectButton) {
-                        top.linkTo(pager.bottom)
+                        top.linkTo(isDateDisplayCheckBox.bottom)
                         start.linkTo(startGuideLine)
                         end.linkTo(endGuideLine)
                         bottom.linkTo(bottomGuideLine)
