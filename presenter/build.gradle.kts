@@ -42,6 +42,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
 
+    // reflect
+    implementation(kotlin("reflect"))
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

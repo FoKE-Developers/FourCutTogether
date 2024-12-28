@@ -3,7 +3,6 @@ package com.foke.together.domain.interactor
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import com.foke.together.domain.interactor.entity.CutFrameTypeV1
 import com.foke.together.domain.output.ImageRepositoryInterface
 import com.foke.together.util.AppPolicy
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -14,13 +13,6 @@ class GeneratePhotoFrameUseCase @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageRepositoryInterface: ImageRepositoryInterface
 ){
-    // 네컷 프레임 선택하는 UseCase
-    @Deprecated("Not in use")
-    fun getCutFrameType(): CutFrameTypeV1 = imageRepositoryInterface.getCutFrameType()
-    @Deprecated("Not in use")
-    suspend fun setCutFrameType(type: Int) = imageRepositoryInterface.setCutFrameType(type)
-
-
     // 촬영한 이미지 리스트 관리
     @Deprecated("Not in use")
     fun getCapturedImageListUri(): List<Uri> = imageRepositoryInterface.getCachedImageUriList()

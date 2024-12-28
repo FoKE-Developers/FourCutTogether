@@ -18,120 +18,119 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import com.foke.together.domain.interactor.entity.CutFrameTypeV1
-import com.foke.together.domain.interactor.entity.FramePosition
-import com.foke.together.presenter.frame.FourCutFrame
-import com.foke.together.presenter.frame.MakerFaireFrame
+import com.foke.together.domain.interactor.entity.CutFrame
+import com.foke.together.presenter.frame.DefaultCutFrame
 import com.foke.together.presenter.theme.FourCutTogetherTheme
-import com.foke.together.presenter.theme.mediumContrastDarkColorScheme
-import com.foke.together.presenter.theme.mediumContrastLightColorScheme
-import com.foke.together.presenter.viewmodel.GenerateTwoRowImageViewModel
+import com.foke.together.presenter.viewmodel.GenerateImageViewModel
 import com.foke.together.util.AppLog
 import kotlinx.coroutines.launch
 
 @Composable
-fun GenerateTwoRowImageScreen(
+fun GenerateImageScreen(
     navigateToShare: () -> Unit,
     popBackStack: () -> Unit,
-    viewModel: GenerateTwoRowImageViewModel = hiltViewModel()
+    viewModel: GenerateImageViewModel = hiltViewModel()
 ) {
 
-    val graphicsLayer = rememberGraphicsLayer()
+    val graphicsLayer1 = rememberGraphicsLayer()
+    val graphicsLayer2 = rememberGraphicsLayer()
     val coroutineScope = rememberCoroutineScope()
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
-        val (editFrame, description) = createRefs()
+        val (frame1, frame2, description) = createRefs()
         Text(
             text = "이미지를 생성중입니다",
             modifier = Modifier.constrainAs(description) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-                bottom.linkTo(editFrame.top)
+                bottom.linkTo(frame1.top)
             },
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
         )
 
 
-
-        // ===== 여기가 프레임 생성하는 구간 =====
+        // 공유용 1장
         Row(
             modifier = Modifier
-                .constrainAs(editFrame) {
+                .constrainAs(frame1) {
                     top.linkTo(description.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(frame2.top)
+                }
+                .aspectRatio(0.3333f)
+                .drawWithContent {
+                    graphicsLayer1.record {
+                        this@drawWithContent.drawContent()
+                    }
+                    drawLayer(graphicsLayer1)
+                }
+        ) {
+            GetFrame(
+                cutFrame = viewModel.cutFrame,
+                imageUri = viewModel.imageUri
+            )
+        }
+
+
+        // 인쇄용 2장
+        Row(
+            modifier = Modifier
+                .constrainAs(frame2) {
+                    top.linkTo(frame1.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
                 }
                 .aspectRatio(0.6666f)
                 .drawWithContent {
-                    graphicsLayer.record {
+                    graphicsLayer2.record {
                         this@drawWithContent.drawContent()
                     }
-                    drawLayer(graphicsLayer)
+                    drawLayer(graphicsLayer2)
                 }
         ) {
             GetFrame(
-                cutFrameType = viewModel.cutFrameType.ordinal,
+                cutFrame = viewModel.cutFrame,
                 imageUri = viewModel.imageUri,
-                position = FramePosition.LEFT
             )
             GetFrame(
-                cutFrameType = viewModel.cutFrameType.ordinal,
+                cutFrame = viewModel.cutFrame,
                 imageUri = viewModel.imageUri,
-                position = FramePosition.RIGHT
             )
         }
-        // ===== 여기가 프레임 생성하는 구간 =====
-
 
 
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        AppLog.d("GenerateTwoRowImageScreen", "LifecycleEventEffect: ON_RESUME", "${viewModel.imageUri}")
+        AppLog.d("GenerateSingleRowImageScreen", "LifecycleEventEffect: ON_RESUME", "${viewModel.imageUri}")
         coroutineScope.launch {
-            viewModel.generateImage(graphicsLayer)
+            viewModel.generateImage1(graphicsLayer1)
+            viewModel.generateImage2(graphicsLayer2)
+            navigateToShare()
         }
-        navigateToShare()
     }
 }
 
 
+// TODO: !!!!! left / right 20dp 마진 있었음
 @Composable
 fun GetFrame(
-    cutFrameType : Int,
+    cutFrame : CutFrame,
     imageUri: List<Uri>,
-    position: FramePosition? = null
 ) {
-    when(cutFrameType) {
-        CutFrameTypeV1.MAKER_FAIRE.ordinal -> MakerFaireFrame(
-            cameraImageUrlList = imageUri,
-            position = position
-        )
-
-        CutFrameTypeV1.FOURCUT_LIGHT.ordinal -> FourCutFrame(
-            designColorScheme = mediumContrastLightColorScheme,
-            cameraImageUrlList = imageUri,
-            position = position
-        )
-
-        CutFrameTypeV1.FOURCUT_DARK.ordinal -> FourCutFrame(
-            designColorScheme = mediumContrastDarkColorScheme,
-            cameraImageUrlList = imageUri,
-            position = position
-        )
-        else -> TODO()
-    }
+    DefaultCutFrame(cutFrame, imageUri)
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun DefaultFrame() {
     FourCutTogetherTheme {
-        GenerateTwoRowImageScreen(
+        GenerateImageScreen(
             navigateToShare = {},
             popBackStack = {}
         )

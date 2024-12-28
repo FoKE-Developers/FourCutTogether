@@ -1,7 +1,6 @@
 package com.foke.together.external.repository
 
 import com.foke.together.domain.interactor.entity.CutFrame
-import com.foke.together.domain.interactor.entity.DefaultCutFrameSet
 import com.foke.together.domain.interactor.entity.SessionData
 import com.foke.together.domain.interactor.entity.SessionId
 import com.foke.together.domain.interactor.entity.Status
@@ -17,7 +16,7 @@ class SessionRepository @Inject constructor(): SessionRepositoryInterface {
     override fun createSession() {
         sessionData = SessionData(
             SessionId(startAt = TimeUtil.getCurrentTimestamp()),
-            cutFrame = DefaultCutFrameSet.None,
+            cutFrame = null,
             status = Status.INIT
         )
         AppLog.i(TAG, "createSession", "sessionData: $sessionData")

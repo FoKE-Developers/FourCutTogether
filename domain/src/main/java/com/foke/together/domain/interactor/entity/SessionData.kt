@@ -1,8 +1,8 @@
 package com.foke.together.domain.interactor.entity
 
 data class SessionData (
-    val sessionId: SessionId? = null,
-    val cutFrame: CutFrame,
+    val sessionId: SessionId,
+    val cutFrame: CutFrame? = null,
     val status: Status
 )
 
