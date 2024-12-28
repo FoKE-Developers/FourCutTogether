@@ -3,8 +3,10 @@ package com.foke.together.presenter.screen
 import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -124,29 +126,35 @@ fun SelectFrameScreen(
                     end = 120.dp,
                 )
             ) { page ->
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .clickable {
-                            viewModel.setCutFrameType(cutFrames.value[page])
-                            navigateToMethod()
-                        }
+                Column (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    DefaultCutFrame(
-                        cutFrames.value[page],
-                        listOf(
-                            // !!!!! TODO: empty 혹은 다른 이미지로 교체
-                            Uri.parse("file:///android_asset/sample_cut.png"),
-                            Uri.parse("file:///android_asset/sample_cut.png"),
-                            Uri.parse("file:///android_asset/sample_cut.png"),
-                            Uri.parse("file:///android_asset/sample_cut.png"),
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.setCutFrameType(cutFrames.value[page])
+                                navigateToMethod()
+                            }
+                    ) {
+                        DefaultCutFrame(
+                            cutFrames.value[page],
+                            listOf(
+                                // !!!!! TODO: empty 혹은 다른 이미지로 교체
+                                Uri.parse("file:///android_asset/sample_cut.png"),
+                                Uri.parse("file:///android_asset/sample_cut.png"),
+                                Uri.parse("file:///android_asset/sample_cut.png"),
+                                Uri.parse("file:///android_asset/sample_cut.png"),
+                            )
                         )
-                    )
+                    }
                     Text(
                         text = cutFrames.value[page].frameTitle,
                         fontWeight = FontWeight.Bold,
                         color = Color.Gray,
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(top = 10.dp)
                     )
                 }
             }

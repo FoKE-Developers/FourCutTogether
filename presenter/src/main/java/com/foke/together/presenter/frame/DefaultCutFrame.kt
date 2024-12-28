@@ -8,14 +8,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.foke.together.domain.interactor.entity.CutFrame
-import com.foke.together.util.AppLog
 
 @Composable
 fun DefaultCutFrame(
@@ -31,14 +32,13 @@ fun DefaultCutFrame(
         Image(
             painter = painterResource(id = cutFrame.frameImageSrc),
             contentDescription = null,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            alignment = Alignment.TopStart,
+            contentScale = ContentScale.Crop,
         )
 
         // Cut Image
         cutFrame.photoPosition.zip(imageUrlList).forEachIndexed { index, (position, imageUrl) ->
-
-            AppLog.e("====", "$imageUrl")
-
             if (index >= cutFrame.cutCount) { return@forEachIndexed }
             Box(
                 modifier = Modifier
@@ -50,7 +50,8 @@ fun DefaultCutFrame(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(imageUrl)
                         .build(),
-                    contentDescription = "",
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
             }
