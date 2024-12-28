@@ -2,6 +2,7 @@ package com.foke.together.util
 
 object AppPolicy {
     const val isDebugMode = true // TODO: change to false
+    const val isNoCameraDebugMode = true // TODO: change to false
 
     // network
     const val WEB_SERVER_URL = "https://4cuts.store/"

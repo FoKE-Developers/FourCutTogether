@@ -45,6 +45,11 @@ class CameraViewModel @Inject constructor(
         graphicsLayer: GraphicsLayer,
         nextNavigate: () -> Unit
     ) {
+        if (AppPolicy.isNoCameraDebugMode) {
+            nextNavigate()
+            return
+        }
+
         viewModelScope.launch {
             generatePhotoFrameUseCase.clearCapturedImageList()
         }
