@@ -1,6 +1,7 @@
 package com.foke.together.presenter.screen
 
 import android.net.Uri
+import androidx.annotation.IntRange
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -156,9 +157,9 @@ fun SelectFrameScreen(
                     Text(
                         text = cutFrames.value[page].frameTitle,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Gray,
-                        fontSize = 16.sp,
-                        modifier = Modifier.padding(top = 10.dp)
+                        color = Color(200,200,200),
+                        fontSize = 24.sp,
+                        modifier = Modifier.padding(top = 16.dp)
                     )
                 }
             }
@@ -173,7 +174,7 @@ fun SelectFrameScreen(
                         width = Dimension.wrapContent
                         height = Dimension.wrapContent
                     }
-                    .padding(top = 30.dp, bottom = 30.dp),
+                    .padding(bottom = 30.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Checkbox(
@@ -225,7 +226,7 @@ fun SelectFrameScreen(
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
-    FourCutTogetherTheme() {
+    FourCutTogetherTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
