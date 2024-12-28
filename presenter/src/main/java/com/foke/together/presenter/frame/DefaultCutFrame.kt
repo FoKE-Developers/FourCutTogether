@@ -59,7 +59,13 @@ fun DefaultCutFrame(
 
         // Additional Images
         cutFrame.additionalFrameImageSrc.forEach { layers ->
-            // !!!!! TODO: add layer images
+            Image(
+                painter = painterResource(id = layers),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                alignment = Alignment.TopStart,
+                contentScale = ContentScale.Crop,
+            )
         }
     }
 }

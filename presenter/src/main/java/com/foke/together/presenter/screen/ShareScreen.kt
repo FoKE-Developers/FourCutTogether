@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.foke.together.presenter.viewmodel.ShareViewModel
+import com.foke.together.util.AppLog
 import com.foke.together.util.ImageFileUtil
 
 @Composable
@@ -97,7 +98,10 @@ fun ShareScreen(
 
             IconButton(
                 onClick = {
-                    ImageFileUtil.printFromUri(context,viewModel.twoImageUri)
+
+                    AppLog.e("", "", "asdf: ${viewModel.twoImageUri}")
+
+                    ImageFileUtil.printFromUri(context, viewModel.twoImageUri)
                 },
                 modifier = Modifier.weight(1f)
             ) {

@@ -1,7 +1,9 @@
 package com.foke.together.presenter.screen
 
 import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +25,7 @@ import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -74,7 +77,8 @@ fun GenerateImageScreen(
                     cutFrame = viewModel.cutFrame,
                     imageUri = viewModel.imageUri,
                     graphicsLayer = graphicsLayer2,
-                    isDual = true
+                    isForPrint = true,
+                    isPaddingHorizontal = 16.dp
                 )
             }
         }
@@ -112,9 +116,10 @@ fun GetFrame(
     cutFrame: CutFrame,
     imageUri: List<Uri>,
     graphicsLayer: GraphicsLayer,
-    isDual: Boolean = false
+    isForPrint: Boolean = false,
+    isPaddingHorizontal: Dp = 0.dp
 ) {
-    Row(
+    Column (
         modifier = Modifier
             .drawWithContent {
                 graphicsLayer.record {
@@ -123,11 +128,29 @@ fun GetFrame(
                 drawLayer(graphicsLayer)
             }
     ) {
-        DefaultCutFrame(cutFrame, imageUri)
-        if (isDual) {
+        if (isForPrint) { WhiteBox(isPaddingHorizontal) }
+        Row {
+            if (isForPrint) { WhiteBox(isPaddingHorizontal) }
             DefaultCutFrame(cutFrame, imageUri)
+            if (isForPrint) {
+                DefaultCutFrame(cutFrame, imageUri)
+                WhiteBox(isPaddingHorizontal)
+            }
         }
+        if (isForPrint) { WhiteBox(isPaddingHorizontal) }
     }
+}
+
+@Composable
+private fun WhiteBox(
+    size: Dp
+) {
+    Box(
+        modifier = Modifier
+            .width(size)
+            .height(size)
+            .background(colorResource(R.color.md_theme_background))
+    )
 }
 
 @Preview(showBackground = true)

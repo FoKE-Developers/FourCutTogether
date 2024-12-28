@@ -9,9 +9,9 @@ abstract class CutFrame(
     val cutCount: Int,
     val width: Int,
     val height: Int,
-    @DrawableRes val frameImageSrc: Int, // TODO: asset 에 추가 및 src 값을 넣어서 처리
+    @DrawableRes val frameImageSrc: Int, // !!!!! TODO: asset 에 추가 및 src 값을 넣어서 처리
     val photoPosition: List<PhotoPosition>,
-    val additionalFrameImageSrc: List<String>,
+    val additionalFrameImageSrc: List<Int>,  // !!!!! TODO: asset 에 추가 및 src 값을 넣어서 처리
 )
 
 sealed class DefaultCutFrameSet (
@@ -20,9 +20,9 @@ sealed class DefaultCutFrameSet (
     cutCount: Int,
     width: Int,
     height: Int,
-    frameImageSrc: Int, // TODO: asset 에 추가 및 src 값을 넣어서 처리
+    frameImageSrc: Int, // !!!!! TODO: asset 에 추가 및 src 값을 넣어서 처리
     photoPosition: List<PhotoPosition>,
-    additionalFrameImageSrc: List<String>
+    additionalFrameImageSrc: List<Int> // !!!!! TODO: asset 에 추가 및 src 값을 넣어서 처리
 ): CutFrame(index, frameTitle, cutCount, width, height, frameImageSrc, photoPosition, additionalFrameImageSrc) {
     val cutFrameSetTitle = "기본"
     val cutFrameCoverImageSrc = ""
@@ -70,21 +70,91 @@ sealed class DefaultCutFrameSet (
         emptyList()
     )
 
-    data object Wedding1: DefaultCutFrameSet(
+    data object Bride1: DefaultCutFrameSet(
         4,
+        "Bride 1",
+        4, 190, 570,
+        R.drawable.bride1,
+        listOf(
+            PhotoPosition(171, 114, 9, 9),
+            PhotoPosition(171, 114, 9, 133),
+            PhotoPosition(171, 114, 9, 256),
+            PhotoPosition(171, 114, 9, 383),
+        ),
+        emptyList()
+    )
+
+    data object Bride2: DefaultCutFrameSet(
+        4,
+        "Bride 2",
+        4, 190, 570,
+        R.drawable.bride2,
+        listOf(
+            PhotoPosition(171, 114, 9, 9),
+            PhotoPosition(171, 114, 9, 133),
+            PhotoPosition(171, 114, 9, 256),
+            PhotoPosition(171, 114, 9, 383),
+        ),
+        emptyList()
+    )
+
+    data object Groom1: DefaultCutFrameSet(
+        4,
+        "Groom 1",
+        4, 190, 570,
+        R.drawable.groom1,
+        listOf(
+            PhotoPosition(171, 114, 9, 9),
+            PhotoPosition(171, 114, 9, 133),
+            PhotoPosition(171, 114, 9, 256),
+            PhotoPosition(171, 114, 9, 383),
+        ),
+        emptyList()
+    )
+
+    data object Groom2: DefaultCutFrameSet(
+        4,
+        "Groom 2",
+        4, 190, 570,
+        R.drawable.groom2,
+        listOf(
+            PhotoPosition(171, 114, 9, 9),
+            PhotoPosition(171, 114, 9, 133),
+            PhotoPosition(171, 114, 9, 256),
+            PhotoPosition(171, 114, 9, 383),
+        ),
+        emptyList()
+    )
+
+    data object Wedding1: DefaultCutFrameSet(
+        5,
         "Wedding 1",
         4, 190, 570,
-        R.drawable.maker_faire_frame,
-        emptyList(),
-        emptyList()
+        R.drawable.wedding,
+        listOf(
+            PhotoPosition(171, 114, 9, 9),
+            PhotoPosition(171, 114, 9, 133),
+            PhotoPosition(171, 114, 9, 256),
+            PhotoPosition(171, 114, 9, 383),
+        ),
+        listOf(
+            R.drawable.wedding_overlay1
+        ),
     )
 
     data object Wedding2: DefaultCutFrameSet(
         5,
         "Wedding 2",
         4, 190, 570,
-        R.drawable.maker_faire_frame,
-        emptyList(),
-        emptyList()
+        R.drawable.wedding,
+        listOf(
+            PhotoPosition(171, 114, 9, 9),
+            PhotoPosition(171, 114, 9, 133),
+            PhotoPosition(171, 114, 9, 256),
+            PhotoPosition(171, 114, 9, 383),
+        ),
+        listOf(
+            R.drawable.wedding_overlay2
+        ),
     )
 }
