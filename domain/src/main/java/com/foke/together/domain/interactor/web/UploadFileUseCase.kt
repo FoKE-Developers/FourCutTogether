@@ -13,10 +13,10 @@ class UploadFileUseCase @Inject constructor(
     suspend operator fun invoke(key: String, file: File): Result<Unit> {
         remoteRepository.getUploadUrl("$key.${file.extension}", file)
             .onSuccess { preSignedUrl ->
-                AppLog.e("UploadFileUseCase", "invoke", "preSignedUrl: $preSignedUrl")
+                AppLog.e(TAG, "invoke", "preSignedUrl: $preSignedUrl")
                 remoteRepository.uploadFile(preSignedUrl, file)
                     .onFailure {
-                        AppLog.e("UploadFileUseCase", "invoke", "upload failed")
+                        AppLog.e(TAG, "invoke", "upload failed")
                         return Result.failure(Exception("cannot upload file: $it"))
                     }
             }
@@ -24,5 +24,9 @@ class UploadFileUseCase @Inject constructor(
                 return Result.failure(Exception("cannot get pre-signed url: $it"))
             }
         return Result.failure(Exception("Unknown error"))
+    }
+
+    companion object {
+        private val TAG = UploadFileUseCase::class.java.simpleName
     }
 }

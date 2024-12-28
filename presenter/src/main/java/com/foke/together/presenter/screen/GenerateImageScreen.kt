@@ -46,10 +46,27 @@ fun GenerateImageScreen(
     popBackStack: () -> Unit,
     viewModel: GenerateImageViewModel = hiltViewModel()
 ) {
+    val TAG = "GenerateImageScreen"
     val graphicsLayer1 = rememberGraphicsLayer()
     val graphicsLayer2 = rememberGraphicsLayer()
     val coroutineScope = rememberCoroutineScope()
     val isFirstState = remember { mutableStateOf(true) }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        AppLog.d(TAG, "LifecycleEventEffect: ON_RESUME", "${viewModel.imageUri}")
+        coroutineScope.launch {
+            isFirstState.value = true
+            delay(200) // !!!!! TODO. timing issue
+            viewModel.generateImage(graphicsLayer1)
+
+            isFirstState.value = false
+            delay(200) // !!!!! TODO. timing issue
+            viewModel.generateImageForPrint(graphicsLayer2)
+
+            delay(1000)
+            navigateToShare()
+        }
+    }
 
     Column (
         modifier = Modifier
@@ -92,22 +109,6 @@ fun GenerateImageScreen(
             color = colorResource(R.color.app_primary_color),
             strokeWidth = 24.dp
         )
-    }
-
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        AppLog.d("GenerateSingleRowImageScreen", "LifecycleEventEffect: ON_RESUME", "${viewModel.imageUri}")
-        coroutineScope.launch {
-            isFirstState.value = true
-            delay(200) // !!!!! TODO timing issue
-            viewModel.generateImage1(graphicsLayer1)
-
-            isFirstState.value = false
-            delay(200) // !!!!! TODO timing issue
-            viewModel.generateImage2(graphicsLayer2)
-
-            delay(1000)
-            navigateToShare()
-        }
     }
 }
 

@@ -1,10 +1,14 @@
 package com.foke.together.presenter.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.Share
@@ -18,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.FileProvider
@@ -35,12 +40,13 @@ fun ShareScreen(
     popBackStack: () -> Unit,
     viewModel: ShareViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
     DisposableEffect(Unit) {
         viewModel.updateSessionStatus()
         onDispose { }
     }
 
-    val context = LocalContext.current
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -80,13 +86,14 @@ fun ShareScreen(
             },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             IconButton(
                 onClick = {
                     viewModel.closeSession()
                     popBackStack()
                           },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .width(70.dp)
+                    .weight(1f)
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -98,12 +105,12 @@ fun ShareScreen(
 
             IconButton(
                 onClick = {
-
                     AppLog.e("", "", "asdf: ${viewModel.twoImageUri}")
-
                     ImageFileUtil.printFromUri(context, viewModel.twoImageUri)
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .width(70.dp)
+                    .weight(1f)
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -122,12 +129,32 @@ fun ShareScreen(
                     )
                     ImageFileUtil.shareUri(context, contentUri)
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .width(70.dp)
+                    .weight(1f)
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
                     imageVector = Icons.Filled.Share,
                     contentDescription = "Share",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            // TODO: add android native share button
+            IconButton(
+                onClick = {
+                    Toast.makeText(context, "사진이 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                    viewModel.downloadImage()
+                          },
+                modifier = Modifier
+                    .width(70.dp)
+                    .weight(1f)
+            ) {
+                Icon(
+                    modifier = Modifier.fillMaxSize(),
+                    imageVector = Icons.Filled.Download,
+                    contentDescription = "Download",
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -143,21 +170,6 @@ fun ShareScreen(
                     modifier = Modifier.fillMaxSize()
                 )
             }
-
-//            TODO: add android native share button
-//            IconButton(
-//                onClick = {
-//                viewModel.downloadImage()
-//                },
-//                modifier = Modifier.weight(1f)
-//            ) {
-//                Icon(
-//                    modifier = Modifier.fillMaxSize(),
-//                    imageVector = Icons.Filled.Download,
-//                    contentDescription = "Download",
-//                    tint = MaterialTheme.colorScheme.primary
-//                )
-//            }
         }
     }
 }
