@@ -58,7 +58,9 @@ fun SelectFrameScreen(
 
         // get frames
         cutFrames.value = DefaultCutFrameSet::class.sealedSubclasses.mapNotNull { classes ->
-            classes.objectInstance
+            val cutFrame = classes.objectInstance
+            cutFrame?.isDateString = isDateDisplay.value
+            cutFrame
         }.sortedBy { it.index }
 
         onDispose { }
