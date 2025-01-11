@@ -58,22 +58,22 @@ sealed class DefaultCutFrameSet (
         emptyList()
     )
 
-//    data object MakerFaire: DefaultCutFrameSet(
-//        3,
-//        "Maker Faire Seoul 2024",
-//        4, 190, 570,
-//        R.drawable.maker_faire_frame,
-//        listOf(
-//            PhotoPosition(159, 106, 16, 36),
-//            PhotoPosition(159, 106, 16, 147),
-//            PhotoPosition(159, 106, 16, 258),
-//            PhotoPosition(159, 106, 16, 369),
-//        ),
-//        emptyList()
-//    )
+    data object MakerFaire: DefaultCutFrameSet(
+        9,
+        "Maker Faire Seoul 2024",
+        4, 190, 570,
+        R.drawable.maker_faire_frame,
+        listOf(
+            PhotoPosition(159, 106, 16, 36),
+            PhotoPosition(159, 106, 16, 147),
+            PhotoPosition(159, 106, 16, 258),
+            PhotoPosition(159, 106, 16, 369),
+        ),
+        emptyList()
+    )
 
     data object Bride1: DefaultCutFrameSet(
-        1,
+        3,
         "신부 1",
         4, 190, 570,
         R.drawable.bride1,
@@ -88,7 +88,7 @@ sealed class DefaultCutFrameSet (
     )
 
     data object Bride2: DefaultCutFrameSet(
-        2,
+        4,
         "신부 2",
         4, 190, 570,
         R.drawable.bride2,
@@ -103,7 +103,7 @@ sealed class DefaultCutFrameSet (
     )
 
     data object Groom1: DefaultCutFrameSet(
-        3,
+        5,
         "신랑 1",
         4, 190, 570,
         R.drawable.groom1,
@@ -118,7 +118,7 @@ sealed class DefaultCutFrameSet (
     )
 
     data object Groom2: DefaultCutFrameSet(
-        4,
+        6,
         "신랑 2",
         4, 190, 570,
         R.drawable.groom2,
@@ -133,7 +133,7 @@ sealed class DefaultCutFrameSet (
     )
 
     data object Wedding1: DefaultCutFrameSet(
-        5,
+        1,
         "웨딩 1",
         4, 190, 570,
         R.drawable.wedding,
@@ -150,7 +150,7 @@ sealed class DefaultCutFrameSet (
     )
 
     data object Wedding2: DefaultCutFrameSet(
-        6,
+        2,
         "웨딩 2",
         4, 190, 570,
         R.drawable.wedding,
