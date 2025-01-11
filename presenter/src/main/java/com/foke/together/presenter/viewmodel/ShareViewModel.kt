@@ -47,14 +47,19 @@ class ShareViewModel @Inject constructor(
         }
     }
 
-    fun downloadImage() {
-        val imageBitmap = ImageFileUtil.getBitmapFromUri(context, singleImageUri)
-        viewModelScope.launch {
-            ImageFileUtil.saveBitmapToStorage(
-                context,
-                imageBitmap,
-                AppPolicy.SINGLE_ROW_FINAL_IMAGE_NAME
-            )
+    fun downloadImage(): Result<Unit> {
+        return getCurrentSessionUseCase()?.let { session ->
+            val imageBitmap = ImageFileUtil.getBitmapFromUri(context, singleImageUri)
+            viewModelScope.launch {
+                ImageFileUtil.saveBitmapToStorage(
+                    context,
+                    imageBitmap,
+                    session.sessionId.toString()
+                )
+            }
+            Result.success(Unit)
+        } ?: run {
+            Result.failure(Exception("invalid session id"))
         }
     }
 

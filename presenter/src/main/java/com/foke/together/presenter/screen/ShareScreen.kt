@@ -1,11 +1,11 @@
 package com.foke.together.presenter.screen
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
@@ -56,6 +56,11 @@ fun ShareScreen(
         val bottomGuideLine = createGuidelineFromBottom(0.1f)
         val startGuideLine = createGuidelineFromStart(0.1f)
         val endGuideLine = createGuidelineFromEnd(0.1f)
+
+        DisposableEffect(Unit) {
+            saveToLocal(context, viewModel)
+            onDispose { }
+        }
 
         // TODO: need check to change single ImageView
         AsyncImage(
@@ -144,8 +149,7 @@ fun ShareScreen(
             // TODO: add android native share button
             IconButton(
                 onClick = {
-                    Toast.makeText(context, "사진이 저장되었습니다.", Toast.LENGTH_SHORT).show()
-                    viewModel.downloadImage()
+                    saveToLocal(context, viewModel)
                           },
                 modifier = Modifier
                     .width(70.dp)
@@ -172,6 +176,16 @@ fun ShareScreen(
             }
         }
     }
+}
+
+private fun saveToLocal(context: Context, viewModel: ShareViewModel) {
+    viewModel.downloadImage()
+        .onSuccess {
+            Toast.makeText(context, "사진이 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        }
+        .onFailure {
+            Toast.makeText(context, "사진 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
 }
 
 @Preview(showBackground = true)
