@@ -36,6 +36,9 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.android.mjpeg.view)
+    implementation(libs.camerax.core)
+    implementation(libs.camerax.view)
+    implementation(libs.camerax.lifecycle)
 
     // navigation
     implementation(libs.androidx.hilt.navigation.compose)
