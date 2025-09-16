@@ -4,26 +4,21 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
-import android.provider.MediaStore
-import com.foke.together.domain.interactor.entity.CutFrameType
+import com.foke.together.domain.interactor.entity.CutFrameTypeV1
 import com.foke.together.domain.output.ImageRepositoryInterface
 import com.foke.together.util.AppPolicy
 import com.foke.together.util.ImageFileUtil
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ImageRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ): ImageRepositoryInterface{
-    private var cutFrameType: CutFrameType = CutFrameType.MAKER_FAIRE
+    private var cutFrameType: CutFrameTypeV1 = CutFrameTypeV1.MAKER_FAIRE
 
-    override fun getCutFrameType(): CutFrameType = cutFrameType
+    override fun getCutFrameType(): CutFrameTypeV1 = cutFrameType
     override suspend fun setCutFrameType(type: Int) {
-        cutFrameType = CutFrameType.findBy(type)
+        cutFrameType = CutFrameTypeV1.findBy(type)
     }
 
     override suspend fun cachingImage(image: Bitmap, fileName: String): Uri {

@@ -12,13 +12,13 @@ class CaptureWithExternalCameraUseCase @Inject constructor(
     suspend operator fun invoke(fileName: String): Result<Unit> {
         externalCameraRepository.capture()
             .onSuccess {
-                AppLog.i(TAG, "capture", "success: $it")
+                AppLog.i(TAG, "invoke", "success: $it")
                 imageRepository.cachingImage(it, fileName)
                 return Result.success(Unit)
             }
             .onFailure {
                 // TODO: handle network error
-                AppLog.i(TAG, "capture", "failure: $it")
+                AppLog.i(TAG, "invoke", "failure: $it")
                 return Result.failure(it)
             }
         return Result.failure(Exception("Unknown error"))

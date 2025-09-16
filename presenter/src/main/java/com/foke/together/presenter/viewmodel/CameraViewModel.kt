@@ -5,14 +5,15 @@ import android.os.CountDownTimer
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.CaptureWithExternalCameraUseCase
-import com.foke.together.domain.interactor.GeneratePhotoFrameUseCase
+import com.foke.together.domain.interactor.GenerateImageFromViewUseCase
+import com.foke.together.domain.interactor.GeneratePhotoFrameUseCaseV1
 import com.foke.together.domain.interactor.GetExternalCameraPreviewUrlUseCase
-import com.foke.together.domain.interactor.web.SessionKeyUseCase
+import com.foke.together.domain.interactor.entity.Status
+import com.foke.together.domain.interactor.session.UpdateSessionStatusUseCase
 import com.foke.together.util.AppPolicy
 import com.foke.together.util.AppPolicy.CAPTURE_INTERVAL
 import com.foke.together.util.AppPolicy.COUNTDOWN_INTERVAL
@@ -27,8 +28,9 @@ class CameraViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     getExternalCameraPreviewUrlUseCase: GetExternalCameraPreviewUrlUseCase,
     private val captureWithExternalCameraUseCase: CaptureWithExternalCameraUseCase,
-    private val generatePhotoFrameUseCase: GeneratePhotoFrameUseCase,
-    private val sessionKeyUseCase: SessionKeyUseCase
+    private val generateImageFromViewUseCase: GenerateImageFromViewUseCase,
+    private val generatePhotoFrameUseCaseV1: GeneratePhotoFrameUseCaseV1,
+    private val updateSessionStatusUseCase: UpdateSessionStatusUseCase
 ): ViewModel() {
     val externalCameraIP = getExternalCameraPreviewUrlUseCase()
 
@@ -39,12 +41,18 @@ class CameraViewModel @Inject constructor(
     val captureCount: Int by _captureCount
     private var captureTimer: CountDownTimer? = null
     private var mTimerState = false
+
     fun setCaptureTimer(
         graphicsLayer: GraphicsLayer,
         nextNavigate: () -> Unit
     ) {
+        if (AppPolicy.isNoCameraDebugMode) {
+            nextNavigate()
+            return
+        }
+
         viewModelScope.launch {
-            generatePhotoFrameUseCase.clearCapturedImageList()
+            generatePhotoFrameUseCaseV1.clearCapturedImageList()
         }
         captureTimer = object : CountDownTimer(CAPTURE_INTERVAL, COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
@@ -53,13 +61,12 @@ class CameraViewModel @Inject constructor(
             override fun onFinish() {
                 viewModelScope.launch {
                     SoundUtil.getCameraSound(context = context )
-                    val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
 
                     // TODO: 현재 External 실패 시, 스크린 캡쳐 화면을 사용하도록 구성함
                     val fileName = "${AppPolicy.CAPTURED_FOUR_CUT_IMAGE_NAME}_${_captureCount.value}"
                     captureWithExternalCameraUseCase(fileName)
                         .onFailure {
-                            generatePhotoFrameUseCase.saveGraphicsLayerImage(bitmap, fileName)
+                            generateImageFromViewUseCase(graphicsLayer, filename = fileName)
                         }
 
                     _progressState.floatValue = 1f
@@ -67,7 +74,6 @@ class CameraViewModel @Inject constructor(
                         _captureCount.intValue += 1
                         mTimerState = false
                     } else {
-                        sessionKeyUseCase.setSessionKey()
                         stopCaptureTimer()
                         _captureCount.intValue = 1
                         nextNavigate()
@@ -91,5 +97,9 @@ class CameraViewModel @Inject constructor(
             mTimerState = false
             captureTimer!!.cancel()
         }
+    }
+
+    fun updateSessionStatus() {
+        updateSessionStatusUseCase(Status.CAPTURE)
     }
 }
