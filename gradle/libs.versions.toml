@@ -2,7 +2,7 @@
 # application ----
 id = "com.foke.together"
 app-version-code = "2"
-app-version-name = "1.0.0"
+app-version-name = "1.1.0"
 
 # sdk ------------
 sdk-compile = "android-35"
