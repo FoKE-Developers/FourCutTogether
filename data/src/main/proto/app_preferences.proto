@@ -15,6 +15,11 @@ message AppPreferences {
     CameraSource camera_source = 10;
     string external_camera_ip = 11;
 
+    int32 internal_camera_lens_facing = 20;
+    int32 internal_camera_flash_mode = 21;
+    int32 internal_camera_capture_mode = 22;
+    int32 internal_camera_aspect_ratio = 23;
+
     // TODO: sample code. remove later.
     string sample_id = 999997;
     string sample_title = 999998;
