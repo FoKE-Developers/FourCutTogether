@@ -6,8 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.foke.together.presenter.screen.CameraScreen
-import com.foke.together.presenter.screen.GenerateSingleRowImageScreen
-import com.foke.together.presenter.screen.GenerateTwoRowImageScreen
+import com.foke.together.presenter.screen.GenerateImageScreen
 import com.foke.together.presenter.screen.HomeScreen
 import com.foke.together.presenter.screen.SelectFrameScreen
 import com.foke.together.presenter.screen.SelectMethodScreen
@@ -25,8 +24,7 @@ fun NavGraph(navController: NavHostController) {
         addSelectFrameScreen(navController, this)
         addSelectMethodScreen(navController, this)
         addCameraScreen(navController, this)
-        addGenerateSingleRowImageScreen(navController, this)
-        addGenerateTwoRowImageScreen(navController, this)
+        addGenerateImageScreen(navController, this)
         addShareScreen(navController, this)
     }
 }
@@ -96,28 +94,12 @@ private fun addCameraScreen(
     }
 }
 
-private fun addGenerateSingleRowImageScreen(
+private fun addGenerateImageScreen(
     navController: NavHostController,
     navGraphBuilder: NavGraphBuilder
 ) {
     navGraphBuilder.composable(route = NavRoute.GenerateSingleRowImage.path) {
-        GenerateSingleRowImageScreen(
-            navigateToTwoRow = {
-                navController.navigate(NavRoute.GenerateTwoRowImage.path)
-            },
-            popBackStack = {
-                navController.popBackStack(NavRoute.Home.path, inclusive = false)
-            }
-        )
-    }
-}
-
-private fun addGenerateTwoRowImageScreen(
-    navController: NavHostController,
-    navGraphBuilder: NavGraphBuilder
-) {
-    navGraphBuilder.composable(route = NavRoute.GenerateTwoRowImage.path) {
-        GenerateTwoRowImageScreen(
+        GenerateImageScreen(
             navigateToShare = {
                 navController.navigate(NavRoute.Share.path)
             },

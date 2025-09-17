@@ -42,9 +42,7 @@ fun SelectMethodScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         val context = LocalContext.current
-
         val (backKey, title, timerButton, gestureButton) = createRefs()
-
         val topGuideLine = createGuidelineFromTop(0.1f)
         val bottomGuideLine = createGuidelineFromBottom(0.1f)
         val startGuideLine = createGuidelineFromStart(0.2f)

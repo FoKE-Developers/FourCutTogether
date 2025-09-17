@@ -4,6 +4,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 object TimeUtil {
+    fun getCurrentTimestamp(): Long {
+        // TODO: LocalDate로 변경
+        return System.currentTimeMillis()
+    }
+
     fun getCurrentDisplayTime(): String {
         val dateFormat = "yyyy.MM.dd"
         // TODO: LocalDate로 변경

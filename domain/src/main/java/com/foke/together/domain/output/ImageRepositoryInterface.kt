@@ -2,12 +2,10 @@ package com.foke.together.domain.output
 
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Environment
-import com.foke.together.domain.interactor.entity.CutFrameType
-import kotlinx.coroutines.flow.Flow
+import com.foke.together.domain.interactor.entity.CutFrameTypeV1
 
 interface ImageRepositoryInterface {
-    fun getCutFrameType(): CutFrameType
+    fun getCutFrameType(): CutFrameTypeV1
     suspend fun setCutFrameType(type: Int)
     // 촬영한 사진들 모음
     suspend fun cachingImage(image: Bitmap, fileName: String) : Uri
