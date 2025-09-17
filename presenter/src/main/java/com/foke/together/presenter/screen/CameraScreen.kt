@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.layer.drawLayer
@@ -47,6 +48,12 @@ fun CameraScreen(
     val externalCameraIP = viewModel.externalCameraIP
     var frameCount = 0
     val graphicsLayer = rememberGraphicsLayer()
+
+    DisposableEffect(Unit) {
+        viewModel.updateSessionStatus()
+        onDispose { }
+    }
+
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -159,15 +166,15 @@ fun CameraScreen(
     }
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         viewModel.setCaptureTimer(graphicsLayer) { navigateToGenerateImage() }
-        AppLog.d(TAG, "ON_START", mjpegView.toString())
+        AppLog.d(TAG, "LifecycleEventEffect. ON_START", mjpegView.toString())
     }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        AppLog.d(TAG, "ON_RESUME", mjpegView.toString())
+        AppLog.d(TAG, "LifecycleEventEffect. ON_RESUME", mjpegView.toString())
         mjpegView?.startStream()
     }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
         viewModel.stopCaptureTimer()
-        AppLog.d(TAG, "ON_STOP", mjpegView.toString())
+        AppLog.d(TAG, "LifecycleEventEffect. ON_STOP", mjpegView.toString())
         frameCount = 0
         mjpegView?.stopStream()
     }

@@ -3,6 +3,7 @@ package com.foke.together.presenter.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.AppInitUseCase
+import com.foke.together.domain.interactor.session.CreateNewSessionUseCase
 import com.foke.together.domain.interactor.web.GetCurrentUserInformationUseCase
 import com.foke.together.domain.interactor.web.SignInUseCase
 import com.foke.together.util.AppLog
@@ -17,7 +18,8 @@ class HomeViewModel @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val signInUseCase: SignInUseCase,
     private val getCurrentUserInformationUseCase: GetCurrentUserInformationUseCase,
-    private val appInitUseCase: AppInitUseCase
+    private val appInitUseCase: AppInitUseCase,
+    private val createNewSessionUseCase: CreateNewSessionUseCase
 ): ViewModel() {
     init {
         viewModelScope.launch(ioDispatcher) {
@@ -39,6 +41,10 @@ class HomeViewModel @Inject constructor(
                     AppLog.e(TAG, "init", "failure: $it")
                 }
         }
+    }
+
+    fun createSession() {
+        createNewSessionUseCase()
     }
 
     companion object {

@@ -14,7 +14,7 @@ agp = "8.5.2"
 
 # kotlin ---------
 kotlin = "1.9.20"
-coreKtx = "1.13.1"
+coreKtx = "1.15.0"
 
 # kapt -----------
 kotlin-kapt = "1.9.20"
@@ -22,11 +22,11 @@ kotlin-kapt = "1.9.20"
 # android --------
 appcompat = "1.7.0"
 composeCompiler = "1.5.5"
-lifecycle-runtime-ktx = "2.8.6"
-activity-compose = "1.9.2"
-compose-bom = "2024.09.03"
+lifecycle-runtime-ktx = "2.8.7"
+activity-compose = "1.9.3"
+compose-bom = "2024.12.01"
 material = "1.12.0"
-navigation-compose = "2.8.2"
+navigation-compose = "2.8.5"
 
 # hilt -----------
 hilt = "2.49"
@@ -38,7 +38,7 @@ androidx-hilt-work = "1.2.0"
 room = "2.6.1"
 
 # work manager ---
-work-runtime-ktx = "2.9.1"
+work-runtime-ktx = "2.10.0"
 
 # retrofit -------
 okhttp = "4.12.0"
@@ -56,10 +56,10 @@ protobuf-plugin = "0.9.4"
 protoc = "com.google.protobuf:protoc:4.28.2"
 
 # compose extended UI
-constraint-layout-compose = "1.0.1"
+constraint-layout-compose = "1.1.0"
 android-mjpeg-view = "1.1.3"
-material-icons-extended = "1.7.3"
-ui-graphics-android = "1.7.3"
+material-icons-extended = "1.7.6"
+ui-graphics-android = "1.7.6"
 
 # qrcode-kotlin --
 qrcode-kotlin = "4.1.1"
