@@ -49,6 +49,8 @@ dependencies {
     implementation(libs.datastore.preferences.core)
     implementation(libs.protobuf.javalite)
 
+    // camerax
+    implementation(libs.camerax.core)
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
