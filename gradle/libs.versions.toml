@@ -67,6 +67,9 @@ qrcode-kotlin = "4.1.1"
 # camerax --------
 camerax = "1.4.1"
 
+# permission -----
+accompanist = "0.37.3"
+
 # test -----------
 junit = "4.13.2"
 junit-version = "1.2.1"
@@ -139,6 +142,9 @@ camerax-camera2 = { group = "androidx.camera", name = "camera-camera2", version.
 camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
 camerax-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
 camerax-extensions = { group = "androidx.camera", name = "camera-extensions", version.ref = "camerax" }
+
+# permission ---
+com-google-accompanist-permission = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
 
 
 # test -----------

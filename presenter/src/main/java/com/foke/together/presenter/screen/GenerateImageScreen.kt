@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.foke.together.domain.interactor.entity.DefaultCutFrameSet
 import com.foke.together.presenter.R
 import com.foke.together.presenter.frame.DefaultCutFrame
@@ -51,6 +53,7 @@ fun GenerateImageScreen(
     val graphicsLayer2 = rememberGraphicsLayer()
     val coroutineScope = rememberCoroutineScope()
     val isFirstState = remember { mutableStateOf(true) }
+    val imageUri by viewModel.imageUri.collectAsStateWithLifecycle()
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         AppLog.d(TAG, "LifecycleEventEffect: ON_RESUME", "${viewModel.imageUri}")
@@ -87,13 +90,13 @@ fun GenerateImageScreen(
                 // TODO: 나중에 다른 CutFrameSet 어떻게 처리해야 할지?
                 GetDefaultFrame(
                     cutFrame = viewModel.cutFrame as DefaultCutFrameSet,
-                    imageUri = viewModel.imageUri,
+                    imageUri = imageUri,
                     graphicsLayer = graphicsLayer1,
                 )
             } else {
                 GetDefaultFrame(
                     cutFrame = viewModel.cutFrame as DefaultCutFrameSet,
-                    imageUri = viewModel.imageUri,
+                    imageUri = imageUri,
                     graphicsLayer = graphicsLayer2,
                     isForPrint = true,
                     isPaddingHorizontal = 16.dp

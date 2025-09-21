@@ -2,6 +2,7 @@ package com.foke.together.domain.output
 
 import android.graphics.Bitmap
 import android.net.Uri
+import com.foke.together.domain.interactor.entity.CameraSourceType
 import com.foke.together.domain.interactor.entity.CutFrameTypeV1
 
 interface ImageRepositoryInterface {
@@ -9,7 +10,8 @@ interface ImageRepositoryInterface {
     suspend fun setCutFrameType(type: Int)
     // 촬영한 사진들 모음
     suspend fun cachingImage(image: Bitmap, fileName: String) : Uri
-    fun getCachedImageUriList() : List<Uri>
+
+    fun getCachedImageUriList(sourceType: CameraSourceType) : List<Uri>
     suspend fun clearCacheDir()
 
     // 완성된 프레임 모음
