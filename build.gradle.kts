@@ -5,7 +5,8 @@ plugins {
     alias(libs.plugins.android.library) apply false
 
     alias(libs.plugins.hilt) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.ksp) apply false
+    alias(libs.plugins.kotlin.compose) apply false
 }
 
 subprojects {
@@ -26,16 +27,11 @@ subprojects {
             }
 
             compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_17
-                targetCompatibility = JavaVersion.VERSION_17
+                sourceCompatibility = JavaVersion.VERSION_21
+                targetCompatibility = JavaVersion.VERSION_21
             }
         }
 
-        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
-        }
     }
 
     // settings for application
@@ -90,16 +86,16 @@ subprojects {
     }
 
     plugins.withId("org.jetbrains.kotlin.android") {
-        apply(plugin = "kotlin-kapt")
+        apply(plugin = "com.google.devtools.ksp")
         apply(plugin = "dagger.hilt.android.plugin")
 
         dependencies {
             add("implementation", libs.hilt)
-            add("kapt", libs.hilt.compiler)
+            add("ksp", libs.hilt.compiler)
         }
 
-        configure<org.jetbrains.kotlin.gradle.plugin.KaptExtension> {
-            correctErrorTypes = true
+        configure<com.google.devtools.ksp.gradle.KspExtension> {
+            arg("correctErrorTypes", "true")
         }
     }
 

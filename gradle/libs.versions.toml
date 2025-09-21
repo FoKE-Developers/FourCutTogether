@@ -5,72 +5,75 @@ app-version-code = "2"
 app-version-name = "1.1.0"
 
 # sdk ------------
-sdk-compile = "android-35"
+sdk-compile = "android-36"
 sdk-min = "31"
-sdk-target = "35"
+sdk-target = "36"
 
 # gradle ---------
-agp = "8.5.2"
+agp = "8.12.1"
 
 # kotlin ---------
-kotlin = "1.9.20"
-coreKtx = "1.15.0"
+kotlin = "2.1.10"
+coreKtx = "1.17.0"
 
 # kapt -----------
-kotlin-kapt = "1.9.20"
+kotlin-kapt = "2.1.10"
+
+# ksp -----------
+ksp = "2.1.10-1.0.31"
 
 # android --------
-appcompat = "1.7.0"
+appcompat = "1.7.1"
 composeCompiler = "1.5.5"
-lifecycle-runtime-ktx = "2.8.7"
-activity-compose = "1.9.3"
-compose-bom = "2024.12.01"
+lifecycle-runtime-ktx = "2.9.4"
+activity-compose = "1.10.1"
+compose-bom = "2025.07.00"
 material = "1.12.0"
-navigation-compose = "2.8.5"
+navigation-compose = "2.9.4"
 
 # hilt -----------
-hilt = "2.49"
+hilt = "2.57.1"
 androidx-hilt-compiler = "1.2.0"
 androidx-hilt-navigation-compose = "1.2.0"
 androidx-hilt-work = "1.2.0"
 
 # room -----------
-room = "2.6.1"
+room = "2.8.0"
 
 # work manager ---
-work-runtime-ktx = "2.10.0"
+work-runtime-ktx = "2.10.4"
 
 # retrofit -------
-okhttp = "4.12.0"
-retrofit = "2.9.0"
-gson = "2.10.1"
+okhttp = "5.1.0"
+retrofit = "3.0.0"
+gson = "2.13.2"
 
 # serialization --
-serialization-json = "1.5.1"
+serialization-json = "1.9.0"
 serialization-converter = "1.0.0"
 
 # proto datastore
-datastore = "1.1.1"
-protobuf = "3.23.2"
-protobuf-plugin = "0.9.4"
-protoc = "com.google.protobuf:protoc:4.28.2"
+datastore = "1.1.7"
+protobuf = "4.32.1"
+protobuf-plugin = "0.9.5"
+protoc = "com.google.protobuf:protoc:4.32.1"
 
 # compose extended UI
-constraint-layout-compose = "1.1.0"
+constraint-layout-compose = "1.1.1"
 android-mjpeg-view = "1.1.3"
-material-icons-extended = "1.7.6"
-ui-graphics-android = "1.7.6"
+material-icons-extended = "1.7.8"
+ui-graphics-android = "1.9.1"
 
 # qrcode-kotlin --
-qrcode-kotlin = "4.1.1"
+qrcode-kotlin = "4.5.0"
 
 # camerax --------
-camerax = "1.4.1"
+camerax = "1.5.0"
 
 # test -----------
 junit = "4.13.2"
-junit-version = "1.2.1"
-espresso-core = "3.6.1"
+junit-version = "1.3.0"
+espresso-core = "3.7.0"
 coilCompose = "2.7.0"
 
 
@@ -155,9 +158,10 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-kapt"}
-
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 # hilt -----------
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 
 # proto datastore
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
