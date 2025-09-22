@@ -49,6 +49,9 @@ dependencies {
     // reflect
     implementation(kotlin("reflect"))
 
+    // permission
+    implementation(libs.com.google.accompanist.permission)
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
