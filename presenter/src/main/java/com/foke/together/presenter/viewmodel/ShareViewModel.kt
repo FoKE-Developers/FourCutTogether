@@ -70,7 +70,7 @@ class ShareViewModel @Inject constructor(
             val result = uploadFileUseCase(sessionKey, singleImageUri.toFile())
             AppLog.d(TAG, "generateQRcode" ,"result: $result")
 
-            val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { "https://4cuts.store" }
+            val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { "https://foke.clon.dev" }
             if (AppPolicy.isDebugMode) {
                 AppLog.e(TAG, "generateQRcode", "sessionKey: $sessionKey")
                 AppLog.e(TAG, "generateQRcode", "downloadUrl: $downloadUrl")

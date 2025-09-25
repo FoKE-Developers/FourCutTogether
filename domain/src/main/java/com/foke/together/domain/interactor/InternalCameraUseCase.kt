@@ -9,26 +9,35 @@ import androidx.lifecycle.LifecycleOwner
 import com.foke.together.domain.output.InternalCameraRepositoryInterface
 import javax.inject.Inject
 
-class GetInternalCameraPreviewUseCase @Inject constructor(
+class InternalCameraUseCase @Inject constructor(
     private val internalCameraRepository: InternalCameraRepositoryInterface,
 ) {
-    suspend operator fun invoke(
+    suspend fun initial(
         context: Context,
-        previewView: PreviewView,
         lifecycleOwner: LifecycleOwner,
+        previewView : PreviewView,
         cameraSelector: CameraSelector,
-        imageAnalysis: ImageAnalysis?,
+        imageAnalyzer: ImageAnalysis.Analyzer?,
         @IntRange(from = 0, to = 2) captureMode: Int,
         @IntRange(from = 0, to = 3) flashMode: Int,
-        @IntRange(from = -1, to = 1) aspectRatio: Int
-    ) = internalCameraRepository.showCameraPreview(
+    ) = internalCameraRepository.initial(
         context = context,
         lifecycleOwner = lifecycleOwner,
-        previewView = previewView,
-        selector = cameraSelector,
-        imageAnalysis = imageAnalysis,
         captureMode = captureMode,
         flashMode = flashMode,
-        aspectRatio = aspectRatio
+        selector = cameraSelector,
+        imageAnalyzer = imageAnalyzer,
+        previewView = previewView,
     )
+
+    suspend fun capture(
+        context: Context,
+        fileName : String,
+    ) = internalCameraRepository.capture(
+        context = context,
+        fileName = fileName
+    )
+    suspend fun release(
+        context: Context
+    ) = internalCameraRepository.release(context)
 }

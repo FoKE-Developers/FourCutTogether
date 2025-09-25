@@ -88,7 +88,7 @@ class AppPreferencesRepository @Inject constructor(
             it.internalCameraCaptureMode
         }
 
-    override suspend fun setInterenalCameraCaptureMode(
+    override suspend fun setInternalCameraCaptureMode(
         @IntRange(from = 0, to = 2) captureMode: Int
     ) {
         appPreferences.updateData {
@@ -98,20 +98,6 @@ class AppPreferencesRepository @Inject constructor(
         }
     }
 
-    override fun getInternalCameraAspectRatio(): Flow<Int> =
-        appPreferencesFlow.map {
-            it.internalCameraAspectRatio
-        }
-
-    override suspend fun setInterenalCameraAspectRatio(
-        @IntRange(from = -1, to = 1) aspectRatio: Int
-    ) {
-        appPreferences.updateData {
-            it.toBuilder()
-                .setInternalCameraAspectRatio(aspectRatio)
-                .build()
-        }
-    }
 
     override suspend fun clearAll() {
         appPreferences.updateData {

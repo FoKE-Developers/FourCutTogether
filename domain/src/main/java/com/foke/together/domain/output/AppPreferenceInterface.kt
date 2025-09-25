@@ -24,13 +24,8 @@ interface AppPreferenceInterface {
     )
 
     fun getInternalCameraCaptureMode(): Flow<Int>
-    suspend fun setInterenalCameraCaptureMode(
+    suspend fun setInternalCameraCaptureMode(
         @IntRange(from = 0, to = 2) captureMode: Int
-    )
-
-    fun getInternalCameraAspectRatio(): Flow<Int>
-    suspend fun setInterenalCameraAspectRatio(
-        @IntRange(from = -1, to = 1) aspectRatio: Int
     )
 
     suspend fun clearAll()
