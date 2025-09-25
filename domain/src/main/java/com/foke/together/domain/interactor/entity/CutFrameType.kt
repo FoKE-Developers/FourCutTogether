@@ -165,4 +165,18 @@ sealed class DefaultCutFrameSet (
         ),
         dateStringHeight = 495
     )
+
+    companion object {
+        val entries = listOf(
+            FourCutLight,
+            FourCurDark,
+            MakerFaire,
+            Wedding1,
+            Wedding2,
+            Bride1,
+            Bride2,
+            Groom1,
+            Groom2,
+        ).sortedBy { it.index }
+    }
 }

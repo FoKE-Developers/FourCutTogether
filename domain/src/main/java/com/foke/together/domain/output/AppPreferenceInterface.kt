@@ -5,6 +5,7 @@ import androidx.camera.core.CameraSelector
 import com.foke.together.domain.interactor.entity.CameraSourceType
 import com.foke.together.domain.interactor.entity.ExternalCameraIP
 import kotlinx.coroutines.flow.Flow
+import kotlin.time.Duration
 
 interface AppPreferenceInterface {
     fun getCameraSourceType(): Flow<CameraSourceType>
@@ -26,6 +27,12 @@ interface AppPreferenceInterface {
     fun getInternalCameraCaptureMode(): Flow<Int>
     suspend fun setInternalCameraCaptureMode(
         @IntRange(from = 0, to = 2) captureMode: Int
+    )
+
+    fun getCaptureDuration(): Flow<Duration>
+
+    suspend fun setCaptureDuration(
+        duration: Duration
     )
 
     suspend fun clearAll()

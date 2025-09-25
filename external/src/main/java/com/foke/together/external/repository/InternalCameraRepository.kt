@@ -26,7 +26,6 @@ import javax.inject.Singleton
 @Singleton
 class InternalCameraRepository @Inject constructor(
 ): InternalCameraRepositoryInterface{
-    private lateinit var previewView: PreviewView
     private lateinit var cameraController: LifecycleCameraController
     private lateinit var imageCapture: ImageCapture
 

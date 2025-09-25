@@ -11,6 +11,9 @@ import com.foke.together.domain.output.AppPreferenceInterface
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 // TODO: datasource -> local / remote 기준으로 module 구분하는게 어떨지?
 class AppPreferencesRepository @Inject constructor(
@@ -97,6 +100,19 @@ class AppPreferencesRepository @Inject constructor(
                 .build()
         }
     }
+
+    override fun getCaptureDuration(): Flow<Duration> = appPreferencesFlow.map {
+            it.cameraDuration.toDuration(DurationUnit.MILLISECONDS)
+        }
+
+    override suspend fun setCaptureDuration(duration: Duration) {
+        appPreferences.updateData {
+            it.toBuilder()
+                .setCameraDuration(duration.toLong(DurationUnit.MILLISECONDS))
+                .build()
+        }
+    }
+
 
 
     override suspend fun clearAll() {
