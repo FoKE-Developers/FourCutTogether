@@ -5,4 +5,5 @@ data class PhotoPosition (
     val height: Int,
     val x: Int,
     val y: Int,
+    val rotation: Int = 0
 )

@@ -1,6 +1,8 @@
 package com.foke.together.domain.interactor.entity
 
 import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import com.foke.together.domain.R
 
 abstract class CutFrame(
@@ -23,8 +25,11 @@ sealed class DefaultCutFrameSet (
     frameImageSrc: Int, // !!!!! TODO: asset 에 추가 및 src 값을 넣어서 처리
     photoPosition: List<PhotoPosition>,
     additionalFrameImageSrc: List<Int>, // !!!!! TODO: asset 에 추가 및 src 값을 넣어서 처리
+    var copyrightPosition: TextStickerPosition,
+    var datePosition: TextStickerPosition,
+    var qrCodePosition: QrStickerPosition,
     var isDateString: Boolean = false,
-    val dateStringHeight: Int = 0,
+    var isQrCode: Boolean = false
 ): CutFrame(index, frameTitle, cutCount, width, height, frameImageSrc, photoPosition, additionalFrameImageSrc) {
     val cutFrameSetTitle = "기본"
     val cutFrameCoverImageSrc = ""
@@ -41,22 +46,28 @@ sealed class DefaultCutFrameSet (
             PhotoPosition(159, 106, 16, 258),
             PhotoPosition(159, 106, 16, 369),
         ),
-        emptyList()
+        emptyList(),
+        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        qrCodePosition = QrStickerPosition(25,16,530)
     )
 
-    data object FourCurDark: DefaultCutFrameSet(
-        8,
-        "같이네컷 다크",
-        4, 190, 570,
-        R.drawable.fourcut_frame_medium_dark,
-        listOf(
-            PhotoPosition(159, 106, 16, 36),
-            PhotoPosition(159, 106, 16, 147),
-            PhotoPosition(159, 106, 16, 258),
-            PhotoPosition(159, 106, 16, 369),
-        ),
-        emptyList()
-    )
+data object FourCurDark: DefaultCutFrameSet(
+    8,
+    "같이네컷 다크",
+    4, 190, 570,
+    R.drawable.fourcut_frame_medium_dark,
+    listOf(
+        PhotoPosition(159, 106, 16, 36),
+        PhotoPosition(159, 106, 16, 147),
+        PhotoPosition(159, 106, 16, 258),
+        PhotoPosition(159, 106, 16, 369),
+    ),
+    emptyList(),
+    datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(170, 170, 170), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+    copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(170, 170, 170), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+    qrCodePosition = QrStickerPosition(25,16,530)
+)
 
     data object MakerFaire: DefaultCutFrameSet(
         9,
@@ -69,101 +80,86 @@ sealed class DefaultCutFrameSet (
             PhotoPosition(159, 106, 16, 258),
             PhotoPosition(159, 106, 16, 369),
         ),
-        emptyList()
-    )
-
-    data object Bride1: DefaultCutFrameSet(
-        3,
-        "신부 1",
-        4, 190, 570,
-        R.drawable.bride1,
-        listOf(
-            PhotoPosition(172, 115, 9, 9),
-            PhotoPosition(172, 115, 9, 133),
-            PhotoPosition(172, 115, 9, 256),
-            PhotoPosition(172, 115, 9, 383),
-        ),
         emptyList(),
-        dateStringHeight = 498
+        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(238, 238, 238), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(238, 238, 238), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        qrCodePosition = QrStickerPosition(25,16,530)
     )
 
-    data object Bride2: DefaultCutFrameSet(
-        4,
-        "신부 2",
+    data object MakerFaire25_1: DefaultCutFrameSet(
+        9,
+        "Maker Faire Seoul 2025 - 1",
         4, 190, 570,
-        R.drawable.bride2,
+        R.drawable.maker_faire_frame_25_1,
         listOf(
-            PhotoPosition(172, 115, 9, 9),
-            PhotoPosition(172, 115, 9, 133),
-            PhotoPosition(172, 115, 9, 256),
-            PhotoPosition(172, 115, 9, 383),
+            PhotoPosition(171, 114, 9, 20),
+            PhotoPosition(171, 114, 9, 148),
+            PhotoPosition(171, 114, 9, 269),
+            PhotoPosition(171, 114, 9, 389),
         ),
-        emptyList(),
-        dateStringHeight = 495
+        listOf(
+            R.drawable.maker_faire_frame_25_1
+        ),
+        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        qrCodePosition = QrStickerPosition(25,149,517)
     )
 
-    data object Groom1: DefaultCutFrameSet(
-        5,
-        "신랑 1",
+    data object MakerFaire25_2: DefaultCutFrameSet(
+        9,
+        "Maker Faire Seoul 2025 - 1",
         4, 190, 570,
-        R.drawable.groom1,
+        R.drawable.maker_faire_frame_25_2,
         listOf(
-            PhotoPosition(172, 115, 9, 9),
-            PhotoPosition(172, 115, 9, 133),
-            PhotoPosition(172, 115, 9, 256),
-            PhotoPosition(172, 115, 9, 383),
+            PhotoPosition(171, 114, 9, 20),
+            PhotoPosition(171, 114, 9, 148),
+            PhotoPosition(171, 114, 9, 269),
+            PhotoPosition(171, 114, 9, 389),
         ),
-        emptyList(),
-        dateStringHeight = 495
+        listOf(
+            R.drawable.maker_faire_frame_25_2
+        ),
+        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        qrCodePosition = QrStickerPosition(25,149,517)
     )
 
-    data object Groom2: DefaultCutFrameSet(
-        6,
-        "신랑 2",
+    data object MakerFaire25_3: DefaultCutFrameSet(
+        9,
+        "Maker Faire Seoul 2025 - 3",
         4, 190, 570,
-        R.drawable.groom2,
+        R.drawable.maker_faire_frame_25_3,
         listOf(
-            PhotoPosition(172, 115, 9, 9),
-            PhotoPosition(172, 115, 9, 133),
-            PhotoPosition(172, 115, 9, 256),
-            PhotoPosition(172, 115, 9, 383),
+            PhotoPosition(171, 114, 9, 20),
+            PhotoPosition(171, 114, 9, 148),
+            PhotoPosition(171, 114, 9, 269),
+            PhotoPosition(171, 114, 9, 389),
         ),
-        emptyList(),
-        dateStringHeight = 495
+        listOf(
+            R.drawable.maker_faire_frame_25_3
+        ),
+        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        qrCodePosition = QrStickerPosition(25,149,517)
     )
 
-    data object Wedding1: DefaultCutFrameSet(
-        1,
-        "웨딩 1",
+    data object MakerFaire25_4: DefaultCutFrameSet(
+        9,
+        "Maker Faire Seoul 2025 - 4",
         4, 190, 570,
-        R.drawable.wedding,
+        R.drawable.maker_faire_frame_25_4,
         listOf(
-            PhotoPosition(172, 115, 9, 9),
-            PhotoPosition(172, 115, 9, 133),
-            PhotoPosition(172, 115, 9, 256),
-            PhotoPosition(172, 115, 9, 383),
+            PhotoPosition(171, 114, 9, 20),
+            PhotoPosition(171, 114, 9, 148),
+            PhotoPosition(171, 114, 9, 269),
+            PhotoPosition(171, 114, 9, 389),
         ),
         listOf(
-            R.drawable.wedding_overlay1
+            R.drawable.maker_faire_frame_25_4
         ),
-        dateStringHeight = 495
-    )
-
-    data object Wedding2: DefaultCutFrameSet(
-        2,
-        "웨딩 2",
-        4, 190, 570,
-        R.drawable.wedding,
-        listOf(
-            PhotoPosition(172, 115, 9, 9),
-            PhotoPosition(172, 115, 9, 133),
-            PhotoPosition(172, 115, 9, 256),
-            PhotoPosition(172, 115, 9, 383),
-        ),
-        listOf(
-            R.drawable.wedding_overlay2
-        ),
-        dateStringHeight = 495
+        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
+        qrCodePosition = QrStickerPosition(25,149,517)
     )
 
     companion object {
@@ -171,12 +167,10 @@ sealed class DefaultCutFrameSet (
             FourCutLight,
             FourCurDark,
             MakerFaire,
-            Wedding1,
-            Wedding2,
-            Bride1,
-            Bride2,
-            Groom1,
-            Groom2,
+            MakerFaire25_1,
+            MakerFaire25_2,
+            MakerFaire25_3,
+            MakerFaire25_4,
         ).sortedBy { it.index }
     }
 }
