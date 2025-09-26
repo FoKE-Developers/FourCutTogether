@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.hilt.compiler)
     implementation(libs.androidx.material.icons.extended)
@@ -48,6 +49,9 @@ dependencies {
 
     // reflect
     implementation(kotlin("reflect"))
+
+    // permission
+    implementation(libs.com.google.accompanist.permission)
 
     // test
     testImplementation(libs.junit)

@@ -17,7 +17,10 @@ class MainActivity : ComponentActivity() {
         // TODO: temporary remove this option
         // enableEdgeToEdge()
         setContent {
-            MainScreen()
+            FourCutTogetherTheme {
+                val navController = rememberNavController()
+                NavGraph(navController)
+            }
         }
     }
 }

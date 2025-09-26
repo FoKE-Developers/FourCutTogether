@@ -23,6 +23,7 @@ import com.foke.together.util.AppPolicy
 import com.foke.together.util.ImageFileUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class ShareViewModel @Inject constructor(
     private val updateSessionStatusUseCase: UpdateSessionStatusUseCase,
     private val clearSessionUseCase: ClearSessionUseCase
 ): ViewModel() {
-    var qrCodeBitmap by mutableStateOf<Bitmap?>(null)
+    val qrCodeBitmap = MutableStateFlow<Bitmap?>(null)
     val singleImageUri: Uri = generatePhotoFrameUseCaseV1.getFinalSingleImageUri()
     val twoImageUri: Uri = generatePhotoFrameUseCaseV1.getFinalTwoImageUri()
 
@@ -70,12 +71,12 @@ class ShareViewModel @Inject constructor(
             val result = uploadFileUseCase(sessionKey, singleImageUri.toFile())
             AppLog.d(TAG, "generateQRcode" ,"result: $result")
 
-            val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { "https://4cuts.store" }
+            val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { "https://foke.clon.dev" }
             if (AppPolicy.isDebugMode) {
                 AppLog.e(TAG, "generateQRcode", "sessionKey: $sessionKey")
                 AppLog.e(TAG, "generateQRcode", "downloadUrl: $downloadUrl")
             }
-            qrCodeBitmap =  getQRCodeUseCase(sessionKey, downloadUrl).getOrNull()
+            qrCodeBitmap.value =  getQRCodeUseCase(sessionKey, downloadUrl).getOrNull()
         }
     }
 

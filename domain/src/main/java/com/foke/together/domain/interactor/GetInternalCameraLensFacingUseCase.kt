@@ -9,9 +9,5 @@ import javax.inject.Inject
 class GetInternalCameraLensFacingUseCase @Inject constructor(
     private val appPreferenceRepository: AppPreferenceInterface
 ) {
-    operator fun invoke() : Flow<CameraSelector> = appPreferenceRepository.getInternalCameraLensFacing().map { cameraSelectorIdx ->
-            CameraSelector.Builder()
-                .requireLensFacing(cameraSelectorIdx)
-                .build()
-        }
+    operator fun invoke() : Flow<Int> = appPreferenceRepository.getInternalCameraLensFacing()
 }
