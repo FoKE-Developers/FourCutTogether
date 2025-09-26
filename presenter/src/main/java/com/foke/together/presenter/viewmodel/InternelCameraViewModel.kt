@@ -1,20 +1,15 @@
 package com.foke.together.presenter.viewmodel
 
 import android.content.Context
-import android.net.Uri
 import android.os.CountDownTimer
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.view.PreviewView
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.foke.together.domain.interactor.GetCaptureDurationUseCase
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCaseV1
+import com.foke.together.domain.interactor.GetCaptureDurationUseCase
 import com.foke.together.domain.interactor.GetCapturedImageUriUseCase
 import com.foke.together.domain.interactor.GetInternalCameraCaptureModeUseCase
 import com.foke.together.domain.interactor.GetInternalCameraFlashModeUseCase
@@ -24,31 +19,28 @@ import com.foke.together.domain.interactor.session.GetCurrentSessionUseCase
 import com.foke.together.presenter.screen.state.InternalCameraState
 import com.foke.together.util.AppLog
 import com.foke.together.util.AppPolicy
-import com.foke.together.util.AppPolicy.CAPTURE_INTERVAL
-import com.foke.together.util.AppPolicy.COUNTDOWN_INTERVAL
 import com.foke.together.util.SoundUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 @HiltViewModel
 class InternelCameraViewModel @Inject constructor(
     private val internalCameraUseCase: InternalCameraUseCase,
-    private val getCaptureDurationUseCase: GetCaptureDurationUseCase,
-    private val getInternalCameraLensFacingUseCase: GetInternalCameraLensFacingUseCase,
-    private val getInternalCameraFlashModeUseCase: GetInternalCameraFlashModeUseCase,
-    private val getInternalCameraCaptureModeUseCase: GetInternalCameraCaptureModeUseCase,
-    private val getCapturedImageUriUseCase: GetCapturedImageUriUseCase,
-    private val getSessionUseCase : GetCurrentSessionUseCase,
     private val generatePhotoFrameUseCaseV1: GeneratePhotoFrameUseCaseV1,
+    getCaptureDurationUseCase: GetCaptureDurationUseCase,
+    getInternalCameraLensFacingUseCase: GetInternalCameraLensFacingUseCase,
+    getInternalCameraFlashModeUseCase: GetInternalCameraFlashModeUseCase,
+    getInternalCameraCaptureModeUseCase: GetInternalCameraCaptureModeUseCase,
+    getCapturedImageUriUseCase: GetCapturedImageUriUseCase,
+    getSessionUseCase : GetCurrentSessionUseCase,
 ): ViewModel() {
 
     // TODO(MutableStateFlow 로 처리하기)
@@ -147,7 +139,7 @@ class InternelCameraViewModel @Inject constructor(
             generatePhotoFrameUseCaseV1.clearCapturedImageList()
         }
 
-        captureTimer = object : CountDownTimer(captureDuration.value.toLong(DurationUnit.MILLISECONDS), COUNTDOWN_INTERVAL) {
+        captureTimer = object : CountDownTimer(captureDuration.value.toLong(DurationUnit.MILLISECONDS), AppPolicy.COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 countdownSeconds.value = ((millisUntilFinished / 1000) + 1).toInt()
             }
@@ -161,14 +153,13 @@ class InternelCameraViewModel @Inject constructor(
                     
                     if (captureCount.value < AppPolicy.CAPTURE_COUNT) {
                         AppLog.d(TAG, "captureCount", "${captureCount.value}")
-                        // 촬영 후 2초 대기
-                        delay(5.seconds.toLong(DurationUnit.MILLISECONDS))
+                        delay(AppPolicy.PREVIEW_INTERVAL.seconds.toLong(DurationUnit.MILLISECONDS))
                         captureCount.value += 1
                         start()
                     } else {
                         AppLog.d(TAG, "captureCount", "${captureCount.value}")
                         stopCaptureTimer()
-                        delay(5.seconds.toLong(DurationUnit.MILLISECONDS))
+                        delay(AppPolicy.PREVIEW_INTERVAL.seconds.toLong(DurationUnit.MILLISECONDS))
                         captureCount.value = 1
                         nextNavigate()
                     }

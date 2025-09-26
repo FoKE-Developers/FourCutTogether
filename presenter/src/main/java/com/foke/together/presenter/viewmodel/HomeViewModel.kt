@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.AppInitUseCase
 import com.foke.together.domain.interactor.session.CreateNewSessionUseCase
 import com.foke.together.domain.interactor.web.GetCurrentUserInformationUseCase
+import com.foke.together.domain.interactor.web.RegisterUseCase
 import com.foke.together.domain.interactor.web.SignInUseCase
 import com.foke.together.util.AppLog
 import com.foke.together.util.di.IODispatcher
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val signInUseCase: SignInUseCase,
+    private val registerUseCase: RegisterUseCase,
     private val getCurrentUserInformationUseCase: GetCurrentUserInformationUseCase,
     private val appInitUseCase: AppInitUseCase,
     private val createNewSessionUseCase: CreateNewSessionUseCase
@@ -25,11 +27,18 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             // init external camera ip address
             appInitUseCase()
-
             // TODO: this is test code. remove later
+
+            // TODO: add register function in Settings
+//            registerUseCase(
+//                "maker-faire-2025@test.com",
+//                "1234",
+//                "maker-faire-2025"
+//            )
+
             signInUseCase(
-                "test@test.com",
-                "1234"
+                "maker-faire-2025@test.com",
+                "1234",
             )
             // TODO: this is test code. remove later
             getCurrentUserInformationUseCase()
