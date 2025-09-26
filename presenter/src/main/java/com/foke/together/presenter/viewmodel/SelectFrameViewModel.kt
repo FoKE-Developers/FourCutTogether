@@ -19,15 +19,26 @@ class SelectFrameViewModel @Inject constructor(
 
     val cutFrames = MutableStateFlow(DefaultCutFrameSet.entries)
     val isDateDisplay = MutableStateFlow(false)
+    val isQRDisplay = MutableStateFlow(false)
     fun updateSessionStatus() {
         updateSessionStatusUseCase(Status.SELECT_FRAME)
     }
 
-    fun updateDateDisplay() = viewModelScope.launch{
-        isDateDisplay.value = !isDateDisplay.value
+    fun updateDateDisplay(state: Boolean) = viewModelScope.launch{
+        isDateDisplay.value = state
         cutFrames.value = cutFrames.value.map {
             it.isDateString = isDateDisplay.value
             it
+        }
+    }
+
+    // TODO(QR 표시 기능 구현)
+    fun updateQRDisplay( state: Boolean ) = viewModelScope.launch{
+        isQRDisplay.value = state
+        cutFrames.value = cutFrames.value.map {
+            it
+//            it.isQRString = isQRDisplay.value
+//            it
         }
     }
 

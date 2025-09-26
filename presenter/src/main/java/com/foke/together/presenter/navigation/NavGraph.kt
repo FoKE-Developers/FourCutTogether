@@ -70,7 +70,7 @@ private fun addSelectFrameScreen(
     navGraphBuilder.composable(route = NavRoute.SelectFrame.path) {
         SelectFrameScreen(
             navigateToMethod = {
-                navController.navigate(NavRoute.SelectMethod.path)
+                navController.navigate(NavRoute.InternalCamera.path)
             },
             popBackStack = {
                 navController.popBackStack(NavRoute.Home.path, inclusive = false)

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
@@ -52,6 +54,7 @@ import com.foke.together.presenter.viewmodel.ShareViewModel
 import com.foke.together.util.AppLog
 import com.foke.together.util.ImageFileUtil
 import androidx.core.graphics.createBitmap
+import com.foke.together.presenter.component.AppBottomBar
 
 @Composable
 fun ShareScreen(
@@ -69,7 +72,8 @@ fun ShareScreen(
     ShareContent(
         context = context,
         captureImageUri = captureImageUri,
-        qrImageBitmap = qrImageBitmap
+        qrImageBitmap = qrImageBitmap,
+        popBackStack = popBackStack,
     )
 }
 
@@ -77,35 +81,37 @@ fun ShareScreen(
 fun ShareContent(
     context: Context,
     captureImageUri : Uri,
-    qrImageBitmap : Bitmap?
+    qrImageBitmap : Bitmap?,
+    popBackStack: () -> Unit,
 ){
     BasicScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             AppTopBar(
                 title = "이미지 저장",
-                alignment = Alignment.CenterHorizontally
+                alignment = Alignment.CenterHorizontally,
+                leftIcon = {
+                    Icon(
+                        modifier = Modifier.size(AppTheme.size.icon)
+                            .clickable(true, onClick = popBackStack),
+                        imageVector = Icons.Filled.Home,
+                        contentDescription = "home",
+                        tint = AppTheme.colorScheme.top
+                    )
+                }
             )
         },
         bottomBar = {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(
-                    start = AppTheme.size.layoutPadding,
-                    end = AppTheme.size.layoutPadding,
-                    bottom = AppTheme.size.layoutPadding
-                ),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ){
+            AppBottomBar{
                 Column(
                     modifier = Modifier.wrapContentSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     Icon(
-                        imageVector = Icons.Outlined.Print,
+                        imageVector = Icons.Filled.Print,
                         contentDescription = "print",
-                        tint = AppTheme.colorScheme.border
+                        tint = AppTheme.colorScheme.top
                     )
                     Text(
                         text = "출력",
@@ -120,9 +126,9 @@ fun ShareContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     Icon(
-                        imageVector = Icons.Outlined.Download,
+                        imageVector = Icons.Filled.Download,
                         contentDescription = "download",
-                        tint = AppTheme.colorScheme.border
+                        tint = AppTheme.colorScheme.top
                     )
                     Text(
                         text = "저장",
@@ -137,9 +143,9 @@ fun ShareContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     Icon(
-                        imageVector = Icons.Outlined.Share,
+                        imageVector = Icons.Filled.Share,
                         contentDescription = "sharing",
-                        tint = AppTheme.colorScheme.border
+                        tint = AppTheme.colorScheme.top
                     )
                     Text(
                         text = "공유",
@@ -205,7 +211,8 @@ private fun ShareScreenPreview() {
         ShareContent(
             context = LocalContext.current,
             captureImageUri = Uri.EMPTY,
-            qrImageBitmap = qrBitmap
+            qrImageBitmap = qrBitmap,
+            popBackStack = {}
         )
     }
 }

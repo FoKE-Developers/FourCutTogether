@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.foke.together.domain.GetCaptureDurationUseCase
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCaseV1
 import com.foke.together.domain.interactor.GetInternalCameraCaptureModeUseCase
 import com.foke.together.domain.interactor.GetInternalCameraFlashModeUseCase
@@ -30,11 +31,16 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @HiltViewModel
 class InternelCameraViewModel @Inject constructor(
     private val internalCameraUseCase: InternalCameraUseCase,
+    private val getCaptureDurationUseCase: GetCaptureDurationUseCase,
     private val getInternalCameraLensFacingUseCase: GetInternalCameraLensFacingUseCase,
     private val getInternalCameraFlashModeUseCase: GetInternalCameraFlashModeUseCase,
     private val getInternalCameraCaptureModeUseCase: GetInternalCameraCaptureModeUseCase,
@@ -45,6 +51,13 @@ class InternelCameraViewModel @Inject constructor(
     // TODO(MutableStateFlow 로 처리하기)
     val captureCount = MutableStateFlow(1)
     val progressState = MutableStateFlow(1f)
+    val flashAnimationState = MutableStateFlow(false)
+    val countdownSeconds = MutableStateFlow(0)
+    private val captureDuration = getCaptureDurationUseCase().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = AppPolicy.CAPTURE_INTERVAL.toDuration(DurationUnit.MILLISECONDS)
+    )
     private var captureTimer: CountDownTimer? = null
     private var mTimerState = false
     private val cameraSelector = getInternalCameraLensFacingUseCase().map { cameraSelectorIdx ->
@@ -53,19 +66,19 @@ class InternelCameraViewModel @Inject constructor(
             .build()
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
+        started = SharingStarted.Lazily,
         initialValue = CameraSelector.DEFAULT_FRONT_CAMERA
     )
 
     private val captureMode = getInternalCameraCaptureModeUseCase().stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(subscribeDuration),
+        started = SharingStarted.Lazily,
         initialValue = ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY
     )
 
     private val flashMode = getInternalCameraFlashModeUseCase().stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(subscribeDuration),
+        started = SharingStarted.Lazily,
         initialValue = ImageCapture.FLASH_MODE_OFF
     )
 
@@ -102,8 +115,15 @@ class InternelCameraViewModel @Inject constructor(
     fun capture(
         context: Context,
     ) = viewModelScope.launch {
-        val fileName = "${AppPolicy.CAPTURED_FOUR_CUT_IMAGE_NAME}_${System.currentTimeMillis()}_${captureCount}"
+        // 플래시 애니메이션 트리거
+        flashAnimationState.value = true
+        
+        val fileName = "${AppPolicy.CAPTURED_FOUR_CUT_IMAGE_NAME}_${System.currentTimeMillis()}_${captureCount.value}"
         internalCameraUseCase.capture(context, fileName)
+        
+        // 200ms 후 플래시 애니메이션 종료
+        delay(200)
+        flashAnimationState.value = false
     }
 
     fun setCaptureTimer(
@@ -119,24 +139,33 @@ class InternelCameraViewModel @Inject constructor(
             generatePhotoFrameUseCaseV1.clearCapturedImageList()
         }
 
-        captureTimer = object : CountDownTimer(CAPTURE_INTERVAL, COUNTDOWN_INTERVAL) {
+        captureTimer = object : CountDownTimer(captureDuration.value.toLong(DurationUnit.MILLISECONDS), COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 progressState.value = 1f - (millisUntilFinished.toFloat() / CAPTURE_INTERVAL)
+                countdownSeconds.value = ((millisUntilFinished / 1000) + 1).toInt()
             }
             override fun onFinish() {
+                countdownSeconds.value = 0
                 SoundUtil.getCameraSound(context = context )
                 // TODO: 현재 External 실패 시, 스크린 캡쳐 화면을 사용하도록 구성함
-                capture(context)
-                progressState.value = 1f
-                if (captureCount.value < AppPolicy.CAPTURE_COUNT) {
-                    AppLog.d(TAG, "captureCount", "$captureCount")
-                    captureCount.value += 1
-                    start()
-                } else {
-                    AppLog.d(TAG, "captureCount", "$captureCount")
-                    stopCaptureTimer()
-                    captureCount.value = 1
-                    nextNavigate()
+                
+                viewModelScope.launch {
+                    capture(context)
+                    progressState.value = 1f
+                    
+                    if (captureCount.value < AppPolicy.CAPTURE_COUNT) {
+                        AppLog.d(TAG, "captureCount", "${captureCount.value}")
+                        captureCount.value += 1
+                        // 촬영 후 2초 대기
+                        delay(2.seconds.toLong(DurationUnit.MILLISECONDS))
+                        start()
+                    } else {
+                        AppLog.d(TAG, "captureCount", "${captureCount.value}")
+                        stopCaptureTimer()
+                        delay(2.seconds.toLong(DurationUnit.MILLISECONDS))
+                        captureCount.value = 1
+                        nextNavigate()
+                    }
                 }
             }
         }
