@@ -11,4 +11,5 @@
     <string name="select_method_gesture_button_toast">준비중입니다.</string>
 
     <string name="camera_exclamation_text">촬영 시 움직이지 마세요</string>
+    <string name="copyright">https://4cut.us</string>
 </resources>
