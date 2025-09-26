@@ -7,7 +7,7 @@ object AppPolicy {
     const val isNoCameraDebugMode = false // TODO: change to false
 
     // network
-    const val WEB_SERVER_URL = "https://4cuts.store/"
+    const val WEB_SERVER_URL = "https://4cut.us/"
     const val WEB_CONNECT_TIMEOUT = 10L
     const val WEB_READ_TIMEOUT = 10L
     const val WEB_WRITE_TIMEOUT = 10L

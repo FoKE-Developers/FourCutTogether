@@ -3,9 +3,6 @@ package com.foke.together.presenter.viewmodel
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.lifecycle.ViewModel
@@ -71,7 +68,7 @@ class ShareViewModel @Inject constructor(
             val result = uploadFileUseCase(sessionKey, singleImageUri.toFile())
             AppLog.d(TAG, "generateQRcode" ,"result: $result")
 
-            val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { "https://foke.clon.dev" }
+            val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { AppPolicy.WEB_SERVER_URL }
             if (AppPolicy.isDebugMode) {
                 AppLog.e(TAG, "generateQRcode", "sessionKey: $sessionKey")
                 AppLog.e(TAG, "generateQRcode", "downloadUrl: $downloadUrl")
