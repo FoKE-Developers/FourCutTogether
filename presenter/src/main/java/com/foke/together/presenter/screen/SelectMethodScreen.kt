@@ -32,6 +32,7 @@ import com.foke.together.presenter.R
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.SelectMethodViewModel
 
+@Deprecated("Deprecated")
 @Composable
 fun SelectMethodScreen(
     navigateToCamera: () -> Unit,

@@ -23,6 +23,7 @@ import com.foke.together.util.AppPolicy
 import com.foke.together.util.ImageFileUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class ShareViewModel @Inject constructor(
     private val updateSessionStatusUseCase: UpdateSessionStatusUseCase,
     private val clearSessionUseCase: ClearSessionUseCase
 ): ViewModel() {
-    var qrCodeBitmap by mutableStateOf<Bitmap?>(null)
+    val qrCodeBitmap = MutableStateFlow<Bitmap?>(null)
     val singleImageUri: Uri = generatePhotoFrameUseCaseV1.getFinalSingleImageUri()
     val twoImageUri: Uri = generatePhotoFrameUseCaseV1.getFinalTwoImageUri()
 
@@ -75,7 +76,7 @@ class ShareViewModel @Inject constructor(
                 AppLog.e(TAG, "generateQRcode", "sessionKey: $sessionKey")
                 AppLog.e(TAG, "generateQRcode", "downloadUrl: $downloadUrl")
             }
-            qrCodeBitmap =  getQRCodeUseCase(sessionKey, downloadUrl).getOrNull()
+            qrCodeBitmap.value =  getQRCodeUseCase(sessionKey, downloadUrl).getOrNull()
         }
     }
 

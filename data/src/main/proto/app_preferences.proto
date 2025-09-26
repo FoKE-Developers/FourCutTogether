@@ -20,6 +20,8 @@ message AppPreferences {
     int32 internal_camera_capture_mode = 22;
     int32 internal_camera_aspect_ratio = 23;
 
+    int64 camera_duration = 24;
+
     // TODO: sample code. remove later.
     string sample_id = 999997;
     string sample_title = 999998;

@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,6 +34,8 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.foke.together.presenter.R
+import com.foke.together.presenter.component.AppTopBar
+import com.foke.together.presenter.component.BasicScaffold
 import com.foke.together.presenter.screen.state.InternalCameraState
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.InternelCameraViewModel
@@ -89,18 +89,12 @@ fun InternalCameraScreen(
     initialPreview : (Context, PreviewView) -> Unit,
     releasePreview : (Context) -> Unit,
 ){
-    Scaffold(
+    BasicScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "${captureCount}번째 촬영",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
+            AppTopBar(
+                title = "${captureCount}번째 촬영",
+                alignment = Alignment.CenterHorizontally
             )
         },
         bottomBar = {
