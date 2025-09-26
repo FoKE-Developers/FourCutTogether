@@ -1,9 +1,11 @@
 package com.foke.together.presenter.screen
 
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,9 +39,13 @@ import com.foke.together.domain.interactor.entity.DefaultCutFrameSet
 import com.foke.together.presenter.component.AppBottomBar
 import com.foke.together.presenter.component.AppTopBar
 import com.foke.together.presenter.component.BasicScaffold
+import com.foke.together.presenter.frame.DefaultCutFrame
 import com.foke.together.presenter.theme.AppTheme
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.SelectFrameViewModel
+import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.foke.together.presenter.component.AppCheckBox
 
 @Composable
 fun SelectFrameScreen(
@@ -45,13 +53,12 @@ fun SelectFrameScreen(
     popBackStack: () -> Unit,
     viewModel: SelectFrameViewModel = hiltViewModel()
 ) {
-    val cutFrames by viewModel.cutFrames.collectAsState()
-    val isDateDisplay by viewModel.isDateDisplay.collectAsState()
-    val isQRDisplay by viewModel.isQRDisplay.collectAsState()
+    val cutFrames by viewModel.cutFrames.collectAsStateWithLifecycle()
+    val isDateDisplay by viewModel.isDateDisplay.collectAsStateWithLifecycle()
+    val isQRDisplay by viewModel.isQRDisplay.collectAsStateWithLifecycle()
 
     DisposableEffect(Unit) {
         viewModel.updateSessionStatus()
-
         onDispose { }
     }
     SelectFrameContent(
@@ -77,9 +84,9 @@ fun SelectFrameContent(
     cutFrames: List<DefaultCutFrameSet>,
     isDateDisplay: Boolean,
     isQRDisplay : Boolean,
-    selectFrame: (cutFrame: CutFrame) -> Unit,
-    onDisplayDate : (Boolean ) -> Unit,
-    onDisplayQR : (Boolean) -> Unit,
+    selectFrame: ( cutFrame: CutFrame ) -> Unit,
+    onDisplayDate : ( Boolean ) -> Unit,
+    onDisplayQR : ( Boolean ) -> Unit,
 ){
     BasicScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -95,11 +102,11 @@ fun SelectFrameContent(
                     modifier = Modifier.wrapContentSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    Checkbox(
+                    AppCheckBox(
                         checked = isDateDisplay,
                         onCheckedChange = { isChecked ->
                             onDisplayDate(isChecked)
-                        }
+                        },
                     )
                     Text(
                         text = "날짜 표시하기",
@@ -111,7 +118,7 @@ fun SelectFrameContent(
                     modifier = Modifier.wrapContentSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    Checkbox(
+                    AppCheckBox(
                         checked = isQRDisplay,
                         onCheckedChange = { isChecked ->
                             onDisplayQR(isChecked)
@@ -140,17 +147,29 @@ fun SelectFrameContent(
             columns = GridCells.Fixed(6)
         ){
             items(cutFrames.size){ index ->
-                Image(
-                    modifier = Modifier.aspectRatio(0.3333f)
-                        .clickable(
-                            true,
-                            onClick = {
-                                selectFrame(cutFrames[index])
-                            }
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                        .clickable{
+                            selectFrame(cutFrames[index])
+                        },
+                    contentAlignment = Alignment.Center,
+                ){
+                    DefaultCutFrame(
+                        cutFrame = cutFrames[index],
+                        imageUrlList = listOf(
+                            "file:///android_asset/sample_cut.png".toUri(),
+                            "file:///android_asset/sample_cut.png".toUri(),
+                            "file:///android_asset/sample_cut.png".toUri(),
+                            "file:///android_asset/sample_cut.png".toUri(),
                         ),
-                    painter = painterResource(id = cutFrames[index].frameImageSrc),
-                    contentDescription = cutFrames[index].frameTitle
-                )
+                    )
+                    Text(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        text = cutFrames[index].frameTitle,
+                        style = AppTheme.typography.body.copy(fontWeight = FontWeight.Bold),
+                        color = AppTheme.colorScheme.top
+                    )
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.foke.together.domain
+package com.foke.together.domain.interactor
 
 import com.foke.together.domain.output.AppPreferenceInterface
 import javax.inject.Inject

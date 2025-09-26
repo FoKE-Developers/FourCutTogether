@@ -47,7 +47,7 @@ class ImageRepository @Inject constructor(
                     MediaStore.Images.Media.DATE_ADDED
                 )
                 val selection = "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ?"
-                val selectionArgs = arrayOf("%Pictures/4cuts/backup%")
+                val selectionArgs = arrayOf("%${AppPolicy.MEDIA_STORE_RELATIVE_PATH}%")
                 val sortOrder = "${MediaStore.Images.Media.DATE_ADDED} DESC"
 
                 val cursor = context.contentResolver.query(

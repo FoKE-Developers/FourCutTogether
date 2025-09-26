@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CameraFront
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.material3.MaterialTheme
@@ -143,6 +144,7 @@ fun SettingContent(
             SliderPreference(
                 modifier = Modifier.fillMaxWidth().wrapContentHeight(),
                 title = "Capture Duration",
+                iconVector = Icons.Filled.CameraFront,
                 sliderText = "${captureDuration / 1000}s",
                 sliderValue = captureDuration.toFloat(),
                 sliderRange = 1f..10f,

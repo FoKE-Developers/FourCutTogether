@@ -1,6 +1,7 @@
 package com.foke.together.presenter.viewmodel
 
 import android.content.Context
+import android.net.Uri
 import android.os.CountDownTimer
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -12,8 +13,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.foke.together.domain.GetCaptureDurationUseCase
+import com.foke.together.domain.interactor.GetCaptureDurationUseCase
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCaseV1
+import com.foke.together.domain.interactor.GetCapturedImageUriUseCase
 import com.foke.together.domain.interactor.GetInternalCameraCaptureModeUseCase
 import com.foke.together.domain.interactor.GetInternalCameraFlashModeUseCase
 import com.foke.together.domain.interactor.GetInternalCameraLensFacingUseCase
@@ -44,6 +46,7 @@ class InternelCameraViewModel @Inject constructor(
     private val getInternalCameraLensFacingUseCase: GetInternalCameraLensFacingUseCase,
     private val getInternalCameraFlashModeUseCase: GetInternalCameraFlashModeUseCase,
     private val getInternalCameraCaptureModeUseCase: GetInternalCameraCaptureModeUseCase,
+    private val getCapturedImageUriUseCase: GetCapturedImageUriUseCase,
     private val getSessionUseCase : GetCurrentSessionUseCase,
     private val generatePhotoFrameUseCaseV1: GeneratePhotoFrameUseCaseV1,
 ): ViewModel() {
@@ -53,10 +56,15 @@ class InternelCameraViewModel @Inject constructor(
     val progressState = MutableStateFlow(1f)
     val flashAnimationState = MutableStateFlow(false)
     val countdownSeconds = MutableStateFlow(0)
+    val capturedImageUri = getCapturedImageUriUseCase().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = null
+    )
     private val captureDuration = getCaptureDurationUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = AppPolicy.CAPTURE_INTERVAL.toDuration(DurationUnit.MILLISECONDS)
+        initialValue = AppPolicy.CAPTURE_INTERVAL
     )
     private var captureTimer: CountDownTimer? = null
     private var mTimerState = false
@@ -141,7 +149,6 @@ class InternelCameraViewModel @Inject constructor(
 
         captureTimer = object : CountDownTimer(captureDuration.value.toLong(DurationUnit.MILLISECONDS), COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
-                progressState.value = 1f - (millisUntilFinished.toFloat() / CAPTURE_INTERVAL)
                 countdownSeconds.value = ((millisUntilFinished / 1000) + 1).toInt()
             }
             override fun onFinish() {
@@ -151,18 +158,17 @@ class InternelCameraViewModel @Inject constructor(
                 
                 viewModelScope.launch {
                     capture(context)
-                    progressState.value = 1f
                     
                     if (captureCount.value < AppPolicy.CAPTURE_COUNT) {
                         AppLog.d(TAG, "captureCount", "${captureCount.value}")
-                        captureCount.value += 1
                         // 촬영 후 2초 대기
-                        delay(2.seconds.toLong(DurationUnit.MILLISECONDS))
+                        delay(5.seconds.toLong(DurationUnit.MILLISECONDS))
+                        captureCount.value += 1
                         start()
                     } else {
                         AppLog.d(TAG, "captureCount", "${captureCount.value}")
                         stopCaptureTimer()
-                        delay(2.seconds.toLong(DurationUnit.MILLISECONDS))
+                        delay(5.seconds.toLong(DurationUnit.MILLISECONDS))
                         captureCount.value = 1
                         nextNavigate()
                     }

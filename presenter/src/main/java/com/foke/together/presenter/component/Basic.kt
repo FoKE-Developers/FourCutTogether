@@ -21,6 +21,8 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -462,4 +464,31 @@ fun AppBottomBar(
             content = content
         )
     }
+}
+
+@Composable
+fun AppCheckBox(
+    modifier: Modifier = Modifier,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+){
+    Checkbox(
+        modifier = modifier,
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        colors = CheckboxColors(
+            checkedCheckmarkColor = AppTheme.colorScheme.tint,
+            uncheckedCheckmarkColor = AppTheme.colorScheme.bottom,
+            checkedBoxColor = AppTheme.colorScheme.top,
+            uncheckedBoxColor = AppTheme.colorScheme.bottom,
+            disabledCheckedBoxColor = AppTheme.colorScheme.bottom,
+            disabledUncheckedBoxColor = AppTheme.colorScheme.bottom,
+            disabledIndeterminateBoxColor= AppTheme.colorScheme.bottom,
+            checkedBorderColor = AppTheme.colorScheme.border,
+            uncheckedBorderColor = AppTheme.colorScheme.top,
+            disabledBorderColor = AppTheme.colorScheme.border,
+            disabledUncheckedBorderColor = AppTheme.colorScheme.border,
+            disabledIndeterminateBorderColor= AppTheme.colorScheme.border,
+        )
+    )
 }

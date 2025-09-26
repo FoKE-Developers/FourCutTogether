@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.foke.together.domain.GetCaptureDurationUseCase
-import com.foke.together.domain.SetCaptureDurationUseCase
+import com.foke.together.domain.interactor.GetCaptureDurationUseCase
+import com.foke.together.domain.interactor.SetCaptureDurationUseCase
 import com.foke.together.domain.interactor.GetCameraSourceTypeUseCase
 import com.foke.together.domain.interactor.GetExternalCameraIPUseCase
 import com.foke.together.domain.interactor.GetInternalCameraLensFacingUseCase
@@ -17,6 +17,7 @@ import com.foke.together.domain.interactor.SetInternalCameraLensFacingUseCase
 import com.foke.together.domain.interactor.entity.CameraSourceType
 import com.foke.together.domain.interactor.entity.ExternalCameraIP
 import com.foke.together.util.AppLog
+import com.foke.together.util.AppPolicy
 import com.foke.together.util.di.IODispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,7 +36,6 @@ import kotlin.time.toDuration
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val getCameraSourceTypeUseCase: GetCameraSourceTypeUseCase,
     private val setCameraSourceTypeUseCase: SetCameraSourceTypeUseCase,
     private val getExternalCameraIPUseCase: GetExternalCameraIPUseCase,
@@ -80,7 +80,7 @@ class SettingViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = 5.seconds.toLong(DurationUnit.MILLISECONDS)
+        initialValue = AppPolicy.CAPTURE_INTERVAL.toLong(DurationUnit.MILLISECONDS)
     )
 
     fun setCameraSourceType(index: Int) = viewModelScope.launch {

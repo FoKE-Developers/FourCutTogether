@@ -1,5 +1,7 @@
 package com.foke.together.util
 
+import kotlin.time.Duration.Companion.seconds
+
 object AppPolicy {
     const val isDebugMode = true // TODO: change to false
     const val isNoCameraDebugMode = false // TODO: change to false
@@ -17,7 +19,7 @@ object AppPolicy {
     const val EXTERNAL_CAMERA_WRITE_TIMEOUT = 10L
 
     // capture settings
-    const val CAPTURE_INTERVAL = 3000L
+    val CAPTURE_INTERVAL = 10.seconds
     const val CAPTURE_COUNT = 4
     const val COUNTDOWN_INTERVAL = 10L
 
@@ -26,4 +28,6 @@ object AppPolicy {
     const val SINGLE_ROW_FINAL_IMAGE_NAME = "final_single_row"
     const val TWO_ROW_FINAL_IMAGE_NAME = "final_two_row"
     const val DEFAULT_QR_CODE_IMAGE_NAME = "qrcode"
+
+    const val MEDIA_STORE_RELATIVE_PATH = "Pictures/4cuts"
 }
