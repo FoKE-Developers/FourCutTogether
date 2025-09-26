@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Start
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
@@ -288,12 +289,16 @@ fun AppTopBar(
     when(alignment){
         Alignment.CenterHorizontally -> {
             CenterAlignedTopAppBar(
+                modifier = Modifier.fillMaxWidth().wrapContentSize().padding(
+                    start = AppTheme.size.layoutPadding,
+                    end = AppTheme.size.layoutPadding
+                ),
                 title = {
                     Text(
                         text = title,
                         style = titleStyle,
                         textAlign = TextAlign.Center,
-                        color = AppTheme.colorScheme.border
+                        color = AppTheme.colorScheme.top
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -309,6 +314,10 @@ fun AppTopBar(
         }
         Alignment.Start -> {
             TopAppBar(
+                modifier = Modifier.fillMaxWidth().wrapContentSize().padding(
+                    start = AppTheme.size.layoutPadding,
+                    end = AppTheme.size.layoutPadding
+                ),
                 title = {
                     Text(
                         text = title,
@@ -431,4 +440,26 @@ fun AppTextField(
         ),
         enabled = enabled
     )
+}
+
+@Composable
+fun AppBottomBar(
+    content: @Composable (RowScope.() -> Unit)
+){
+    BottomAppBar(
+        modifier = Modifier.fillMaxWidth().padding(
+            start = AppTheme.size.layoutPadding,
+            end = AppTheme.size.layoutPadding,
+            bottom = AppTheme.size.layoutPadding
+        ),
+        containerColor = AppTheme.colorScheme.bottom,
+        contentColor = AppTheme.colorScheme.top,
+    ){
+        Row(
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+            content = content
+        )
+    }
 }
