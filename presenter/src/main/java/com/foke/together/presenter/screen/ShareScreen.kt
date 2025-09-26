@@ -74,6 +74,21 @@ fun ShareScreen(
         captureImageUri = captureImageUri,
         qrImageBitmap = qrImageBitmap,
         popBackStack = popBackStack,
+        printImage = {
+            viewModel.printImage(context)
+        },
+        downloadImage = {
+            viewModel.downloadImage()
+                .onSuccess {
+                    Toast.makeText(context, "사진이 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                }
+                .onFailure {
+                    Toast.makeText(context, "사진 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+        },
+        shareImage = {
+            viewModel.shareImage()
+        }
     )
 }
 
@@ -83,6 +98,9 @@ fun ShareContent(
     captureImageUri : Uri,
     qrImageBitmap : Bitmap?,
     popBackStack: () -> Unit,
+    downloadImage: () -> Unit,
+    printImage: () -> Unit,
+    shareImage: () -> Unit
 ){
     BasicScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -104,7 +122,10 @@ fun ShareContent(
         bottomBar = {
             AppBottomBar{
                 Column(
-                    modifier = Modifier.wrapContentSize(),
+                    modifier = Modifier.wrapContentSize()
+                        .clickable{
+                            printImage()
+                        },
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
@@ -121,7 +142,10 @@ fun ShareContent(
                 }
 
                 Column(
-                    modifier = Modifier.wrapContentSize(),
+                    modifier = Modifier.wrapContentSize()
+                        .clickable{
+                            downloadImage()
+                        },
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
@@ -138,7 +162,10 @@ fun ShareContent(
                 }
 
                 Column(
-                    modifier = Modifier.wrapContentSize(),
+                    modifier = Modifier.wrapContentSize()
+                        .clickable{
+                            shareImage()
+                        },
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
@@ -190,16 +217,6 @@ fun ShareContent(
     }
 }
 
-private fun saveToLocal(context: Context, viewModel: ShareViewModel) {
-    viewModel.downloadImage()
-        .onSuccess {
-            Toast.makeText(context, "사진이 저장되었습니다.", Toast.LENGTH_SHORT).show()
-        }
-        .onFailure {
-            Toast.makeText(context, "사진 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
-        }
-}
-
 @Preview(
     showBackground = true,
     device = Devices.TABLET
@@ -212,7 +229,10 @@ private fun ShareScreenPreview() {
             context = LocalContext.current,
             captureImageUri = Uri.EMPTY,
             qrImageBitmap = qrBitmap,
-            popBackStack = {}
+            popBackStack = {},
+            downloadImage = {},
+            printImage = {},
+            shareImage = {}
         )
     }
 }

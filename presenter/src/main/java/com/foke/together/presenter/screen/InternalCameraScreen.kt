@@ -1,6 +1,7 @@
 package com.foke.together.presenter.screen
 
 import android.content.Context
+import android.net.Uri
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -22,6 +23,7 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +46,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.foke.together.presenter.R
 import com.foke.together.presenter.component.AppBottomBar
 import com.foke.together.presenter.component.AppTopBar
@@ -63,13 +67,14 @@ fun InternalCameraScreenRoot(
     popBackStack: () -> Unit,
     viewModel: InternelCameraViewModel = hiltViewModel()
 ){
-    val state = viewModel.state
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val captureCount by viewModel.captureCount.collectAsStateWithLifecycle()
     val progress by viewModel.progressState.collectAsStateWithLifecycle()
+
     val isFlashAnimationVisible by viewModel.flashAnimationState.collectAsStateWithLifecycle()
     val countdownSeconds by viewModel.countdownSeconds.collectAsStateWithLifecycle()
+    val capturedImageUri by viewModel.capturedImageUri.collectAsState()
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         viewModel.setCaptureTimer(context) { navigateToGenerateImage() }
         AppLog.d(TAG, "LifecycleEventEffect. ON_START", "")
@@ -83,11 +88,10 @@ fun InternalCameraScreenRoot(
         AppLog.d(TAG, "LifecycleEventEffect. ON_STOP", "")
     }
     InternalCameraScreen(
-        state = state,
         captureCount = captureCount,
-        progress = progress,
-        isFlashAnimationVisible = isFlashAnimationVisible,
         countdownSeconds = countdownSeconds,
+        isFlashAnimationVisible = isFlashAnimationVisible,
+        capturedImageUri = capturedImageUri,
         initialPreview = { context, previewView ->
             viewModel.initial(context, lifecycleOwner, previewView)
         },
@@ -100,11 +104,10 @@ fun InternalCameraScreenRoot(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InternalCameraScreen(
-    state : InternalCameraState,
     captureCount : Int,
-    progress: Float,
     isFlashAnimationVisible: Boolean,
     countdownSeconds: Int,
+    capturedImageUri : Uri?,
     initialPreview : (Context, PreviewView) -> Unit,
     releasePreview : (Context) -> Unit,
 ){
@@ -185,7 +188,15 @@ fun InternalCameraScreen(
                             .padding(24.dp)
                     )
                 }
-                
+                this@Column.AnimatedVisibility(
+                    visible = capturedImageUri != null && countdownSeconds == 0,
+                ) {
+                    AsyncImage(
+                        model = capturedImageUri,
+                        contentDescription = "Captured Image",
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
         }
     }
@@ -197,18 +208,16 @@ fun InternalCameraScreen(
 )
 @Composable
 fun InternalScreenPreview(){
-    val state by remember { mutableStateOf(InternalCameraState()) }
     val captureCount by remember{ mutableStateOf(1) }
-    val progress by remember{ mutableStateOf(1f)}
     val isFlashAnimationVisible by remember{ mutableStateOf(false)}
     val countdownSeconds by remember{ mutableStateOf(3)}
+    val capturedImageUri by remember { mutableStateOf(Uri.EMPTY) }
     FourCutTogetherTheme() {
         InternalCameraScreen(
-            state = state,
             captureCount = captureCount,
-            progress = progress,
             isFlashAnimationVisible = isFlashAnimationVisible,
             countdownSeconds = countdownSeconds,
+            capturedImageUri = capturedImageUri,
             initialPreview = { context, previewView ->
 
             },

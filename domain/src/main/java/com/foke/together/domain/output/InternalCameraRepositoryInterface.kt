@@ -2,13 +2,17 @@ package com.foke.together.domain.output
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.annotation.IntRange
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
+import kotlinx.coroutines.flow.Flow
 
 interface InternalCameraRepositoryInterface {
+
+    fun getCapturedImageUri() : Flow<Uri?>
     suspend fun capture(
         context: Context,
         fileName : String,
