@@ -15,6 +15,9 @@ class UploadFileUseCase @Inject constructor(
             .onSuccess { preSignedUrl ->
                 AppLog.e(TAG, "invoke", "preSignedUrl: $preSignedUrl")
                 remoteRepository.uploadFile(preSignedUrl, file)
+                    .onSuccess {
+                        return Result.success(Unit)
+                    }
                     .onFailure {
                         AppLog.e(TAG, "invoke", "upload failed")
                         return Result.failure(Exception("cannot upload file: $it"))

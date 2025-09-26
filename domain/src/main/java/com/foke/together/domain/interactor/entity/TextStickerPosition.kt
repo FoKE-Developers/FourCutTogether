@@ -3,8 +3,11 @@ package com.foke.together.domain.interactor.entity
 import androidx.annotation.FontRes
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 data class TextStickerPosition (
+    val width: Int,
+    val height: Int,
     val x: Int,
     val y: Int,
     @FontRes val font: Int,
@@ -12,5 +15,6 @@ data class TextStickerPosition (
     val backgroundColor: Color = Color(0,0,0,0),
     val fontWeight: FontWeight,
     val fontSize: Int,
-    val rotation: Float = 0f
+    val rotation: Float = 0f,
+    val textAlign: TextAlign = TextAlign.Left,
 )

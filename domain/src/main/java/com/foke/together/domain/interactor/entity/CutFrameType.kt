@@ -3,6 +3,7 @@ package com.foke.together.domain.interactor.entity
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import com.foke.together.domain.R
 
 abstract class CutFrame(
@@ -47,9 +48,9 @@ sealed class DefaultCutFrameSet (
             PhotoPosition(159, 106, 16, 369),
         ),
         emptyList(),
-        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        qrCodePosition = QrStickerPosition(25,16,530)
+        datePosition = TextStickerPosition(80, 10, 91,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        copyrightPosition = TextStickerPosition(80, 10, 91,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        qrCodePosition = QrStickerPosition(30,16,530)
     )
 
 data object FourCurDark: DefaultCutFrameSet(
@@ -64,9 +65,9 @@ data object FourCurDark: DefaultCutFrameSet(
         PhotoPosition(159, 106, 16, 369),
     ),
     emptyList(),
-    datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(170, 170, 170), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-    copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(170, 170, 170), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-    qrCodePosition = QrStickerPosition(25,16,530)
+    datePosition = TextStickerPosition(80, 10, 91,541,R.font.cascadia_mono, color = Color(170, 170, 170), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+    copyrightPosition = TextStickerPosition(80, 10, 91,547,R.font.cascadia_mono, color = Color(170, 170, 170), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+    qrCodePosition = QrStickerPosition(30,16,530)
 )
 
     data object MakerFaire: DefaultCutFrameSet(
@@ -81,9 +82,9 @@ data object FourCurDark: DefaultCutFrameSet(
             PhotoPosition(159, 106, 16, 369),
         ),
         emptyList(),
-        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(238, 238, 238), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(238, 238, 238), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        qrCodePosition = QrStickerPosition(25,16,530)
+        datePosition = TextStickerPosition(80, 10, 91,541,R.font.cascadia_mono, color = Color(238, 238, 238), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        copyrightPosition = TextStickerPosition(80, 10, 91,547,R.font.cascadia_mono, color = Color(238, 238, 238), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        qrCodePosition = QrStickerPosition(30,16,530)
     )
 
     data object MakerFaire25_1: DefaultCutFrameSet(
@@ -100,9 +101,9 @@ data object FourCurDark: DefaultCutFrameSet(
         listOf(
             R.drawable.maker_faire_frame_25_1
         ),
-        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        qrCodePosition = QrStickerPosition(25,149,517)
+        datePosition = TextStickerPosition(80, 10, 92,546,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        copyrightPosition = TextStickerPosition(80, 10, 92,551,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        qrCodePosition = QrStickerPosition(30,145,515)
     )
 
     data object MakerFaire25_2: DefaultCutFrameSet(
@@ -119,9 +120,9 @@ data object FourCurDark: DefaultCutFrameSet(
         listOf(
             R.drawable.maker_faire_frame_25_2
         ),
-        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        qrCodePosition = QrStickerPosition(25,149,517)
+        datePosition = TextStickerPosition(80, 10, 92,546,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        copyrightPosition = TextStickerPosition(80, 10, 92,551,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        qrCodePosition = QrStickerPosition(30,145,515)
     )
 
     data object MakerFaire25_3: DefaultCutFrameSet(
@@ -138,9 +139,9 @@ data object FourCurDark: DefaultCutFrameSet(
         listOf(
             R.drawable.maker_faire_frame_25_3
         ),
-        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        qrCodePosition = QrStickerPosition(25,149,517)
+        datePosition = TextStickerPosition(80, 10, 92,546,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        copyrightPosition = TextStickerPosition(80, 10, 92,551,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        qrCodePosition = QrStickerPosition(30,145,515)
     )
 
     data object MakerFaire25_4: DefaultCutFrameSet(
@@ -157,9 +158,9 @@ data object FourCurDark: DefaultCutFrameSet(
         listOf(
             R.drawable.maker_faire_frame_25_4
         ),
-        datePosition = TextStickerPosition(139,541,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        copyrightPosition = TextStickerPosition(122,547,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6),
-        qrCodePosition = QrStickerPosition(25,149,517)
+        datePosition = TextStickerPosition(80, 10, 92,546,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        copyrightPosition = TextStickerPosition(80, 10, 92,551,R.font.cascadia_mono, color = Color(34, 34, 34), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        qrCodePosition = QrStickerPosition(30,145,515)
     )
 
     companion object {

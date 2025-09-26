@@ -20,10 +20,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -32,7 +32,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.foke.together.domain.interactor.entity.DefaultCutFrameSet
-import com.foke.together.presenter.R
 import com.foke.together.presenter.component.AppTopBar
 import com.foke.together.presenter.component.BasicScaffold
 import com.foke.together.presenter.frame.DefaultCutFrame
@@ -40,6 +39,7 @@ import com.foke.together.presenter.theme.AppTheme
 import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.GenerateImageViewModel
 import com.foke.together.util.AppLog
+import com.foke.together.util.AppPolicy
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -50,7 +50,7 @@ fun GenerateImageScreen(
     viewModel: GenerateImageViewModel = hiltViewModel()
 ) {
     val TAG = "GenerateImageScreen"
-    val curFrame = viewModel.cutFrame as DefaultCutFrameSet
+    val cutFrame = viewModel.cutFrame as DefaultCutFrameSet
     val graphicsLayer1 = rememberGraphicsLayer()
     val graphicsLayer2 = rememberGraphicsLayer()
     val coroutineScope = rememberCoroutineScope()
@@ -62,18 +62,21 @@ fun GenerateImageScreen(
         coroutineScope.launch {
             isFirstState.value = true
             delay(200) // !!!!! TODO. timing issue
-            viewModel.generateImage(graphicsLayer1)
+            viewModel.generateImageForUpload(graphicsLayer1)
+
+            viewModel.uploadImage()
+            viewModel.generateQrCode()
 
             isFirstState.value = false
             delay(200) // !!!!! TODO. timing issue
-            viewModel.generateImageForPrint(graphicsLayer2)
+            viewModel.generateImage(graphicsLayer2)
 
             delay(1000)
             navigateToShare()
         }
     }
     GenerateImageContent(
-        cutFrame = curFrame,
+        cutFrame = cutFrame,
         imageUri = imageUri,
         isFirstState = isFirstState.value,
         graphicsLayer1 = graphicsLayer1,
@@ -88,7 +91,8 @@ fun GetDefaultFrame(
     imageUri: List<Uri>,
     graphicsLayer: GraphicsLayer,
     isForPrint: Boolean = false,
-    isPaddingHorizontal: Dp = 0.dp
+    isPaddingHorizontal: Dp = 0.dp,
+    viewModel: GenerateImageViewModel = hiltViewModel()
 ) {
     Column (
         modifier = Modifier
@@ -99,16 +103,20 @@ fun GetDefaultFrame(
                 drawLayer(graphicsLayer)
             }
     ) {
-        if (isForPrint) { WhiteBox(isPaddingHorizontal) }
-        Row {
-            if (isForPrint) { WhiteBox(isPaddingHorizontal) }
-            DefaultCutFrame(cutFrame, imageUri)
-            if (isForPrint) {
-                DefaultCutFrame(cutFrame, imageUri)
+        if (isForPrint) {
+            WhiteBox(isPaddingHorizontal)
+            Row {
+                WhiteBox(isPaddingHorizontal)
+                DefaultCutFrame(cutFrame, imageUri, viewModel.qrImageBitmap)
+                DefaultCutFrame(cutFrame, imageUri, viewModel.qrImageBitmap)
                 WhiteBox(isPaddingHorizontal)
             }
+            WhiteBox(isPaddingHorizontal)
+        } else {
+            Row {
+                DefaultCutFrame(cutFrame, imageUri)
+            }
         }
-        if (isForPrint) { WhiteBox(isPaddingHorizontal) }
     }
 }
 
@@ -162,7 +170,7 @@ fun GenerateImageContent(
                     imageUri = imageUri,
                     graphicsLayer = graphicsLayer2,
                     isForPrint = isForPrint,
-                    isPaddingHorizontal = 16.dp
+                    isPaddingHorizontal = AppPolicy.PRINT_IMAGE_MARGIN
                 )
             }
         }
@@ -177,7 +185,7 @@ private fun WhiteBox(
         modifier = Modifier
             .width(size)
             .height(size)
-            .background(colorResource(R.color.md_theme_background))
+            .background(Color.Transparent)
     )
 }
 
