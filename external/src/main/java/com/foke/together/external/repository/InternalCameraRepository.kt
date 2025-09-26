@@ -3,6 +3,7 @@ package com.foke.together.external.repository
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.annotation.IntRange
@@ -20,6 +21,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.foke.together.domain.output.InternalCameraRepositoryInterface
 import com.foke.together.util.AppLog
+import com.foke.together.util.AppPolicy
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,7 +33,9 @@ class InternalCameraRepository @Inject constructor(
     private lateinit var cameraController: LifecycleCameraController
     private lateinit var imageCapture: ImageCapture
 
-    private var imageBitmap : Bitmap? = null
+    private val capturedImageUri = MutableStateFlow<Uri?>(null)
+    override fun getCapturedImageUri(): Flow<Uri?> = capturedImageUri
+
     override suspend fun capture(
         context: Context,
         fileName : String,
@@ -38,7 +44,7 @@ class InternalCameraRepository @Inject constructor(
             val contentValues = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, "${fileName}.jpg")
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/4cuts/backup")
+                put(MediaStore.Images.Media.RELATIVE_PATH, AppPolicy.MEDIA_STORE_RELATIVE_PATH)
             }
             val outputOptions = ImageCapture.OutputFileOptions.Builder(
                 context.contentResolver,
@@ -50,10 +56,8 @@ class InternalCameraRepository @Inject constructor(
                 object : ImageCapture.OnImageSavedCallback {
                     override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                         if (outputFileResults.savedUri != null) {
-                            imageBitmap = MediaStore.Images.Media.getBitmap(
-                                context.contentResolver,
-                                outputFileResults.savedUri
-                            )
+                            AppLog.d(TAG, "onImageSaved", "Photo capture succeeded: ${outputFileResults.savedUri}")
+                            capturedImageUri.value = outputFileResults.savedUri
                         }
                     }
                     override fun onError(exception: ImageCaptureException) {

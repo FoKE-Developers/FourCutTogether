@@ -22,6 +22,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.DurationUnit
 
 @HiltViewModel
 class CameraViewModel @Inject constructor(
@@ -54,9 +55,9 @@ class CameraViewModel @Inject constructor(
         viewModelScope.launch {
             generatePhotoFrameUseCaseV1.clearCapturedImageList()
         }
-        captureTimer = object : CountDownTimer(CAPTURE_INTERVAL, COUNTDOWN_INTERVAL) {
+        captureTimer = object : CountDownTimer(CAPTURE_INTERVAL.toLong(DurationUnit.MILLISECONDS), COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
-                _progressState.floatValue = 1f - (millisUntilFinished.toFloat() / CAPTURE_INTERVAL)
+                _progressState.floatValue = 1f - (millisUntilFinished.toFloat() / CAPTURE_INTERVAL.toLong(DurationUnit.MILLISECONDS))
             }
             override fun onFinish() {
                 viewModelScope.launch {
