@@ -8,9 +8,9 @@ object AppPolicy {
 
     // network
     const val WEB_SERVER_URL = "https://4cut.us/"
-    const val WEB_CONNECT_TIMEOUT = 10L
-    const val WEB_READ_TIMEOUT = 10L
-    const val WEB_WRITE_TIMEOUT = 10L
+    const val WEB_CONNECT_TIMEOUT = 20L
+    const val WEB_READ_TIMEOUT = 20L
+    const val WEB_WRITE_TIMEOUT = 20L
     const val WEB_FILE_MAX_CONTENT_LENGTH = 20971520
 
     const val EXTERNAL_CAMERA_DEFAULT_SERVER_URL = "http://0.0.0.0"
@@ -22,6 +22,7 @@ object AppPolicy {
     val CAPTURE_INTERVAL = 10.seconds
     const val CAPTURE_COUNT = 4
     const val COUNTDOWN_INTERVAL = 10L
+    const val PREVIEW_INTERVAL = 5L
 
     // file settings
     const val CAPTURED_FOUR_CUT_IMAGE_NAME = "capture"

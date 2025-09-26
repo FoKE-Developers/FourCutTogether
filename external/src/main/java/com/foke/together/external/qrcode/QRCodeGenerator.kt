@@ -6,6 +6,7 @@ import com.foke.together.util.AppPolicy
 import com.foke.together.util.FileUtil
 import com.foke.together.util.ImageFileUtil
 import qrcode.QRCode
+import qrcode.color.Colors
 import javax.inject.Inject
 
 class QRCodeGenerator @Inject constructor(
@@ -18,9 +19,12 @@ class QRCodeGenerator @Inject constructor(
 //        val roundedSquares = QRCode.ofRoundedSquares()
 
             val qrcode = squares
+                .withMargin(20)
                 .withInnerSpacing(0)
+                // TODO: 아래 속성이 없어서 QR코드가 안보였던건데 그 전에는 왜 제대로 동작했는지?
+                .withColor(Colors.BLACK)
+                .withBackgroundColor(Colors.WHITE)
                 // TODO: check customize qrcode
-//            .withColor(Colors.BLACK)
 //            .withRadius(20)
 //            .withSize(25)
 //            .withLogo(logo.readBytes(), 20, 20)
