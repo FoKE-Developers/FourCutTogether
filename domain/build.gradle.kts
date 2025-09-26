@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics.android)
     implementation(libs.camerax.view)
     implementation(libs.camerax.lifecycle)
+    implementation(libs.androidx.compose.ui.text)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
