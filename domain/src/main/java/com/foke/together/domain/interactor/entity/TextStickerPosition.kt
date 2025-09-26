@@ -12,5 +12,5 @@ data class TextStickerPosition (
     val backgroundColor: Color = Color(0,0,0,0),
     val fontWeight: FontWeight,
     val fontSize: Int,
-    val rotation: Int = 0
+    val rotation: Float = 0f
 )
