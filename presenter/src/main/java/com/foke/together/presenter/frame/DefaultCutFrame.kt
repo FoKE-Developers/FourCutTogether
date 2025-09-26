@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -57,6 +58,7 @@ fun DefaultCutFrame(
                 modifier = Modifier
                     .width(position.width.dp)
                     .height(position.height.dp)
+                    .rotate(position.rotation)
                     .offset(x = position.x.dp, y = position.y.dp)
             ) {
                 AsyncImage(
@@ -70,7 +72,7 @@ fun DefaultCutFrame(
             }
         }
 
-        // Additional Images
+        // Additional Overlay Images
         cutFrame.additionalFrameImageSrc.forEach { layers ->
             Image(
                 painter = painterResource(id = layers),
@@ -86,6 +88,7 @@ fun DefaultCutFrame(
             modifier = Modifier
                 .fillMaxSize()
                 .background(cutFrame.copyrightPosition.backgroundColor)
+                .rotate(cutFrame.copyrightPosition.rotation)
                 .offset(x = cutFrame.copyrightPosition.x.dp, y = cutFrame.copyrightPosition.y.dp),
             text = stringResource(com.foke.together.presenter.R.string.copyright),
             color = cutFrame.copyrightPosition.color,
@@ -98,6 +101,7 @@ fun DefaultCutFrame(
             Text(
                 modifier = Modifier
                     .fillMaxSize()
+                    .rotate(cutFrame.datePosition.rotation)
                     .offset(x = cutFrame.datePosition.x.dp, y = cutFrame.datePosition.y.dp),
                 text = TimeUtil.getCurrentDisplayTime(),
                 color = Color.White,
