@@ -1,52 +1,33 @@
 package com.foke.together.presenter.viewmodel
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCaseV1
-import com.foke.together.domain.interactor.GetQRCodeUseCase
 import com.foke.together.domain.interactor.entity.Status
 import com.foke.together.domain.interactor.session.ClearSessionUseCase
 import com.foke.together.domain.interactor.session.GetCurrentSessionUseCase
 import com.foke.together.domain.interactor.session.UpdateSessionStatusUseCase
-import com.foke.together.domain.interactor.web.GetDownloadUrlUseCase
-import com.foke.together.domain.interactor.web.UploadFileUseCase
-import com.foke.together.util.AppLog
-import com.foke.together.util.AppPolicy
 import com.foke.together.util.ImageFileUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ShareViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val getQRCodeUseCase: GetQRCodeUseCase,
-    private val getDownloadUrlUseCase: GetDownloadUrlUseCase,
-    private val uploadFileUseCase: UploadFileUseCase,
-    private val generatePhotoFrameUseCaseV1: GeneratePhotoFrameUseCaseV1,
     private val getCurrentSessionUseCase: GetCurrentSessionUseCase,
     private val updateSessionStatusUseCase: UpdateSessionStatusUseCase,
-    private val clearSessionUseCase: ClearSessionUseCase
+    private val clearSessionUseCase: ClearSessionUseCase,
+    generatePhotoFrameUseCaseV1: GeneratePhotoFrameUseCaseV1
 ): ViewModel() {
-    val qrCodeBitmap = MutableStateFlow<Bitmap?>(null)
+    val qrCodeBitmap = getCurrentSessionUseCase()?.qrCodeBitmap
     val singleImageUri: Uri = generatePhotoFrameUseCaseV1.getFinalSingleImageUri()
     val twoImageUri: Uri = generatePhotoFrameUseCaseV1.getFinalTwoImageUri()
-
-    init {
-        viewModelScope.launch {
-            generateQRcode()
-        }
-    }
 
     fun downloadImage(): Result<Unit> {
         return getCurrentSessionUseCase()?.let { session ->
@@ -64,23 +45,7 @@ class ShareViewModel @Inject constructor(
         }
     }
 
-    private suspend fun generateQRcode() {
-        getCurrentSessionUseCase()?.let { session ->
-            val sessionKey = session.sessionId.toString()
-
-            val result = uploadFileUseCase(sessionKey, singleImageUri.toFile())
-            AppLog.d(TAG, "generateQRcode" ,"result: $result")
-
-            val downloadUrl: String = getDownloadUrlUseCase(sessionKey).getOrElse { "https://foke.clon.dev" }
-            if (AppPolicy.isDebugMode) {
-                AppLog.e(TAG, "generateQRcode", "sessionKey: $sessionKey")
-                AppLog.e(TAG, "generateQRcode", "downloadUrl: $downloadUrl")
-            }
-            qrCodeBitmap.value =  getQRCodeUseCase(sessionKey, downloadUrl).getOrNull()
-        }
-    }
-
-    fun shareImage() {
+    fun shareImage(context: Context) {
         val contentUri = FileProvider.getUriForFile(
             context,
             "com.foke.together.fileprovider",
