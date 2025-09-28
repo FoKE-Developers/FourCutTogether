@@ -6,55 +6,38 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Print
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
-import androidx.core.content.FileProvider
-import androidx.core.net.toFile
-import com.foke.together.presenter.theme.FourCutTogetherTheme
+import androidx.core.graphics.createBitmap
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.foke.together.presenter.component.AppBottomBar
 import com.foke.together.presenter.component.AppTopBar
 import com.foke.together.presenter.component.BasicScaffold
 import com.foke.together.presenter.theme.AppTheme
+import com.foke.together.presenter.theme.FourCutTogetherTheme
 import com.foke.together.presenter.viewmodel.ShareViewModel
-import com.foke.together.util.AppLog
-import com.foke.together.util.ImageFileUtil
-import androidx.core.graphics.createBitmap
-import com.foke.together.presenter.component.AppBottomBar
 
 @Composable
 fun ShareScreen(
@@ -63,7 +46,7 @@ fun ShareScreen(
 ) {
     val context = LocalContext.current
     val captureImageUri = viewModel.singleImageUri
-    val qrImageBitmap by viewModel.qrCodeBitmap.collectAsState()
+    val qrImageBitmap = viewModel.qrCodeBitmap
     DisposableEffect(Unit) {
         viewModel.updateSessionStatus()
         onDispose { }
@@ -87,7 +70,7 @@ fun ShareScreen(
                 }
         },
         shareImage = {
-            viewModel.shareImage()
+            viewModel.shareImage(context)
         }
     )
 }
@@ -100,7 +83,7 @@ fun ShareContent(
     popBackStack: () -> Unit,
     downloadImage: () -> Unit,
     printImage: () -> Unit,
-    shareImage: () -> Unit
+    shareImage: (context: Context) -> Unit
 ){
     BasicScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -164,7 +147,7 @@ fun ShareContent(
                 Column(
                     modifier = Modifier.wrapContentSize()
                         .clickable{
-                            shareImage()
+                            shareImage(context)
                         },
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -193,15 +176,15 @@ fun ShareContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
-            // TODO: need check to change single ImageView
+            // TODO: need to check to change single ImageView
             AsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(captureImageUri)
                     .build(),
                 contentDescription = "",
                 modifier = Modifier
-                    .aspectRatio(0.4f)
-                    .fillMaxHeight(0.6f)
+                    .aspectRatio(0.7f)
+                    .fillMaxHeight(1.0f)
             )
 
             AsyncImage(

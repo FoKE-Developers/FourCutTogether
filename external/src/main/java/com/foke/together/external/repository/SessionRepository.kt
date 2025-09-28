@@ -1,5 +1,6 @@
 package com.foke.together.external.repository
 
+import android.graphics.Bitmap
 import com.foke.together.domain.interactor.entity.CutFrame
 import com.foke.together.domain.interactor.entity.SessionData
 import com.foke.together.domain.interactor.entity.SessionId
@@ -33,7 +34,7 @@ class SessionRepository @Inject constructor(): SessionRepositoryInterface {
 
     override fun updateSession(cutFrame: CutFrame) {
         sessionData = sessionData?.let {
-            SessionData(it.sessionId, cutFrame, it.status)
+            SessionData(it.sessionId, cutFrame, it.qrCodeBitmap, it.status)
         }
         AppLog.i(TAG, "updateSession", "sessionData: $sessionData")
 
@@ -42,7 +43,7 @@ class SessionRepository @Inject constructor(): SessionRepositoryInterface {
 
     override fun updateSession(status: Status) {
         sessionData = sessionData?.let {
-            SessionData(it.sessionId, it.cutFrame, status)
+            SessionData(it.sessionId, it.cutFrame, it.qrCodeBitmap, status)
         }
         AppLog.i(TAG, "updateSession", "sessionData: $sessionData")
 
@@ -51,7 +52,16 @@ class SessionRepository @Inject constructor(): SessionRepositoryInterface {
 
     override fun updateSession(cutFrame: CutFrame, status: Status) {
         sessionData = sessionData?.let {
-            SessionData(it.sessionId, cutFrame, status)
+            SessionData(it.sessionId, cutFrame, it.qrCodeBitmap, status)
+        }
+        AppLog.i(TAG, "updateSession", "sessionData: $sessionData")
+
+        // TODO: save session data to Pref.
+    }
+
+    override fun updateSession(qrCodeBitmap: Bitmap) {
+        sessionData = sessionData?.let {
+            SessionData(it.sessionId, it.cutFrame, qrCodeBitmap, it.status)
         }
         AppLog.i(TAG, "updateSession", "sessionData: $sessionData")
 
