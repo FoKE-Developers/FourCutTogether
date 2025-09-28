@@ -70,6 +70,10 @@ class InternalCameraRepository @Inject constructor(
         }
     }
 
+    override fun clearCapturedImageUri() {
+        capturedImageUri.value = null
+    }
+
     override suspend fun initial(
         context: Context,
         lifecycleOwner: LifecycleOwner,

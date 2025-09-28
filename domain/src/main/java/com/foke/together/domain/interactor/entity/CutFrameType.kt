@@ -163,6 +163,44 @@ data object FourCurDark: DefaultCutFrameSet(
         qrCodePosition = QrStickerPosition(30,145,515)
     )
 
+        data object FourCutFrame25: DefaultCutFrameSet(
+        9,
+        "FourCutFrame Dark 2025",
+        4, 190, 570,
+        R.drawable.fourcut_frame_dark_25,
+        listOf(
+            PhotoPosition(163, 110, 13, 29),
+            PhotoPosition(163, 110, 13, 144),
+            PhotoPosition(163, 110, 13, 259),
+            PhotoPosition(163, 110, 13, 373),
+        ),
+        listOf(
+            R.drawable.fourcut_frame_dark_25
+        ),
+        datePosition = TextStickerPosition(80, 10, 92,546,R.font.cascadia_mono, color = Color(187, 187, 187), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        copyrightPosition = TextStickerPosition(80, 10, 92,551,R.font.cascadia_mono, color = Color(187, 187, 187), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        qrCodePosition = QrStickerPosition(30,145,515)
+    )
+
+    data object Halloween25: DefaultCutFrameSet(
+        10,
+        "Halloween 2025",
+        4, 190, 570,
+        R.drawable.holloween,
+        listOf(
+            PhotoPosition(163, 110, 13, 29),
+            PhotoPosition(163, 110, 13, 144),
+            PhotoPosition(163, 110, 13, 259),
+            PhotoPosition(163, 110, 13, 373),
+        ),
+        listOf(
+            R.drawable.holloween
+        ),
+        datePosition = TextStickerPosition(80, 10, 92,546,R.font.cascadia_mono, color = Color(187, 187, 187), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        copyrightPosition = TextStickerPosition(80, 10, 92,551,R.font.cascadia_mono, color = Color(187, 187, 187), fontWeight = FontWeight.ExtraBold, fontSize = 6, textAlign = TextAlign.End),
+        qrCodePosition = QrStickerPosition(30,145,515)
+    )
+
     companion object {
         val entries = listOf(
             FourCutLight,
@@ -172,6 +210,8 @@ data object FourCurDark: DefaultCutFrameSet(
             MakerFaire25_2,
             MakerFaire25_3,
             MakerFaire25_4,
+            FourCutFrame25,
+            Halloween25,
         ).sortedBy { it.index }
     }
 }

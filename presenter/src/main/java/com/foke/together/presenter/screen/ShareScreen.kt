@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Print
@@ -49,7 +50,13 @@ fun ShareScreen(
     val qrImageBitmap = viewModel.qrCodeBitmap
     DisposableEffect(Unit) {
         viewModel.updateSessionStatus()
-        onDispose { }
+        viewModel.setupTimer(
+            finished = popBackStack
+        )
+        viewModel.startTimer()
+        onDispose {
+            viewModel.closeTimer()
+        }
     }
 
     ShareContent(
@@ -91,15 +98,6 @@ fun ShareContent(
             AppTopBar(
                 title = "이미지 저장",
                 alignment = Alignment.CenterHorizontally,
-                leftIcon = {
-                    Icon(
-                        modifier = Modifier.size(AppTheme.size.icon)
-                            .clickable(true, onClick = popBackStack),
-                        imageVector = Icons.Filled.Home,
-                        contentDescription = "home",
-                        tint = AppTheme.colorScheme.top
-                    )
-                }
             )
         },
         bottomBar = {
@@ -159,6 +157,25 @@ fun ShareContent(
                     )
                     Text(
                         text = "공유",
+                        style = AppTheme.typography.title,
+                        color = AppTheme.colorScheme.border
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.wrapContentSize()
+                        .clickable(true, onClick = popBackStack),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Icon(
+                        modifier = Modifier.size(AppTheme.size.icon),
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "close",
+                        tint = AppTheme.colorScheme.top
+                    )
+                    Text(
+                        text = "닫기",
                         style = AppTheme.typography.title,
                         color = AppTheme.colorScheme.border
                     )
