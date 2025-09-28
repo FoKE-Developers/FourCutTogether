@@ -8,6 +8,7 @@ import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.foke.together.domain.interactor.ClearCapturedImageUriUseCase
 import com.foke.together.domain.interactor.GeneratePhotoFrameUseCaseV1
 import com.foke.together.domain.interactor.GetCaptureDurationUseCase
 import com.foke.together.domain.interactor.GetCapturedImageUriUseCase
@@ -35,12 +36,13 @@ import kotlin.time.DurationUnit
 class InternelCameraViewModel @Inject constructor(
     private val internalCameraUseCase: InternalCameraUseCase,
     private val generatePhotoFrameUseCaseV1: GeneratePhotoFrameUseCaseV1,
-    getCaptureDurationUseCase: GetCaptureDurationUseCase,
-    getInternalCameraLensFacingUseCase: GetInternalCameraLensFacingUseCase,
-    getInternalCameraFlashModeUseCase: GetInternalCameraFlashModeUseCase,
-    getInternalCameraCaptureModeUseCase: GetInternalCameraCaptureModeUseCase,
-    getCapturedImageUriUseCase: GetCapturedImageUriUseCase,
-    getSessionUseCase : GetCurrentSessionUseCase,
+    private val getCaptureDurationUseCase: GetCaptureDurationUseCase,
+    private val getInternalCameraLensFacingUseCase: GetInternalCameraLensFacingUseCase,
+    private val getInternalCameraFlashModeUseCase: GetInternalCameraFlashModeUseCase,
+    private val getInternalCameraCaptureModeUseCase: GetInternalCameraCaptureModeUseCase,
+    private val getCapturedImageUriUseCase: GetCapturedImageUriUseCase,
+    private val clearCapturedImageUriUseCase: ClearCapturedImageUriUseCase,
+    private val getSessionUseCase : GetCurrentSessionUseCase,
 ): ViewModel() {
 
     // TODO(MutableStateFlow 로 처리하기)
@@ -141,6 +143,7 @@ class InternelCameraViewModel @Inject constructor(
 
         captureTimer = object : CountDownTimer(captureDuration.value.toLong(DurationUnit.MILLISECONDS), AppPolicy.COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
+                clearCapturedImageUriUseCase()
                 countdownSeconds.value = ((millisUntilFinished / 1000) + 1).toInt()
             }
             override fun onFinish() {

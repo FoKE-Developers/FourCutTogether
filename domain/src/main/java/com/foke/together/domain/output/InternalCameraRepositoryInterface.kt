@@ -17,6 +17,8 @@ interface InternalCameraRepositoryInterface {
         context: Context,
         fileName : String,
     )
+
+    fun clearCapturedImageUri()
     suspend fun initial(
         context: Context,
         lifecycleOwner: LifecycleOwner,

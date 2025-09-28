@@ -2,6 +2,7 @@ package com.foke.together.presenter.viewmodel
 
 import android.content.Context
 import android.net.Uri
+import android.os.CountDownTimer
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.lifecycle.ViewModel
@@ -11,11 +12,14 @@ import com.foke.together.domain.interactor.entity.Status
 import com.foke.together.domain.interactor.session.ClearSessionUseCase
 import com.foke.together.domain.interactor.session.GetCurrentSessionUseCase
 import com.foke.together.domain.interactor.session.UpdateSessionStatusUseCase
+import com.foke.together.util.AppPolicy
 import com.foke.together.util.ImageFileUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.DurationUnit
 
 @HiltViewModel
 class ShareViewModel @Inject constructor(
@@ -28,6 +32,8 @@ class ShareViewModel @Inject constructor(
     val qrCodeBitmap = getCurrentSessionUseCase()?.qrCodeBitmap
     val singleImageUri: Uri = generatePhotoFrameUseCaseV1.getFinalSingleImageUri()
     val twoImageUri: Uri = generatePhotoFrameUseCaseV1.getFinalTwoImageUri()
+
+    private var returnHomeTimer: CountDownTimer? = null
 
     fun downloadImage(): Result<Unit> {
         return getCurrentSessionUseCase()?.let { session ->
@@ -60,6 +66,29 @@ class ShareViewModel @Inject constructor(
 
     fun updateSessionStatus() {
         updateSessionStatusUseCase(Status.SHARE)
+    }
+
+    fun setupTimer(
+        finished : () -> Unit
+    ){
+        returnHomeTimer = object : CountDownTimer(1.minutes.toLong(DurationUnit.MILLISECONDS), AppPolicy.COUNTDOWN_INTERVAL){
+            override fun onFinish() {
+                finished()
+            }
+            override fun onTick(millisUntilFinished: Long) {
+                //
+            }
+        }
+    }
+    fun startTimer() {
+        returnHomeTimer?.start()
+    }
+
+    fun closeTimer(
+
+    ){
+        returnHomeTimer?.cancel()
+        returnHomeTimer = null
     }
 
     fun closeSession() {
