@@ -17,14 +17,21 @@ class SelectFrameViewModel @Inject constructor(
     private val updateSessionStatusUseCase: UpdateSessionStatusUseCase
 ): ViewModel() {
 
-    val isDateDisplay = MutableStateFlow(false)
-    val isQRDisplay = MutableStateFlow(false)
+    val isDateDisplay = MutableStateFlow(true)
+    val isQRDisplay = MutableStateFlow(true)
 
     val cutFrames = MutableStateFlow<List<DefaultCutFrameSet>>(emptyList())
 
     fun updateSessionStatus() {
         updateSessionStatusUseCase(Status.SELECT_FRAME)
-        cutFrames.value = DefaultCutFrameSet.entries
+        // TODO: 윤수야 여기 내가 하드코딩 했어
+        cutFrames.value = DefaultCutFrameSet.entries.map { cutFrame ->
+            cutFrame.isDateString = isDateDisplay.value
+            cutFrame.isQrCode = isQRDisplay.value
+            AppLog.d(TAG, "updateDateDisplay", "isDateString : ${cutFrame.isDateString}")
+            AppLog.d(TAG, "updateDateDisplay", "isQrCode : ${cutFrame.isQrCode}")
+            cutFrame
+        }
     }
 
     fun updateDateDisplay(state: Boolean) = viewModelScope.launch{
@@ -32,6 +39,7 @@ class SelectFrameViewModel @Inject constructor(
         cutFrames.value = DefaultCutFrameSet.entries.map { cutFrame ->
             cutFrame.isDateString = state
             AppLog.d(TAG, "updateDateDisplay", "isDateString : ${cutFrame.isDateString}")
+            AppLog.d(TAG, "updateDateDisplay", "isQrCode : ${cutFrame.isQrCode}")
             cutFrame
         }
     }
